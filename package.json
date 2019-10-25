@@ -1,0 +1,49 @@
+{
+  "name": "flat-land-gl",
+  "version": "1.0.0",
+  "description": "WebGL library for images and sprites display management.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "react-app-rewired build",
+    "start": "react-app-rewired start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "test": "react-app-rewired test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tolokoban/flat-land-gl.git"
+  },
+  "keywords": [
+    "tolokoban",
+    "toloframework",
+    "flat-land-gl",
+    "react",
+    "webgl"
+  ],
+  "author": "Tolokoban <contact@tolokoban.org>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/tolokoban/flat-land-gl/issues"
+  },
+  "homepage": "https://github.com/tolokoban/flat-land-gl#readme",
+  "dependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.8",
+    "@types/react": "^16.9.3",
+    "@types/react-dom": "^16.9.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.1",
+    "save-as-file": "^0.2.0",
+    "typescript": "^3.6.3"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.1.1",
+    "react-app-rewire-yaml": "^1.1.0",
+    "react-app-rewired": "^2.1.3",
+    "react-dev-utils": "^8.0.0",
+    "redux-devtools-extension": "^2.13.8"
+  }
+}
