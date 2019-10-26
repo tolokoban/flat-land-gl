@@ -5,7 +5,8 @@ import FrameVertexShader from './shader/frame.vert'
 import FrameFragmentShader from './shader/frame.frag'
 
 interface IInternalStuff {
-    texture: number
+    texture: number,
+    program: Program
 }
 
 export interface IFrameInput {
@@ -14,7 +15,8 @@ export interface IFrameInput {
     y: number,
     z: number,
     width: number,
-    height: number
+    height: number,
+    visible: boolean
 }
 
 export interface IFrame extends IFrameInput {
@@ -30,16 +32,17 @@ interface ITexture {
 export default class FlatLand {
     private readonly gl
     private readonly textures: Map<string, ITexture>
-    private readonly samples: IFrame[]
+    private readonly frames: IFrame[]
     private readonly programs: Map<string, Program>
     private isInitialized = false
+    private isRendering = false
 
     contructor(private canvas: HTMLCanvasElement) {
         this.gl = canvas.getContext("webgl", {
             // Specify WebGL options.
         })
         this.textures = new Map()
-        this.samples = []
+        this.frames = []
         this.programs = new Map()
     }
 
@@ -51,7 +54,12 @@ export default class FlatLand {
         })
         const prg = new Program(shaders)
         this.programs.set('_frame', prg)
+        this.initBuff()
         this.isInitialized = true
+    }
+
+    private initBuff() {
+        
     }
 
     private ensureInit() {
@@ -90,7 +98,38 @@ export default class FlatLand {
         })
     }
 
-    createFrame(opt: IFrameInput): IFrame {
+    createFrame(opt: Partial<IFrameInput>): IFrame {
+        this.ensureInit()
 
+        if (!this.textures.has(opt.image)) {
+            throw Error(`[flat-land-gl/createFrame()] Image "" does not exist yet!`)
+        }
+        const prg = this.programs.get("_frame")
+        const frame = {
+            x: 0, y: 0, z: 0,
+            width: 300, height: 200,
+            visible: true,
+            ...opt,
+            $: {
+                texture: this.textures.gt(opt.image),
+                program: prg
+            }
+        }
+        this.frames.push(frame)
+        return frame
+    }
+
+    start() {
+        if (this.isRendering) return
+        this.isRendering = true
+        window.requestAnimationFrame(this.render)
+    }
+
+    stop() {
+        this.isRendering = false
+    }
+
+    private render = (time: number) => {
+        const { gl, buff } = this
     }
 }
