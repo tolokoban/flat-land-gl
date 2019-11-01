@@ -1,6 +1,3 @@
-export default { endsWith, fetchAssets }
-
-
 interface IAssetsOutput {
     [key: string]: string | HTMLImageElement | HTMLAudioElement;
 }

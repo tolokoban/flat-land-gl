@@ -1,5 +1,6 @@
 import Program from './webgl/program'
-import fetchAssets from './webgl/tools'
+import Atlas from './atlas'
+import { fetchAssets } from './webgl/tools'
 
 import FrameVertexShader from './shader/frame.vert'
 import FrameFragmentShader from './shader/frame.frag'
@@ -29,73 +30,86 @@ interface ITexture {
     texture: number
 }
 
-export default class FlatLand {
-    private readonly gl
-    private readonly textures: Map<string, ITexture>
-    private readonly frames: IFrame[]
-    private readonly programs: Map<string, Program>
-    private isInitialized = false
-    private isRendering = false
+interface IAsyncActionAtlas  {
+    type: "atlas",
+    name: string,
+    url: string
+}
 
-    contructor(private canvas: HTMLCanvasElement) {
-        this.gl = canvas.getContext("webgl", {
+interface IAsyncActionProgram  {
+    type: "program",
+    name: string,
+    vertURL: string,
+    fragURL: string
+}
+
+type IAsyncAction = IAsyncActionAtlas | IAsyncActionProgram
+
+export default class FlatLand {
+    private readonly gl: WebGLRenderingContext
+    private readonly atlases: Map<string, Atlas>
+    private readonly programs: Map<string, Program>
+    private isRendering = false
+    private asyncActions: IAsyncAction[] = []
+    private isProcessingAsynActions = false
+
+    constructor(private canvas: HTMLCanvasElement) {
+        const gl = canvas.getContext("webgl", {
             // Specify WebGL options.
         })
-        this.textures = new Map()
-        this.frames = []
+        if (!gl) throw "Unable to create a WegGL context!"
+
+        this.gl = gl
+        this.atlases = new Map()
         this.programs = new Map()
+
+        this.pushAsyncAction({
+            type: "program",
+            name: "_frame",
+            vertURL: FrameVertexShader,
+            fragURL: FrameFragmentShader
+        })
+    }
+
+    private pushAsyncAction(action: IAsyncAction) {
+        this.asyncActions.push(action)
+        if (!this.isProcessingAsynActions) {
+            window.requestAnimationFrame(this.processAsyncActions)
+        }
+    }
+
+    private async processAsyncActions() {
+        this.isProcessingAsynActions = true
+        while (this.asyncActions.length > 0) {
+            const action = this.asyncActions.shift()
+            if (!action) continue
+            if (action.type === "atlas") {
+                await this.processAsyncActionAtlas(action)
+            }
+        }
+    }
+
+    private async processAsyncActionAtlas(action: IAsyncActionAtlas) {
+
+    }
+
+    private async processAsyncActionProgram(action: IAsyncActionProgram) {
+        const shaders = await fetchAssets({
+            vert: action.vertURL,
+            frag: action.fragURL
+        })
+        const prg = new Program(shaders)
+        this.programs.set('_frame', prg)
     }
 
     async initialize() {
         if (this.isInitialized) return
-        const shaders = await fetchAssets({
-            vert: FrameVertexShader,
-            frag: FrameFragmentShader
-        })
-        const prg = new Program(shaders)
-        this.programs.set('_frame', prg)
         this.initBuff()
         this.isInitialized = true
     }
 
     private initBuff() {
-        
-    }
 
-    private ensureInit() {
-        if (this.isInitialized) return
-        console.error("[flat-land-gl] This object is not yet initialized!")
-        console.error("    const f = new FlatLand(canvas)")
-        console.error("    await f.initialize()")
-        throw Error("[flat-land-gl] This object is not yet initialized!")
-    }
-
-    async loadImageFromURL(name: string, url: string) {
-        this.ensureInit()
-
-        const { gl, textures } = this
-        return new Promise((resolve, reject) => {
-            const texture = gl.createTexture()
-
-            gl.bindTexture(gl.TEXTURE_2D, texture)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-
-            textures.set(name, { name, texture })
-
-            const img = new Image()
-            img.onload = () => {
-                gl.bindTexture(gl.TEXTURE_2D, texture)
-                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img)
-                resolve(name)
-            }
-            img.onerror = () => {
-                reject(name)
-            }
-            img.src = url
-        })
     }
 
     createFrame(opt: Partial<IFrameInput>): IFrame {
@@ -130,6 +144,14 @@ export default class FlatLand {
     }
 
     private render = (time: number) => {
-        const { gl, buff } = this
+        if (this.isRendering) window.requestAnimationFrame(this.render)
+        else return
+
+        // @TODO
     }
+}
+
+
+async function sleep(timeInMilliseconds: number) {
+    return new Promise(resolve => window.setTimeout(resolve, timeInMilliseconds))
 }
