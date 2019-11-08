@@ -15,8 +15,17 @@ var __extends = (this && this.__extends) || (function () {
  * Background the screen by filling it with an image that covers it entirely.
  */
 import Painter from '../painter';
+import castString from '../../converter/string';
 var BackgroundPainter = /** @class */ (function (_super) {
     __extends(BackgroundPainter, _super);
+    /**
+     * params: { atlasName, align }
+     * - align: if undefined, the background will be centered.
+     *          "R" means that the Right edge of the background is always visible.
+     *          "L" means the same for Left.
+     *          "T" for Top.
+     *          "B" for "Bottom".
+     */
     function BackgroundPainter(name, scene, params) {
         var _this = _super.call(this, name, scene) || this;
         var atlasName = params.atlasName;
@@ -26,7 +35,7 @@ var BackgroundPainter = /** @class */ (function (_super) {
         }
         _this.atlas = atlas;
         _this.prg = _this.createProgram({
-            vert: VERT, frag: FRAG
+            vert: getVert(castString(params.align).toUpperCase()), frag: FRAG
         });
         var gl = scene.gl;
         var buff = gl.createBuffer();
@@ -56,6 +65,22 @@ var BackgroundPainter = /** @class */ (function (_super) {
     return BackgroundPainter;
 }(Painter));
 export default BackgroundPainter;
-var VERT = "uniform float uniAspectRatio;\nattribute vec2 attXY;\nvarying vec2 varUV;\n\nvoid main() {\n  varUV = attXY;\n  vec2 location = 2.0 * (attXY - vec2(0.5, 0.5));\n\n  if (uniAspectRatio > 1.0) {\n    location.y *= uniAspectRatio;\n  } else {\n    location.x /= uniAspectRatio;\n  }\n\n  gl_Position = vec4(location.x, -location.y, -1.0, 1.0);\n}";
+function getVert(align) {
+    var x = "";
+    var y = "";
+    if (align.indexOf("B") !== -1) {
+        y = "location.y -= uniAspectRatio - 1.0;";
+    }
+    else if (align.indexOf("T") !== -1) {
+        y = "location.y += uniAspectRatio - 1.0;";
+    }
+    if (align.indexOf("R") !== -1) {
+        x = "location.x -= 1.0 / uniAspectRatio - 1.0;";
+    }
+    else if (align.indexOf("L") !== -1) {
+        x = "location.x += 1.0 / uniAspectRatio - 1.0;";
+    }
+    return "uniform float uniAspectRatio;\nattribute vec2 attXY;\nvarying vec2 varUV;\n\nvoid main() {\n  varUV = attXY;\n  vec2 location = 2.0 * (attXY - vec2(0.5, 0.5));\n\n  if (uniAspectRatio > 1.0) {\n    location.y *= uniAspectRatio;" + y + "\n  } else {\n    location.x /= uniAspectRatio;" + x + "\n  }\n\n  gl_Position = vec4(location.x, -location.y, -1.0, 1.0);\n}";
+}
 var FRAG = "precision mediump float;\nuniform sampler2D uniTexture;\nvarying vec2 varUV;\n\nvoid main() {\n  vec4 color = texture2D( uniTexture, varUV );\n  gl_FragColor = color;\n}";
 //# sourceMappingURL=background.js.map

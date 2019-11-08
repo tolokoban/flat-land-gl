@@ -1,0 +1,1 @@
+{"version":3,"file":"object.js","sourceRoot":"","sources":["../../src/converter/object.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,UAAU,UAAU,CAAC,CAAM,EAAE,YAAqB;IAArB,6BAAA,EAAA,iBAAqB;IAC5D,IAAI,OAAO,CAAC,KAAK,QAAQ;QAAE,OAAO,YAAY,CAAC;IAC/C,IAAI,KAAK,CAAC,OAAO,CAAC,CAAC,CAAC;QAAE,OAAO,YAAY,CAAC;IAC1C,OAAO,CAAC,CAAC;AACb,CAAC"}

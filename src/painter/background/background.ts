@@ -5,9 +5,11 @@ import Painter from '../painter'
 import Scene from '../../scene'
 import Atlas from '../../atlas'
 import Program from '../../webgl/program'
+import castString from '../../converter/string'
 
 interface IBackgroundPainterParams {
-    atlasName: string
+    atlasName: string,
+    align?: string
 }
 
 export default class BackgroundPainter extends Painter {
@@ -15,6 +17,14 @@ export default class BackgroundPainter extends Painter {
     private readonly prg: Program
     private readonly buff: WebGLBuffer
 
+    /**
+     * params: { atlasName, align }
+     * - align: if undefined, the background will be centered.
+     *          "R" means that the Right edge of the background is always visible.
+     *          "L" means the same for Left.
+     *          "T" for Top.
+     *          "B" for "Bottom".
+     */
     constructor(name: string, scene: Scene, params: IBackgroundPainterParams) {
         super(name, scene)
         const { atlasName } = params
@@ -25,7 +35,7 @@ export default class BackgroundPainter extends Painter {
 
         this.atlas = atlas
         this.prg = this.createProgram({
-            vert: VERT, frag: FRAG
+            vert: getVert(castString(params.align).toUpperCase()), frag: FRAG
         })
         const { gl } = scene
         const buff = gl.createBuffer();
@@ -56,7 +66,24 @@ export default class BackgroundPainter extends Painter {
 }
 
 
-const VERT = `uniform float uniAspectRatio;
+function getVert(align: string) {
+    let x = ""
+    let y = ""
+
+    if (align.indexOf("B") !== -1) {
+        y = "location.y -= uniAspectRatio - 1.0;"
+    }
+    else if (align.indexOf("T") !== -1) {
+        y = "location.y += uniAspectRatio - 1.0;"
+    }
+    if (align.indexOf("R") !== -1) {
+        x = "location.x -= 1.0 / uniAspectRatio - 1.0;"
+    }
+    else if (align.indexOf("L") !== -1) {
+        x = "location.x += 1.0 / uniAspectRatio - 1.0;"
+    }
+
+    return `uniform float uniAspectRatio;
 attribute vec2 attXY;
 varying vec2 varUV;
 
@@ -65,13 +92,14 @@ void main() {
   vec2 location = 2.0 * (attXY - vec2(0.5, 0.5));
 
   if (uniAspectRatio > 1.0) {
-    location.y *= uniAspectRatio;
+    location.y *= uniAspectRatio;${y}
   } else {
-    location.x /= uniAspectRatio;
+    location.x /= uniAspectRatio;${x}
   }
 
   gl_Position = vec4(location.x, -location.y, -1.0, 1.0);
 }`
+}
 
 const FRAG = `precision mediump float;
 uniform sampler2D uniTexture;
