@@ -6,6 +6,7 @@ export default class Painter {
     protected _name: string;
     protected scene: Scene;
     constructor(_name: string, scene: Scene);
+    destroy(): void;
     readonly name: string;
     render(time: number): void;
 }

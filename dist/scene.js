@@ -17,6 +17,7 @@ var FlatLand = /** @class */ (function () {
         this.activePainters = [];
         this.isRendering = false;
         this.resolution = 1;
+        this.onAnimation = null;
         this.render = function (time) {
             var e_1, _a;
             if (_this.isRendering)
@@ -36,6 +37,10 @@ var FlatLand = /** @class */ (function () {
                     if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                 }
                 finally { if (e_1) throw e_1.error; }
+            }
+            var onAnimation = _this.onAnimation;
+            if (typeof onAnimation === 'function') {
+                onAnimation(time);
             }
         };
         var gl = canvas.getContext("webgl", {
@@ -62,7 +67,7 @@ var FlatLand = /** @class */ (function () {
     /**
      * If a painter with the same name already exists, return false and don't add the new one.
      */
-    FlatLand.prototype.attachPainter = function (painter) {
+    FlatLand.prototype.$attachPainter = function (painter) {
         if (this.painters.has(painter.name))
             return false;
         this.painters.set(painter.name, painter);
@@ -71,7 +76,7 @@ var FlatLand = /** @class */ (function () {
         this.activePainters.push(painter);
         return true;
     };
-    FlatLand.prototype.detachPainter = function (name) {
+    FlatLand.prototype.$detachPainter = function (name) {
         if (this.painters.has(name))
             return false;
         this.painters.delete(name);

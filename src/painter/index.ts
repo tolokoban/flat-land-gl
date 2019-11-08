@@ -1,7 +1,7 @@
+import Clear from './clear'
 import Painter from './painter'
-import Scene from './scene'
 
 export default {
-    Painter,
-    Scene
+    Clear,
+    Painter
 }

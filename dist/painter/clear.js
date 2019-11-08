@@ -50,7 +50,7 @@ var ClearPainter = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ClearPainter.prototype.paint = function () {
+    ClearPainter.prototype.render = function () {
         var gl = this.scene.gl;
         gl.clearColor(this._red, this._green, this._blue, this._alpha);
         gl.clear(gl.COLOR_BUFFER_BIT);

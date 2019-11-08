@@ -1,7 +1,7 @@
+import Clear from './clear';
 import Painter from './painter';
-import Scene from './scene';
 export default {
-    Painter: Painter,
-    Scene: Scene
+    Clear: Clear,
+    Painter: Painter
 };
 //# sourceMappingURL=index.js.map

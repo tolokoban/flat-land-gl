@@ -14,6 +14,6 @@ export default class ClearPainter extends Painter {
     green: number;
     blue: number;
     alpha: number;
-    paint(): void;
+    render(): void;
 }
 //# sourceMappingURL=clear.d.ts.map

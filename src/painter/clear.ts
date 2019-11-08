@@ -27,7 +27,7 @@ export default class ClearPainter extends Painter {
     get alpha() { return this._alpha }
     set alpha(v: number) { this._alpha = v }
 
-    paint() {
+    render() {
         const gl = this.scene.gl
         gl.clearColor(this._red, this._green, this._blue, this._alpha)
         gl.clear(gl.COLOR_BUFFER_BIT)

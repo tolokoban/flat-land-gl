@@ -5,7 +5,13 @@
 import Scene from '../scene'
 
 export default class Painter {
-    constructor(protected _name: string, protected scene: Scene) {}
+    constructor(protected _name: string, protected scene: Scene) {
+        scene.$attachPainter(this)
+    }
+
+    destroy() {
+        this.scene.$detachPainter(this.name)
+    }
 
     get name() { return this._name }
 

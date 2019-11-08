@@ -5,7 +5,11 @@ var Painter = /** @class */ (function () {
     function Painter(_name, scene) {
         this._name = _name;
         this.scene = scene;
+        scene.$attachPainter(this);
     }
+    Painter.prototype.destroy = function () {
+        this.scene.$detachPainter(this.name);
+    };
     Object.defineProperty(Painter.prototype, "name", {
         get: function () { return this._name; },
         enumerable: true,

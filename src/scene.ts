@@ -9,6 +9,7 @@ export default class FlatLand {
     private activePainters: Painter[] = []
     private isRendering = false
     resolution = 1
+    onAnimation: ((time: number) => void) | null = null
 
     constructor(canvas: HTMLCanvasElement) {
         const gl = canvas.getContext("webgl", {
@@ -37,7 +38,7 @@ export default class FlatLand {
     /**
      * If a painter with the same name already exists, return false and don't add the new one.
      */
-    attachPainter(painter: Painter): boolean {
+    $attachPainter(painter: Painter): boolean {
         if (this.painters.has(painter.name)) return false
         this.painters.set(painter.name, painter)
         this.activePainters = this.activePainters
@@ -46,7 +47,7 @@ export default class FlatLand {
         return true
     }
 
-    detachPainter(name: string): boolean {
+    $detachPainter(name: string): boolean {
         if (this.painters.has(name)) return false
         this.painters.delete(name)
         this.activePainters = this.activePainters
@@ -71,6 +72,11 @@ export default class FlatLand {
         Resize(this.gl, this.resolution)
         for (const painter of this.activePainters) {
             painter.render(time)
+        }
+
+        const { onAnimation } = this
+        if (typeof onAnimation === 'function') {
+            onAnimation(time)
         }
     }
 }
