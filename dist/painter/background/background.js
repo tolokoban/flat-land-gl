@@ -56,6 +56,6 @@ var BackgroundPainter = /** @class */ (function (_super) {
     return BackgroundPainter;
 }(Painter));
 export default BackgroundPainter;
-var VERT = "uniform float uniAspectRatio;\nattribute vec2 attXY;\nvarying vec2 varUV;\n\nvoid main() {\n  varUV = attXY;\n  vec2 location = 2.0 * (attXY - vec2(0.5, 0.5));\n  if (uniAspectRatio > 1.0) {\n    location.y = uniAspectRatio;\n  } else {\n    location.x = -uniAspectRatio;\n  }\n\n  gl_Position = vec4(location.x, -location.y, -1.0, 1.0);\n}";
+var VERT = "uniform float uniAspectRatio;\nattribute vec2 attXY;\nvarying vec2 varUV;\n\nvoid main() {\n  varUV = attXY;\n  vec2 location = 2.0 * (attXY - vec2(0.5, 0.5));\n\n  if (uniAspectRatio > 1.0) {\n    location.y *= uniAspectRatio;\n  } else {\n    location.x /= uniAspectRatio;\n  }\n\n  gl_Position = vec4(location.x, -location.y, -1.0, 1.0);\n}";
 var FRAG = "precision mediump float;\nuniform sampler2D uniTexture;\nvarying vec2 varUV;\n\nvoid main() {\n  vec4 color = texture2D( uniTexture, varUV );\n  gl_FragColor = color;\n}";
 //# sourceMappingURL=background.js.map
