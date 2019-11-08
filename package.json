@@ -1,6 +1,6 @@
 {
     "name": "flat-land-gl",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "author": "Tolokoban <contact@tolokoban.org>",
     "private": false,
     "main": "dist/index.js",
