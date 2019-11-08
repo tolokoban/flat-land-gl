@@ -83,6 +83,22 @@ var Atlas = /** @class */ (function () {
         var _a = this, gl = _a.gl, texture = _a.texture;
         gl.deleteTexture(texture);
     };
+    Atlas.prototype.activate = function (unit) {
+        if (unit === void 0) { unit = 0; }
+        var _a = this, gl = _a.gl, texture = _a.texture;
+        var UNITS = [
+            gl.TEXTURE0,
+            gl.TEXTURE1,
+            gl.TEXTURE2,
+            gl.TEXTURE3,
+            gl.TEXTURE4,
+            gl.TEXTURE5,
+            gl.TEXTURE6,
+            gl.TEXTURE7
+        ];
+        gl.activeTexture(UNITS[Math.abs(unit) % UNITS.length]);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+    };
     Atlas.prototype.loadImage = function (url) {
         return __awaiter(this, void 0, void 0, function () {
             var that;

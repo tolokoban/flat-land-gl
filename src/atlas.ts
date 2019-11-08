@@ -41,6 +41,22 @@ export default class Atlas {
         gl.deleteTexture(texture)
     }
 
+    activate(unit: number = 0) {
+        const { gl, texture } = this
+        const UNITS = [
+            gl.TEXTURE0,
+            gl.TEXTURE1,
+            gl.TEXTURE2,
+            gl.TEXTURE3,
+            gl.TEXTURE4,
+            gl.TEXTURE5,
+            gl.TEXTURE6,
+            gl.TEXTURE7
+        ]
+        gl.activeTexture(UNITS[Math.abs(unit) % UNITS.length])
+        gl.bindTexture(gl.TEXTURE_2D, texture)
+    }
+
     async loadImage(url: string): Promise<string> {
         const that = this
 

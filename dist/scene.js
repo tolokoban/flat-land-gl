@@ -26,21 +26,30 @@ var FlatLand = /** @class */ (function () {
                 return;
             Resize(_this.gl, _this.resolution);
             try {
-                for (var _b = __values(_this.activePainters), _c = _b.next(); !_c.done; _c = _b.next()) {
-                    var painter = _c.value;
-                    painter.render(time);
-                }
-            }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
                 try {
-                    if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                    for (var _b = __values(_this.activePainters), _c = _b.next(); !_c.done; _c = _b.next()) {
+                        var painter = _c.value;
+                        painter.render(time);
+                    }
                 }
-                finally { if (e_1) throw e_1.error; }
+                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                finally {
+                    try {
+                        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                }
+                var onAnimation = _this.onAnimation;
+                if (typeof onAnimation === 'function') {
+                    onAnimation(time);
+                }
             }
-            var onAnimation = _this.onAnimation;
-            if (typeof onAnimation === 'function') {
-                onAnimation(time);
+            catch (ex) {
+                console.error(ex);
+                _this.stop();
+                console.error("###############################");
+                console.error("# Rendering has been stopped! #");
+                console.error("###############################");
             }
         };
         var gl = canvas.getContext("webgl", {
@@ -52,15 +61,21 @@ var FlatLand = /** @class */ (function () {
         this.atlases = new Map();
         this.painters = new Map();
     }
+    FlatLand.prototype.getAtlas = function (name) {
+        var atlases = this.atlases;
+        return atlases.get(name) || null;
+    };
     FlatLand.prototype.createAtlas = function (params) {
         var atlas = new Atlas(this.gl, params);
         this.atlases.set(params.name, atlas);
         return atlas;
     };
-    FlatLand.prototype.destroyAtlas = function (atlas) {
-        if (!this.atlases.has(atlas.name))
+    FlatLand.prototype.destroyAtlas = function (name) {
+        var atlases = this.atlases;
+        var atlas = atlases.get(name);
+        if (!atlas)
             return false;
-        this.atlases.delete(atlas.name);
+        atlases.delete(name);
         atlas.destroy();
         return true;
     };
@@ -84,6 +99,20 @@ var FlatLand = /** @class */ (function () {
             .filter(function (p) { return p.name; });
         return true;
     };
+    Object.defineProperty(FlatLand.prototype, "width", {
+        get: function () {
+            return this.gl.drawingBufferWidth;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlatLand.prototype, "height", {
+        get: function () {
+            return this.gl.drawingBufferHeight;
+        },
+        enumerable: true,
+        configurable: true
+    });
     FlatLand.prototype.start = function () {
         if (this.isRendering)
             return;

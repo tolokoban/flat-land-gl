@@ -21,6 +21,7 @@ export default class Atlas {
      * Remove the texture from the graphic card memory.
      */
     destroy(): void;
+    activate(unit?: number): void;
     loadImage(url: string): Promise<string>;
 }
 //# sourceMappingURL=atlas.d.ts.map

@@ -22,15 +22,22 @@ export default class FlatLand {
         this.painters = new Map()
     }
 
+    getAtlas(name: string): Atlas | null {
+        const { atlases } = this
+        return atlases.get(name) || null
+    }
+
     createAtlas(params: IAtlasParams): Atlas {
         const atlas = new Atlas(this.gl, params)
         this.atlases.set(params.name, atlas)
         return atlas
     }
 
-    destroyAtlas(atlas: Atlas): boolean {
-        if (!this.atlases.has(atlas.name)) return false
-        this.atlases.delete(atlas.name)
+    destroyAtlas(name: string): boolean {
+        const { atlases } = this
+        const atlas = atlases.get(name)
+        if (!atlas) return false
+        atlases.delete(name)
         atlas.destroy()
         return true
     }
@@ -55,6 +62,14 @@ export default class FlatLand {
         return true
     }
 
+    get width() {
+        return this.gl.drawingBufferWidth
+    }
+
+    get height() {
+        return this.gl.drawingBufferHeight
+    }
+
     start() {
         if (this.isRendering) return
         this.isRendering = true
@@ -70,13 +85,23 @@ export default class FlatLand {
         else return
 
         Resize(this.gl, this.resolution)
-        for (const painter of this.activePainters) {
-            painter.render(time)
-        }
 
-        const { onAnimation } = this
-        if (typeof onAnimation === 'function') {
-            onAnimation(time)
+        try {
+            for (const painter of this.activePainters) {
+                painter.render(time)
+            }
+
+            const { onAnimation } = this
+            if (typeof onAnimation === 'function') {
+                onAnimation(time)
+            }
+        }
+        catch(ex) {
+            console.error(ex)
+            this.stop()
+            console.error("###############################")
+            console.error("# Rendering has been stopped! #")
+            console.error("###############################")
         }
     }
 }
