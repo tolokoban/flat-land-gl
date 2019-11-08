@@ -1,0 +1,1 @@
+{"version":3,"file":"painter.js","sourceRoot":"","sources":["../../src/painter/painter.ts"],"names":[],"mappings":"AAAA;;GAEG;AAIH;IACI,iBAAsB,KAAa,EAAY,KAAY;QAArC,UAAK,GAAL,KAAK,CAAQ;QAAY,UAAK,GAAL,KAAK,CAAO;IAAG,CAAC;IAE/D,sBAAI,yBAAI;aAAR,cAAa,OAAO,IAAI,CAAC,KAAK,CAAA,CAAC,CAAC;;;OAAA;IAEhC,wBAAM,GAAN,UAAO,IAAY,IAAG,CAAC;IAC3B,cAAC;AAAD,CAAC,AAND,IAMC"}

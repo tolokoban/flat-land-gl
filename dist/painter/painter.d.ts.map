@@ -1,0 +1,1 @@
+{"version":3,"file":"painter.d.ts","sourceRoot":"","sources":["../../src/painter/painter.ts"],"names":[],"mappings":"AAAA;;GAEG;AAEH,OAAO,KAAK,MAAM,UAAU,CAAA;AAE5B,MAAM,CAAC,OAAO,OAAO,OAAO;IACZ,SAAS,CAAC,KAAK,EAAE,MAAM;IAAE,SAAS,CAAC,KAAK,EAAE,KAAK;gBAArC,KAAK,EAAE,MAAM,EAAY,KAAK,EAAE,KAAK;aAEvD,IAAI;IAER,MAAM,CAAC,IAAI,EAAE,MAAM;CACtB"}

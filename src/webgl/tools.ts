@@ -28,10 +28,7 @@ export function fetchAssets(assets: { [key: string]: string },
         }
 
         function onaudioloaded(audio: HTMLAudioElement, url: string) {
-            console.log("Slot for ", url);
-            if (audio._loaded) return;
-            audio._loaded = true;
-            console.log("Loaded: ", url);
+            console.log("Loaded: ", url, audio);
             next();
         }
 
