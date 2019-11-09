@@ -16,6 +16,7 @@ var __extends = (this && this.__extends) || (function () {
  * This color is defined by attributes red, gree, blue and alpha, which must be between 0 and 1.
  */
 import Painter from './painter';
+import Color from '../webgl/color';
 var ClearPainter = /** @class */ (function (_super) {
     __extends(ClearPainter, _super);
     function ClearPainter(name, scene) {
@@ -47,6 +48,25 @@ var ClearPainter = /** @class */ (function (_super) {
     Object.defineProperty(ClearPainter.prototype, "alpha", {
         get: function () { return this._alpha; },
         set: function (v) { this._alpha = v; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClearPainter.prototype, "color", {
+        get: function () {
+            var color = new Color();
+            color.R = this._red;
+            color.G = this._green;
+            color.B = this._blue;
+            color.A = this._alpha;
+            return color.stringify();
+        },
+        set: function (cssColor) {
+            var color = new Color(cssColor);
+            this._red = color.R;
+            this._green = color.G;
+            this._blue = color.B;
+            this._alpha = color.A;
+        },
         enumerable: true,
         configurable: true
     });

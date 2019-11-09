@@ -2,8 +2,10 @@
  * Clear the screen by filling it with a plain color.
  * This color is defined by attributes red, gree, blue and alpha, which must be between 0 and 1.
  */
- import Painter from './painter'
+import Painter from './painter'
 import Scene from '../scene'
+import Color from '../webgl/color'
+
 
 export default class ClearPainter extends Painter {
     private _red = 0.8
@@ -26,6 +28,22 @@ export default class ClearPainter extends Painter {
 
     get alpha() { return this._alpha }
     set alpha(v: number) { this._alpha = v }
+
+    get color() {
+        const color = new Color()
+        color.R = this._red
+        color.G = this._green
+        color.B = this._blue
+        color.A = this._alpha
+        return color.stringify()
+    }
+    set color(cssColor: string) {
+        const color = new Color(cssColor)
+        this._red = color.R
+        this._green = color.G
+        this._blue = color.B
+        this._alpha = color.A
+    }
 
     render() {
         const gl = this.scene.gl
