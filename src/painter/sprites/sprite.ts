@@ -13,85 +13,39 @@ export interface ISprite {
 }
 
 export default class Sprite {
-    private readonly data: ISprite
-    private dirty = false
+    private params: ISprite
+    private readonly index: number
+    private readonly data: Float32Array
 
-    constructor(private index: number, params: Partial<ISprite>) {
-        this.data = {
+    constructor(index: number, data: Float32Array, params: Partial<ISprite>) {
+        this.index = index
+        this.data = data
+        this.params = {
             x: 0, y: 0, z: 0,
             width: 50, height: 50,
             originX: 0, originY: 0,
-            u0: 0, v0: 0, u1: 1, v1: 1
+            u0: 0, v0: 0, u1: 1, v1: 1,
+            ...params
         }
     }
 
-    update(array: Float32Array) {
-        
+    update(newParams: Partial<ISprite>) {
+        this.params = { ...this.params, ...newParams }
+        const { data, index, params } = this
+        data[index] = params.x
+        data[index + 1] = params.y
+        data[index + 2] = params.z
     }
 
-    get x() { return this.data.x }
-    set x(v: number) {
-        this.data.x = v
-        this.dirty = true
-    }
-
-    get y() { return this.data.y }
-    set y(v: number) {
-        this.data.y = v
-        this.dirty = true
-    }
-
-    get z() { return this.data.z }
-    set z(v: number) {
-        this.data.z = v
-        this.dirty = true
-    }
-
-    get width() { return this.data.width }
-    set width(v: number) {
-        this.data.width = v
-        this.dirty = true
-    }
-
-    get height() { return this.data.height }
-    set height(v: number) {
-        this.data.height = v
-        this.dirty = true
-    }
-
-    get originX() { return this.data.originX }
-    set originX(v: number) {
-        this.data.originX = v
-        this.dirty = true
-    }
-
-    get originY() { return this.data.originY }
-    set originY(v: number) {
-        this.data.originY = v
-        this.dirty = true
-    }
-
-    get u0() { return this.data.u0 }
-    set u0(v: number) {
-        this.data.u0 = v
-        this.dirty = true
-    }
-
-    get v0() { return this.data.v0 }
-    set v0(v: number) {
-        this.data.v0 = v
-        this.dirty = true
-    }
-
-    get u1() { return this.data.u1 }
-    set u1(v: number) {
-        this.data.u1 = v
-        this.dirty = true
-    }
-
-    get v1() { return this.data.v1 }
-    set v1(v: number) {
-        this.data.v1 = v
-        this.dirty = true
-    }
+    get x() { return this.params.x }
+    get y() { return this.params.y }
+    get z() { return this.params.z }
+    get width() { return this.params.width }
+    get height() { return this.params.height }
+    get originX() { return this.params.originX }
+    get originY() { return this.params.originY }
+    get u0() { return this.params.u0 }
+    get v0() { return this.params.v0 }
+    get u1() { return this.params.u1 }
+    get v1() { return this.params.v1 }
 }
