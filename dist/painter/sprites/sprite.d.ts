@@ -15,6 +15,9 @@ export interface ISprite {
 export default class Sprite {
     private getData;
     private params;
+    readonly extra: {
+        [key: string]: any;
+    };
     $index: number;
     constructor(index: number, getData: () => Float32Array, params: Partial<ISprite>);
     update(newParams: Partial<ISprite>): void;

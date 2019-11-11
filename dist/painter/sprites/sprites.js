@@ -74,11 +74,14 @@ var SpritesPainter = /** @class */ (function (_super) {
     SpritesPainter.prototype.createSprite = function (params) {
         var index = this.count * CHUNK;
         this.count++;
+        if (this.count >= this.capacity) {
+            // Allocate a new block.
+            this.allocateNewBlock();
+        }
         var _a = this.atlas, width = _a.width, height = _a.height;
         var sprite = new Sprite(index, this.getData, __assign({ width: width,
             height: height }, params));
         this.sprites.push(sprite);
-        console.info("this.dataVert=", this.dataVert);
         return sprite;
     };
     SpritesPainter.prototype.render = function () {
@@ -98,6 +101,17 @@ var SpritesPainter = /** @class */ (function (_super) {
         gl.bindBuffer(gl.ARRAY_BUFFER, buffVert);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem);
         gl.drawElements(gl.TRIANGLES, 6 * this.count, gl.UNSIGNED_SHORT, 0);
+    };
+    SpritesPainter.prototype.allocateNewBlock = function () {
+        this.capacity += BLOCK;
+        var scene = this.scene;
+        var gl = scene.gl;
+        var buffElem = this.buffElem;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, createElements(this.capacity), gl.DYNAMIC_DRAW);
+        var dataVert = new Float32Array(this.capacity * CHUNK);
+        dataVert.set(this.dataVert);
+        this.dataVert = dataVert;
     };
     return SpritesPainter;
 }(Painter));

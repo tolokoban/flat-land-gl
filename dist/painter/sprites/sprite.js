@@ -12,9 +12,12 @@ var __assign = (this && this.__assign) || function () {
 var Sprite = /** @class */ (function () {
     function Sprite(index, getData, params) {
         this.getData = getData;
+        this.extra = {};
         this.$index = 0;
         this.$index = index;
-        this.params = __assign({ x: 0, y: 0, z: 0, width: 50, height: 50, originX: params.width ? params.width / 2 : 0, originY: params.height ? params.height / 2 : 0, u0: 0, v0: 0, u1: 1, v1: 1, scale: 1 }, params);
+        var width = params.width || 50;
+        var height = params.height || 50;
+        this.params = __assign({ x: 0, y: 0, z: 0, width: width, height: height, originX: width / 2, originY: height / 2, u0: 0, v0: 0, u1: 1, v1: 1, scale: 1 }, params);
         this.update(this.params);
     }
     Sprite.prototype.update = function (newParams) {

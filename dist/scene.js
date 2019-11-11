@@ -60,7 +60,11 @@ var FlatLand = /** @class */ (function () {
                 window.requestAnimationFrame(_this.render);
             else
                 return;
-            Resize(_this.gl, _this.resolution);
+            var gl = _this.gl;
+            Resize(gl, _this.resolution);
+            gl.clearDepth(-1);
+            gl.clear(gl.DEPTH_BUFFER_BIT);
+            gl.depthFunc(gl.GEQUAL);
             try {
                 try {
                     for (var _b = __values(_this.activePainters), _c = _b.next(); !_c.done; _c = _b.next()) {

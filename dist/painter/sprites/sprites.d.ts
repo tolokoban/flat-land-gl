@@ -18,6 +18,7 @@ export default class SpritesPainter extends Painter {
     constructor(params: ISpritesPainterParams);
     createSprite(params: Partial<ISprite>): Sprite;
     render(): void;
+    private allocateNewBlock;
     /**
      * Since the vertex array can be reallocated, we cannot give a reference to the Float32Array
      * to any Sprite. Instead, we will give them this function that will return the current array.

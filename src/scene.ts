@@ -86,7 +86,12 @@ export default class FlatLand {
         if (this.isRendering) window.requestAnimationFrame(this.render)
         else return
 
-        Resize(this.gl, this.resolution)
+        const { gl } = this
+        Resize(gl, this.resolution)
+
+        gl.clearDepth(-1)
+        gl.clear(gl.DEPTH_BUFFER_BIT)
+        gl.depthFunc(gl.GEQUAL)
 
         try {
             for (const painter of this.activePainters) {

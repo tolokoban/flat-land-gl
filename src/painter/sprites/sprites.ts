@@ -64,6 +64,11 @@ export default class SpritesPainter extends Painter {
     createSprite(params: Partial<ISprite>): Sprite {
         const index = this.count * CHUNK
         this.count++
+        if (this.count >= this.capacity) {
+            // Allocate a new block.
+            this.allocateNewBlock()
+        }
+
         const { width, height } = this.atlas
         const sprite = new Sprite(index, this.getData, {
             width,
@@ -71,7 +76,6 @@ export default class SpritesPainter extends Painter {
             ...params
         })
         this.sprites.push(sprite)
-        console.info("this.dataVert=", this.dataVert);
         return sprite
     }
 
@@ -94,6 +98,24 @@ export default class SpritesPainter extends Painter {
         gl.bindBuffer(gl.ARRAY_BUFFER, buffVert)
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem)
         gl.drawElements(gl.TRIANGLES, 6 * this.count, gl.UNSIGNED_SHORT, 0)
+    }
+
+    private allocateNewBlock() {
+        this.capacity += BLOCK
+
+        const { scene } = this
+        const { gl } = scene
+
+        const buffElem = this.buffElem
+        gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, buffElem )
+        gl.bufferData(
+            gl.ELEMENT_ARRAY_BUFFER,
+            createElements(this.capacity),
+            gl.DYNAMIC_DRAW )
+
+        const dataVert = new Float32Array(this.capacity * CHUNK)
+        dataVert.set(this.dataVert)
+        this.dataVert = dataVert
     }
 
     /**
