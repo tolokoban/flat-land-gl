@@ -11,16 +11,20 @@
         "@types/node": "12.12.5"
     },
     "devDependencies": {
+        "raw-loader": "^3.1.0",
         "react-scripts": "3.2.0",
-        "typescript": "3.6.4"
+        "ts-loader": "^6.2.1",
+        "typescript": "^3.6.4",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/tolokoban/flat-land-gl.git"
     },
     "scripts": {
-        "start": "tsc --watch",
-        "build": "tsc",
+        "start": "webpack --mode development --watch",
+        "build": "webpack --mode production",
         "postbuild": "rsync -av --exclude='**/*.ts' --exclude='**/*.js' src/ dist/",
         "test": "react-scripts test"
     },

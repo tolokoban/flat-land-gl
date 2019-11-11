@@ -38,7 +38,7 @@ export default class Atlas {
         gl.deleteTexture(texture)
     }
 
-    activate(unit: number = 0) {
+    activate(unit = 0) {
         const { gl, texture } = this
         const UNITS = [
             gl.TEXTURE0,

@@ -2,11 +2,11 @@
     "compilerOptions": {
         "incremental": true,
         "target": "es5",
-        "module": "esnext",
+        "module": "es6",
         "lib": [
             "dom",
             "dom.iterable",
-            "esnext"
+            "es6"
         ],
         "jsx": "react",
         "declaration": true,
@@ -18,11 +18,11 @@
         "tsBuildInfoFile": "./tmp/build.json",
         "removeComments": false,
         "downlevelIteration": true,
-        "strict": true,
-        "noImplicitAny": true,
+        "strict": false,
+        "noImplicitAny": false,
         "strictNullChecks": true,
-        "alwaysStrict": true,
-        "noImplicitReturns": true,
+        "alwaysStrict": false,
+        "noImplicitReturns": false,
         "moduleResolution": "node",
         "baseUrl": "./src",
         "allowSyntheticDefaultImports": true,
