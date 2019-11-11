@@ -2,11 +2,17 @@
  * This is a virtual painter from which all the other will inherit.
  */
 import Program from '../webgl/program';
+var ID = 0;
 var Painter = /** @class */ (function () {
-    function Painter(_name, scene) {
-        this._name = _name;
-        this.scene = scene;
-        scene.$attachPainter(this);
+    function Painter(params) {
+        this._name = "" + ID++;
+        if (!params.scene)
+            throw Error('Argument "params.scene" is mandatory!');
+        this.scene = params.scene;
+        if (typeof params.name === 'string' && params.name.length > 0) {
+            this._name = params.name;
+        }
+        this.scene.$attachPainter(this);
     }
     Painter.prototype.destroy = function () {
         this.scene.$detachPainter(this.name);
@@ -22,7 +28,7 @@ var Painter = /** @class */ (function () {
     };
     Painter.prototype.fatal = function (message) {
         console.error("Fatal error in Painter \"" + this.name + "\":", message);
-        throw Error(message);
+        return new Error(message);
     };
     return Painter;
 }());

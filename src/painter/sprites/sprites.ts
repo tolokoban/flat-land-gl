@@ -1,11 +1,11 @@
 /**
  *
  */
-import Painter from '../painter'
+import Painter, { IPainterParams } from '../painter'
 import Scene from '../../scene'
 import Atlas from '../../atlas'
 import Program from '../../webgl/program'
-import castString from '../../converter/string'
+import Sprite, { ISprite } from './sprite'
 import vert from './sprites.vert'
 import frag from './sprites.frag'
 
@@ -13,28 +13,31 @@ import frag from './sprites.frag'
 const BLOCK = 64
 const NB_ATTRIBS = 5  // attXYZ and attUV.
 const NB_CORNERS = 4
+const CHUNK = NB_ATTRIBS * NB_CORNERS
 
-interface ISpritesPainterParams {
-    atlasName: string
+interface ISpritesPainterParams extends IPainterParams {
+    atlas: string
 }
 
 export default class SpritesPainter extends Painter {
     private readonly atlas: Atlas
     private readonly prg: Program
+    private dataVert = new Float32Array(BLOCK * CHUNK)
     private readonly buffVert: WebGLBuffer
     private readonly buffElem: WebGLBuffer
+    private sprites: Sprite[] = []
     private count = 0
     private capacity = BLOCK
 
-    constructor(name: string, scene: Scene, params: ISpritesPainterParams) {
-        super(name, scene)
-        const { atlasName } = params
-        const atlas = scene.getAtlas(atlasName)
-        if (!atlas) {
-            throw this.fatal(`Atlas "${atlasName}" not found!`)
+    constructor(params: ISpritesPainterParams) {
+        super(params)
+        const { scene, atlas } = params
+        const atlasObj = scene.getAtlas(atlas)
+        if (!atlasObj) {
+            throw this.fatal(`Atlas "${atlas}" not found!`)
         }
 
-        this.atlas = atlas
+        this.atlas = atlasObj
         this.prg = this.createProgram({ vert, frag })
         const { gl } = scene
 
@@ -43,10 +46,7 @@ export default class SpritesPainter extends Painter {
             throw this.fatal("Not enough memory to create an array buffer!")
         }
         gl.bindBuffer( gl.ARRAY_BUFFER, buffVert )
-        gl.bufferData(
-            gl.ARRAY_BUFFER,
-            new Float32Array(NB_ATTRIBS * NB_CORNERS * BLOCK),
-            gl.DYNAMIC_DRAW )
+        gl.bufferData( gl.ARRAY_BUFFER, this.dataVert, gl.DYNAMIC_DRAW )
         this.buffVert = buffVert
 
         const buffElem = gl.createBuffer();
@@ -61,9 +61,28 @@ export default class SpritesPainter extends Painter {
         this.buffElem = buffElem
     }
 
+    createSprite(params: Partial<ISprite>): Sprite {
+        const index = this.count * CHUNK
+        this.count++
+        const { width, height } = this.atlas
+        const sprite = new Sprite(index, this.getData, {
+            width,
+            height,
+            ...params
+        })
+        this.sprites.push(sprite)
+        console.info("this.dataVert=", this.dataVert);
+        return sprite
+    }
+
     render() {
         const { scene, prg, atlas, buffVert, buffElem } = this
         const gl = scene.gl
+
+        // Update sprites' attributes.
+        gl.bindBuffer( gl.ARRAY_BUFFER, buffVert )
+        gl.bufferData( gl.ARRAY_BUFFER, this.dataVert, gl.DYNAMIC_DRAW )
+
         gl.enable(gl.DEPTH_TEST)
         prg.use()
         atlas.activate()
@@ -76,6 +95,12 @@ export default class SpritesPainter extends Painter {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem)
         gl.drawElements(gl.TRIANGLES, 6 * this.count, gl.UNSIGNED_SHORT, 0)
     }
+
+    /**
+     * Since the vertex array can be reallocated, we cannot give a reference to the Float32Array
+     * to any Sprite. Instead, we will give them this function that will return the current array.
+     */
+    private getData = () => this.dataVert
 }
 
 
@@ -98,7 +123,7 @@ function createElements(capacity: number) {
         dataElem[i + 3] = b
         dataElem[i + 4] = d
         dataElem[i + 5] = c
-        a++
+        a += 4
         i += 6
     }
     return dataElem

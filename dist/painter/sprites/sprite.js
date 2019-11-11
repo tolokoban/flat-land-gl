@@ -10,17 +10,54 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var Sprite = /** @class */ (function () {
-    function Sprite(index, data, params) {
-        this.index = index;
-        this.data = data;
-        this.params = __assign({ x: 0, y: 0, z: 0, width: 50, height: 50, originX: 0, originY: 0, u0: 0, v0: 0, u1: 1, v1: 1 }, params);
+    function Sprite(index, getData, params) {
+        this.getData = getData;
+        this.$index = 0;
+        this.$index = index;
+        this.params = __assign({ x: 0, y: 0, z: 0, width: 50, height: 50, originX: params.width ? params.width / 2 : 0, originY: params.height ? params.height / 2 : 0, u0: 0, v0: 0, u1: 1, v1: 1, scale: 1 }, params);
+        this.update(this.params);
     }
     Sprite.prototype.update = function (newParams) {
         this.params = __assign(__assign({}, this.params), newParams);
-        var _a = this, data = _a.data, index = _a.index, params = _a.params;
-        data[index] = params.x;
-        data[index + 1] = params.y;
-        data[index + 2] = params.z;
+        var _a = this, getData = _a.getData, $index = _a.$index, params = _a.params;
+        var data = getData();
+        var x = params.x, y = params.y, z = params.z, originX = params.originX, originY = params.originY, width = params.width, height = params.height, u0 = params.u0, v0 = params.v0, u1 = params.u1, v1 = params.v1, scale = params.scale;
+        var xxA = -originX;
+        var yyA = -originY;
+        var xxB = xxA + width;
+        var yyB = yyA;
+        var xxC = xxA + width;
+        var yyC = yyA + height;
+        var xxD = xxA;
+        var yyD = yyA + height;
+        var xA = xxA * scale;
+        var yA = yyA * scale;
+        var xB = xxB * scale;
+        var yB = yyB * scale;
+        var xC = xxC * scale;
+        var yC = yyC * scale;
+        var xD = xxD * scale;
+        var yD = yyD * scale;
+        data[$index + 0] = xA + x;
+        data[$index + 1] = yA + y;
+        data[$index + 2] = z;
+        data[$index + 3] = u0;
+        data[$index + 4] = v0;
+        data[$index + 5] = xB + x;
+        data[$index + 6] = yB + y;
+        data[$index + 7] = z;
+        data[$index + 8] = u1;
+        data[$index + 9] = v0;
+        data[$index + 10] = xC + x;
+        data[$index + 11] = yC + y;
+        data[$index + 12] = z;
+        data[$index + 13] = u1;
+        data[$index + 14] = v1;
+        data[$index + 15] = xD + x;
+        data[$index + 16] = yD + y;
+        data[$index + 17] = z;
+        data[$index + 18] = u0;
+        data[$index + 19] = v1;
     };
     Object.defineProperty(Sprite.prototype, "x", {
         get: function () { return this.params.x; },

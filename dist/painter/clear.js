@@ -19,12 +19,13 @@ import Painter from './painter';
 import Color from '../webgl/color';
 var ClearPainter = /** @class */ (function (_super) {
     __extends(ClearPainter, _super);
-    function ClearPainter(name, scene) {
-        var _this = _super.call(this, name, scene) || this;
+    function ClearPainter(params) {
+        var _this = _super.call(this, params) || this;
         _this._red = 0.8;
         _this._green = 0.4;
         _this._blue = 0.2;
         _this._alpha = 1;
+        _this.color = params.color || "#d72";
         return _this;
     }
     Object.defineProperty(ClearPainter.prototype, "red", {

@@ -5,9 +5,24 @@
 import Scene from '../scene'
 import Program, { IShaders } from '../webgl/program'
 
+let ID = 0
+
+export interface IPainterParams {
+    name?: string,
+    scene: Scene
+}
+
 export default abstract class Painter {
-    constructor(protected _name: string, protected scene: Scene) {
-        scene.$attachPainter(this)
+    protected _name: string = `${ID++}`
+    protected readonly scene: Scene
+
+    constructor(params: IPainterParams) {
+        if (!params.scene) throw Error('Argument "params.scene" is mandatory!')
+        this.scene = params.scene
+        if (typeof params.name === 'string' && params.name.length > 0) {
+            this._name = params.name
+        }
+        this.scene.$attachPainter(this)
     }
 
     destroy() {
@@ -22,7 +37,7 @@ export default abstract class Painter {
 
     protected fatal(message: any) {
         console.error(`Fatal error in Painter "${this.name}":`, message)
-        throw Error(message)
+        return new Error(message)
     }
 
     abstract render(time: number): void

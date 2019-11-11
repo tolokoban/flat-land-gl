@@ -2,10 +2,12 @@
  * Clear the screen by filling it with a plain color.
  * This color is defined by attributes red, gree, blue and alpha, which must be between 0 and 1.
  */
-import Painter from './painter'
-import Scene from '../scene'
+import Painter, { IPainterParams } from './painter'
 import Color from '../webgl/color'
 
+interface IClearPainterParams extends IPainterParams {
+    color?: string
+}
 
 export default class ClearPainter extends Painter {
     private _red = 0.8
@@ -13,8 +15,9 @@ export default class ClearPainter extends Painter {
     private _blue = 0.2
     private _alpha = 1
 
-    constructor(name: string, scene: Scene) {
-        super(name, scene)
+    constructor(params: IClearPainterParams) {
+        super(params)
+        this.color = params.color || "#d72"
     }
 
     get red() { return this._red }

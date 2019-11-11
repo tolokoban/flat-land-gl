@@ -1,14 +1,13 @@
 /**
  * Background the screen by filling it with an image that covers it entirely.
  */
-import Painter from '../painter'
-import Scene from '../../scene'
+ import Painter, { IPainterParams } from '../painter'
 import Atlas from '../../atlas'
 import Program from '../../webgl/program'
 import castString from '../../converter/string'
 
-interface IBackgroundPainterParams {
-    atlasName: string,
+interface IBackgroundPainterParams extends IPainterParams {
+    atlas: string,
     align?: string
 }
 
@@ -18,22 +17,22 @@ export default class BackgroundPainter extends Painter {
     private readonly buff: WebGLBuffer
 
     /**
-     * params: { atlasName, align }
+     * params: { atlas, align }
      * - align: if undefined, the background will be centered.
      *          "R" means that the Right edge of the background is always visible.
      *          "L" means the same for Left.
      *          "T" for Top.
      *          "B" for "Bottom".
      */
-    constructor(name: string, scene: Scene, params: IBackgroundPainterParams) {
-        super(name, scene)
-        const { atlasName } = params
-        const atlas = scene.getAtlas(atlasName)
-        if (!atlas) {
-            throw this.fatal(`Atlas "${atlasName}" not found!`)
+    constructor(params: IBackgroundPainterParams) {
+        super(params)
+        const { scene, atlas } = params
+        const atlasObj = scene.getAtlas(atlas)
+        if (!atlasObj) {
+            throw this.fatal(`Atlas "${atlas}" not found!`)
         }
 
-        this.atlas = atlas
+        this.atlas = atlasObj
         this.prg = this.createProgram({
             vert: getVert(castString(params.align).toUpperCase()), frag: FRAG
         })

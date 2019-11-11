@@ -10,12 +10,13 @@ export interface ISprite {
     v0: number;
     u1: number;
     v1: number;
+    scale: number;
 }
 export default class Sprite {
+    private getData;
     private params;
-    private readonly index;
-    private readonly data;
-    constructor(index: number, data: Float32Array, params: Partial<ISprite>);
+    $index: number;
+    constructor(index: number, getData: () => Float32Array, params: Partial<ISprite>);
     update(newParams: Partial<ISprite>): void;
     readonly x: number;
     readonly y: number;

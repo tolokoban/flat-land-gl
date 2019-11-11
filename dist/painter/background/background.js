@@ -19,21 +19,21 @@ import castString from '../../converter/string';
 var BackgroundPainter = /** @class */ (function (_super) {
     __extends(BackgroundPainter, _super);
     /**
-     * params: { atlasName, align }
+     * params: { atlas, align }
      * - align: if undefined, the background will be centered.
      *          "R" means that the Right edge of the background is always visible.
      *          "L" means the same for Left.
      *          "T" for Top.
      *          "B" for "Bottom".
      */
-    function BackgroundPainter(name, scene, params) {
-        var _this = _super.call(this, name, scene) || this;
-        var atlasName = params.atlasName;
-        var atlas = scene.getAtlas(atlasName);
-        if (!atlas) {
-            throw _this.fatal("Atlas \"" + atlasName + "\" not found!");
+    function BackgroundPainter(params) {
+        var _this = _super.call(this, params) || this;
+        var scene = params.scene, atlas = params.atlas;
+        var atlasObj = scene.getAtlas(atlas);
+        if (!atlasObj) {
+            throw _this.fatal("Atlas \"" + atlas + "\" not found!");
         }
-        _this.atlas = atlas;
+        _this.atlas = atlasObj;
         _this.prg = _this.createProgram({
             vert: getVert(castString(params.align).toUpperCase()), frag: FRAG
         });

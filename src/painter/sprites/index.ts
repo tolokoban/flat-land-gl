@@ -1,1 +1,1 @@
-export { default } from './sprite'
+export { default } from './sprites'

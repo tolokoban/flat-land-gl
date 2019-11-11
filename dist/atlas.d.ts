@@ -4,12 +4,12 @@ export interface IAtlasParams {
 }
 export default class Atlas {
     private gl;
-    private params;
+    private _name;
     private readonly texture;
     private _ready;
     private _width;
     private _height;
-    constructor(gl: WebGLRenderingContext, params: IAtlasParams);
+    constructor(gl: WebGLRenderingContext, _name: string);
     readonly name: string;
     readonly width: number;
     readonly height: number;
@@ -22,6 +22,7 @@ export default class Atlas {
      */
     destroy(): void;
     activate(unit?: number): void;
-    loadImage(url: string): Promise<string>;
+    load(params: IAtlasParams): Promise<void>;
+    private loadImage;
 }
 //# sourceMappingURL=atlas.d.ts.map

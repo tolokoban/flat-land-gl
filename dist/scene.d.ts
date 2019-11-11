@@ -10,7 +10,7 @@ export default class FlatLand {
     onAnimation: ((time: number) => void) | null;
     constructor(canvas: HTMLCanvasElement);
     getAtlas(name: string): Atlas | null;
-    createAtlas(params: IAtlasParams): Atlas;
+    createAtlas(params: IAtlasParams): Promise<Atlas>;
     destroyAtlas(name: string): boolean;
     /**
      * If a painter with the same name already exists, return false and don't add the new one.

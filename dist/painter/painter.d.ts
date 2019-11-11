@@ -3,16 +3,20 @@
  */
 import Scene from '../scene';
 import Program, { IShaders } from '../webgl/program';
+export interface IPainterParams {
+    name?: string;
+    scene: Scene;
+}
 export default abstract class Painter {
     protected _name: string;
-    protected scene: Scene;
-    constructor(_name: string, scene: Scene);
+    protected readonly scene: Scene;
+    constructor(params: IPainterParams);
     destroy(): void;
     readonly name: string;
     protected createProgram(shaders: IShaders, includes?: {
         [key: string]: string;
     }): Program;
-    protected fatal(message: any): void;
+    protected fatal(message: any): Error;
     abstract render(time: number): void;
 }
 //# sourceMappingURL=painter.d.ts.map

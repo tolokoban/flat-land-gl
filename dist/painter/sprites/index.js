@@ -1,2 +1,2 @@
-export { default } from './sprite';
+export { default } from './sprites';
 //# sourceMappingURL=index.js.map

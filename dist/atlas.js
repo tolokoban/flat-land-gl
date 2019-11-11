@@ -35,9 +35,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var Atlas = /** @class */ (function () {
-    function Atlas(gl, params) {
+    function Atlas(gl, _name) {
         this.gl = gl;
-        this.params = params;
+        this._name = _name;
         this._ready = false;
         this._width = 0;
         this._height = 0;
@@ -50,10 +50,9 @@ var Atlas = /** @class */ (function () {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        this.loadImage(params.image);
     }
     Object.defineProperty(Atlas.prototype, "name", {
-        get: function () { return this.params.name; },
+        get: function () { return this._name; },
         enumerable: true,
         configurable: true
     });
@@ -99,6 +98,14 @@ var Atlas = /** @class */ (function () {
         gl.activeTexture(UNITS[Math.abs(unit) % UNITS.length]);
         gl.bindTexture(gl.TEXTURE_2D, texture);
     };
+    Atlas.prototype.load = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this._ready = false;
+                return [2 /*return*/, this.loadImage(params.image)];
+            });
+        });
+    };
     Atlas.prototype.loadImage = function (url) {
         return __awaiter(this, void 0, void 0, function () {
             var that;
@@ -108,18 +115,17 @@ var Atlas = /** @class */ (function () {
                         var img = new Image();
                         that._ready = false;
                         img.onload = function () {
-                            var gl = that.gl, params = that.params, texture = that.texture;
-                            var name = params.name;
+                            var gl = that.gl, texture = that.texture;
                             gl.bindTexture(gl.TEXTURE_2D, texture);
                             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
                             that._ready = true;
                             that._width = img.width;
                             that._height = img.height;
-                            resolve(name);
+                            resolve();
                         };
                         img.onerror = function () {
                             console.error("Unable to load image \"" + name + "\": ", url);
-                            reject(name);
+                            reject();
                         };
                         img.src = url;
                     })];

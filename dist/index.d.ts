@@ -4,6 +4,7 @@ declare const _default: {
         Background: typeof import("./painter/background").default;
         Clear: typeof import("./painter/clear").default;
         Painter: typeof import("./painter/painter").default;
+        Sprites: typeof import("./painter/sprites").default;
     };
     Scene: typeof Scene;
 };

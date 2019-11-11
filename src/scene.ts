@@ -27,9 +27,11 @@ export default class FlatLand {
         return atlases.get(name) || null
     }
 
-    createAtlas(params: IAtlasParams): Atlas {
-        const atlas = new Atlas(this.gl, params)
-        this.atlases.set(params.name, atlas)
+    async createAtlas(params: IAtlasParams): Promise<Atlas> {
+        const { name } = params
+        const atlas = new Atlas(this.gl, name)
+        this.atlases.set(name, atlas)
+        await atlas.load(params)
         return atlas
     }
 
