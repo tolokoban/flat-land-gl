@@ -52,7 +52,7 @@ var BackgroundPainter = /** @class */ (function (_super) {
     BackgroundPainter.prototype.render = function () {
         var _a = this, scene = _a.scene, prg = _a.prg, atlas = _a.atlas, buff = _a.buff;
         var gl = scene.gl;
-        gl.disable(gl.DEPTH_TEST);
+        gl.enable(gl.DEPTH_TEST);
         prg.use();
         atlas.activate();
         var uniforms = prg;

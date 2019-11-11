@@ -52,7 +52,7 @@ export default class BackgroundPainter extends Painter {
     render() {
         const { scene, prg, atlas, buff } = this
         const gl = scene.gl
-        gl.disable(gl.DEPTH_TEST)
+        gl.enable(gl.DEPTH_TEST)
         prg.use()
         atlas.activate()
         const uniforms = prg as {[key: string]: any}
