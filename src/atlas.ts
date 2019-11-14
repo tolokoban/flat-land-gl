@@ -12,7 +12,7 @@ export default class Atlas {
 
     constructor(private gl: WebGLRenderingContext, private _name: string) {
         const texture = gl.createTexture()
-        if (!texture) throw "Unable to create a new texture!"
+        if (!texture) { throw new Error("Unable to create a new texture!") }
         this.texture = texture
         gl.bindTexture(gl.TEXTURE_2D, texture)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
@@ -32,13 +32,13 @@ export default class Atlas {
     /**
      * Remove the texture from the graphic card memory.
      */
-    destroy() {
+    public destroy() {
         this._ready = false
         const { gl, texture } = this
         gl.deleteTexture(texture)
     }
 
-    activate(unit = 0) {
+    public activate(unit = 0) {
         const { gl, texture } = this
         const UNITS = [
             gl.TEXTURE0,
@@ -48,13 +48,13 @@ export default class Atlas {
             gl.TEXTURE4,
             gl.TEXTURE5,
             gl.TEXTURE6,
-            gl.TEXTURE7
+            gl.TEXTURE7,
         ]
         gl.activeTexture(UNITS[Math.abs(unit) % UNITS.length])
         gl.bindTexture(gl.TEXTURE_2D, texture)
     }
 
-    async load(params: IAtlasParams) {
+    public async load(params: IAtlasParams) {
         this._ready = false
         return this.loadImage(params.image)
     }

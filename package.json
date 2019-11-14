@@ -14,9 +14,11 @@
         "raw-loader": "^3.1.0",
         "react-scripts": "3.2.0",
         "ts-loader": "^6.2.1",
-        "typescript": "^3.6.4",
+        "tslint": "^5.20.1",
+        "typescript": "^3.7.2",
         "webpack": "^4.41.2",
-        "webpack-cli": "^3.3.10"
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.9.0"
     },
     "repository": {
         "type": "git",
@@ -25,6 +27,7 @@
     "scripts": {
         "start": "webpack --mode development --watch",
         "build": "webpack --mode production",
+        "lint": "tslint --fix -t verbose -c tslint.json 'src/**/*.ts'",
         "postbuild": "rsync -av --exclude='**/*.ts' --exclude='**/*.js' src/ dist/",
         "test": "react-scripts test"
     },

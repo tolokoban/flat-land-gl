@@ -1,24 +1,24 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
     entry: './src/index.ts',
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     module: {
         rules: [{
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
-            },
-            {
                 test: /\.(vert|frag)$/,
                 use: 'raw-loader',
                 exclude: /node_modules/,
             },
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                use: {
+                    loader: "ts-loader",
+                    options: {
+                        configFile: "tsconfig.webpack.json"
+                    }
+                },
                 exclude: /node_modules/,
-            },
+            }
         ],
     },
     resolve: {
@@ -27,5 +27,5 @@ module.exports = {
     output: {
         filename: 'flat-land-gl.js',
         path: path.resolve(__dirname, 'dist'),
-    },
-};
+    }
+}

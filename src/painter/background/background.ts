@@ -1,17 +1,17 @@
 /**
  * Background the screen by filling it with an image that covers it entirely.
  */
- import Painter, { IPainterParams } from '../painter'
-import Atlas from '../../atlas'
-import Program from '../../webgl/program'
-import castString from '../../converter/string'
+  import Atlas from "../../atlas"
+  import castString from "../../converter/string"
+  import Program from "../../webgl/program"
+  import Painter, { IPainterParams } from "../painter"
 
-interface IBackgroundPainterParams extends IPainterParams {
+  interface IBackgroundPainterParams extends IPainterParams {
     atlas: string,
     align?: string
 }
 
-export default class BackgroundPainter extends Painter {
+  export default class BackgroundPainter extends Painter {
     private readonly atlas: Atlas
     private readonly prg: Program
     private readonly buff: WebGLBuffer
@@ -34,22 +34,23 @@ export default class BackgroundPainter extends Painter {
 
         this.atlas = atlasObj
         this.prg = this.createProgram({
-            vert: getVert(castString(params.align).toUpperCase()), frag: FRAG
+            frag: FRAG,
+            vert: getVert(castString(params.align).toUpperCase()),
         })
         const { gl } = scene
-        const buff = gl.createBuffer();
+        const buff = gl.createBuffer()
         if (!buff) {
             throw this.fatal("Not enough memory to create an array buffer!")
         }
 
         gl.bindBuffer( gl.ARRAY_BUFFER, buff )
         gl.bufferData( gl.ARRAY_BUFFER, new Float32Array([
-            0,0, 0,1, 1,0, 1,1
-        ]), gl.STATIC_DRAW );
+            0, 0, 0, 1, 1, 0, 1, 1,
+        ]), gl.STATIC_DRAW )
         this.buff = buff
     }
 
-    render() {
+    public render() {
         const { scene, prg, atlas, buff } = this
         const gl = scene.gl
         gl.enable(gl.DEPTH_TEST)
@@ -64,21 +65,18 @@ export default class BackgroundPainter extends Painter {
     }
 }
 
-
-function getVert(align: string) {
+  function getVert(align: string) {
     let x = ""
     let y = ""
 
     if (align.indexOf("B") !== -1) {
         y = "location.y -= uniAspectRatio - 1.0;"
-    }
-    else if (align.indexOf("T") !== -1) {
+    } else if (align.indexOf("T") !== -1) {
         y = "location.y += uniAspectRatio - 1.0;"
     }
     if (align.indexOf("R") !== -1) {
         x = "location.x -= 1.0 / uniAspectRatio - 1.0;"
-    }
-    else if (align.indexOf("L") !== -1) {
+    } else if (align.indexOf("L") !== -1) {
         x = "location.x += 1.0 / uniAspectRatio - 1.0;"
     }
 
@@ -100,7 +98,7 @@ void main() {
 }`
 }
 
-const FRAG = `precision mediump float;
+  const FRAG = `precision mediump float;
 uniform sampler2D uniTexture;
 varying vec2 varUV;
 

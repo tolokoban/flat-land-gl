@@ -1,4 +1,4 @@
-import castString from "./string";
+import castString from "./string"
 
 /**
  * If `value` is not an array, return `defaultArray`.
@@ -11,10 +11,10 @@ import castString from "./string";
  * @returns               [description]
  */
 export default function castStringArray(
-    value: any, defaultArray: string[] = [], defaultString: string = ""
+    value: any, defaultArray: string[] = [], defaultString: string = "",
 ) {
-    if (typeof value === 'string') return [value];
-    if (!Array.isArray(value)) return defaultArray;
-    if (typeof defaultString === 'undefined') return value;
-    return value.map(item => castString(item, defaultString));
+    if (typeof value === "string") { return [value] }
+    if (!Array.isArray(value)) { return defaultArray }
+    if (typeof defaultString === "undefined") { return value }
+    return value.map((item) => castString(item, defaultString))
 }

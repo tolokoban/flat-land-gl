@@ -14,9 +14,21 @@ export interface ISprite {
 }
 
 export default class Sprite {
+
+    get x() { return this.params.x }
+    get y() { return this.params.y }
+    get z() { return this.params.z }
+    get width() { return this.params.width }
+    get height() { return this.params.height }
+    get originX() { return this.params.originX }
+    get originY() { return this.params.originY }
+    get u0() { return this.params.u0 }
+    get v0() { return this.params.v0 }
+    get u1() { return this.params.u1 }
+    get v1() { return this.params.v1 }
+    public readonly extra: {[key: string]: any} = {}
+    public $index: number = 0
     private params: ISprite
-    readonly extra: {[key: string]: any} = {}
-    $index: number = 0
 
     constructor(index: number, private getData: () => Float32Array, params: Partial<ISprite>) {
         this.$index = index
@@ -29,12 +41,12 @@ export default class Sprite {
             originY: height / 2,
             u0: 0, v0: 0, u1: 1, v1: 1,
             scale: 1,
-            ...params
+            ...params,
         }
         this.update(this.params)
     }
 
-    update(newParams: Partial<ISprite>) {
+    public update(newParams: Partial<ISprite>) {
         this.params = { ...this.params, ...newParams }
 
         const { getData, $index, params } = this
@@ -82,16 +94,4 @@ export default class Sprite {
         data[$index + 18] = u0
         data[$index + 19] = v1
     }
-
-    get x() { return this.params.x }
-    get y() { return this.params.y }
-    get z() { return this.params.z }
-    get width() { return this.params.width }
-    get height() { return this.params.height }
-    get originX() { return this.params.originX }
-    get originY() { return this.params.originY }
-    get u0() { return this.params.u0 }
-    get v0() { return this.params.v0 }
-    get u1() { return this.params.u1 }
-    get v1() { return this.params.v1 }
 }

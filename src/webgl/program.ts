@@ -1,4 +1,4 @@
-const BPE = (new Float32Array()).BYTES_PER_ELEMENT;
+const BPE = (new Float32Array()).BYTES_PER_ELEMENT
 
 export interface IShaders { vert: string, frag: string }
 
@@ -33,98 +33,58 @@ interface IUniformsDic {
  * `includes.foo`.
  */
 export default class Program {
-    readonly gl: WebGLRenderingContext
-    readonly BPE: number
-    readonly program: WebGLProgram
+    public readonly gl: WebGLRenderingContext
+    public readonly BPE: number
+    public readonly program: WebGLProgram
+    public readonly attribs: IAttribsDic
+    public readonly uniforms: IUniformsDic
     private _typesNamesLookup: {[key: number]: string}
-    readonly attribs: IAttribsDic
-    readonly uniforms: IUniformsDic
 
     constructor(gl: WebGLRenderingContext,
-        codes: IShaders,
-        includes: { [key: string]: string } = {}) {
-        if (typeof codes.vert !== 'string') {
-            throw Error('[webgl.program] Missing attribute `vert` in argument `codes`!');
+                codes: IShaders,
+                includes: { [key: string]: string } = {}) {
+        if (typeof codes.vert !== "string") {
+            throw Error("[webgl.program] Missing attribute `vert` in argument `codes`!")
         }
-        if (typeof codes.frag !== 'string') {
-            throw Error('[webgl.program] Missing attribute `frag` in argument `codes`!');
+        if (typeof codes.frag !== "string") {
+            throw Error("[webgl.program] Missing attribute `frag` in argument `codes`!")
         }
 
-        codes = parseIncludes(codes, includes);
+        codes = parseIncludes(codes, includes)
 
-        this.gl = gl;
-        Object.freeze(this.gl);
-        this.BPE = BPE;
-        Object.freeze(this.BPE);
+        this.gl = gl
+        Object.freeze(this.gl)
+        this.BPE = BPE
+        Object.freeze(this.BPE)
 
-        this._typesNamesLookup = getTypesNamesLookup(gl);
+        this._typesNamesLookup = getTypesNamesLookup(gl)
 
-        const shaderProgram = gl.createProgram();
+        const shaderProgram = gl.createProgram()
         if (!shaderProgram) {
-            throw Error('Unable to create WebGLProgram!')
+            throw Error("Unable to create WebGLProgram!")
         }
-        this.program = shaderProgram;
+        this.program = shaderProgram
         const vertShader = getVertexShader(gl, codes.vert)
         gl.attachShader(shaderProgram, vertShader)
         const fragShader = getFragmentShader(gl, codes.frag)
         gl.attachShader(shaderProgram, fragShader)
         gl.linkProgram(shaderProgram)
 
+        this.use = () => { gl.useProgram(shaderProgram) }
 
-        this.use = function() {
-            gl.useProgram(shaderProgram);
-        };
-
-        this.attribs = this.createAttributes();
-        this.uniforms = this.createUniforms();
+        this.attribs = this.createAttributes()
+        this.uniforms = this.createUniforms()
     }
 
-    private createAttributes(): IAttribsDic {
-        const { gl, program } = this
-        const attribs: IAttribsDic = {};
-        const attribsCount = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
-        for (let index = 0; index < attribsCount; index++) {
-            const item: IAttrib | null = gl.getActiveAttrib(program, index) as IAttrib;
-            if (!item) continue
-            item.typeName = this.getTypeName(item.type);
-            item.length = this.getSize(gl, item);
-            item.location = gl.getAttribLocation(program, item.name);
-            attribs[item.name] = item;
-            Object.defineProperty(this, '$' + item.name, {
-                value: item.location,
-                writable: false,
-                enumerable: true,
-                configurable: false
-            });
-        }
-        return attribs
-    }
-
-    private getSize(gl: WebGLRenderingContext, item: IAttrib): number {
-        switch (item.type) {
-            case gl.FLOAT_VEC4:
-                return 4;
-            case gl.FLOAT_VEC3:
-                return 3;
-            case gl.FLOAT_VEC2:
-                return 2;
-            case gl.FLOAT:
-                return 1;
-            default:
-                throw Error("[webgl.program:getSize] I don't know the size of the attribute '" + item.name +
-                    "' because I don't know the type " + this.getTypeName(item.type) + "!");
-        }
-    }
-
-    use() {
+    public use() {
         this.gl.useProgram(this.program)
     }
 
-    getTypeName(typeId: number) {
-        return this._typesNamesLookup[typeId];
+    public getTypeName(typeId: number) {
+        return this._typesNamesLookup[typeId]
     }
 
-    bindAttribs(buffer: WebGLBuffer, ...names: string[]) {
+    public bindAttribs(buffer: WebGLBuffer, ...names: string[]) {
         const that = this
         const { gl } = this
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
@@ -135,16 +95,17 @@ export default class Program {
             if (!attrib) {
                 throw Error("Cannot find attribute \"" + name + "\"!\n" +
                     "It may be not active because unused in the shader.\n" +
-                    "Available attributes are: " + Object.keys(that.attribs).map(function(name) {
-                        return '"' + name + '"';
+                    "Available attributes are: " +
+                    Object.keys(that.attribs).map((n) => {
+                        return '"' + n + '"'
                     }).join(", ") + ` (${that.attribs.length})`)
             }
             totalSize += (attrib.size * attrib.length) * BPE
         }
 
-        let offset = 0;
+        let offset = 0
         for (const name of names) {
-            const attrib = that.attribs[name];
+            const attrib = that.attribs[name]
             gl.enableVertexAttribArray(attrib.location)
             gl.vertexAttribPointer(
                 attrib.location,
@@ -152,34 +113,71 @@ export default class Program {
                 gl.FLOAT,
                 false, // No normalisation.
                 totalSize,
-                offset
+                offset,
             )
             offset += (attrib.size * attrib.length) * BPE
         }
     }
 
-    setUniform(name: string, value: any) {
-        const id = '$' + name
+    public setUniform(name: string, value: any) {
+        const id = "$" + name
         const map = this as {[key: string]: any}
         map[id] = value
     }
 
+    private createAttributes(): IAttribsDic {
+        const { gl, program } = this
+        const attribs: IAttribsDic = {}
+        const attribsCount = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES)
+        for (let index = 0; index < attribsCount; index++) {
+            const item: IAttrib | null = gl.getActiveAttrib(program, index) as IAttrib
+            if (!item) { continue }
+            item.typeName = this.getTypeName(item.type)
+            item.length = this.getSize(gl, item)
+            item.location = gl.getAttribLocation(program, item.name)
+            attribs[item.name] = item
+            Object.defineProperty(this, "$" + item.name, {
+                value: item.location,
+                writable: false,
+                enumerable: true,
+                configurable: false,
+            })
+        }
+        return attribs
+    }
+
+    private getSize(gl: WebGLRenderingContext, item: IAttrib): number {
+        switch (item.type) {
+            case gl.FLOAT_VEC4:
+                return 4
+            case gl.FLOAT_VEC3:
+                return 3
+            case gl.FLOAT_VEC2:
+                return 2
+            case gl.FLOAT:
+                return 1
+            default:
+                throw Error("[webgl.program:getSize] I don't know the size of the attribute '" + item.name +
+                    "' because I don't know the type " + this.getTypeName(item.type) + "!")
+        }
+    }
+
     private createUniforms(): IUniformsDic {
         const { gl, program } = this
-        const uniforms: IUniformsDic = {};
-        const uniformsCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+        const uniforms: IUniformsDic = {}
+        const uniformsCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS)
         for (let index = 0; index < uniformsCount; index++) {
-            const item = gl.getActiveUniform(program, index);
-            if (!item) continue
+            const item = gl.getActiveUniform(program, index)
+            if (!item) { continue }
             const location = gl.getUniformLocation(program, item.name)
-            if (!location) continue
+            if (!location) { continue }
             uniforms[item.name] = location
-            Object.defineProperty(this, '$' + item.name, {
+            Object.defineProperty(this, "$" + item.name, {
                 set: this.createUniformSetter(item, uniforms[item.name], this._typesNamesLookup),
                 get: this.createUniformGetter(item),
                 enumerable: true,
-                configurable: false
-            });
+                configurable: false,
+            })
         }
 
         return uniforms
@@ -189,7 +187,7 @@ export default class Program {
                                 nameGL: WebGLUniformLocation,
                                 lookup: {[key: number]: string}) {
         const { gl } = this
-        const nameJS = '_$' + item.name;
+        const nameJS = "_$" + item.name
 
         switch (item.type) {
             case gl.BYTE:
@@ -201,100 +199,100 @@ export default class Program {
             case gl.SAMPLER_2D: // For textures, we specify the texture unit.
                 if (item.size === 1) {
                     return function(this: {[key: string]: number}, v: number) {
-                        gl.uniform1i(nameGL, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniform1i(nameGL, v)
+                        this[nameJS] = v
+                    }
                 } else {
                     return function(this: {[key: string]: Int32List}, v: Int32List) {
-                        gl.uniform1iv(nameGL, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniform1iv(nameGL, v)
+                        this[nameJS] = v
+                    }
                 }
             case gl.FLOAT:
                 if (item.size === 1) {
                     return function(this: {[key: string]: number}, v: number) {
-                        gl.uniform1f(nameGL, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniform1f(nameGL, v)
+                        this[nameJS] = v
+                    }
                 } else {
                     return function(this: {[key: string]: Float32List}, v: Float32List) {
-                        gl.uniform1fv(nameGL, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniform1fv(nameGL, v)
+                        this[nameJS] = v
+                    }
                 }
             case gl.FLOAT_VEC2:
                 if (item.size === 1) {
                     return function(this: {[key: string]: Float32List}, v: Float32List) {
-                        gl.uniform2fv(nameGL, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniform2fv(nameGL, v)
+                        this[nameJS] = v
+                    }
                 } else {
                     throw Error(
                         "[webgl.program.createWriter] Don't know how to deal arrays of FLOAT_VEC2 in uniform `" +
-                        item.name + "'!'"
-                    );
+                        item.name + "'!'",
+                    )
                 }
             case gl.FLOAT_VEC3:
                 if (item.size === 1) {
                     return function(this: {[key: string]: Float32List}, v: Float32List) {
-                        gl.uniform3fv(nameGL, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniform3fv(nameGL, v)
+                        this[nameJS] = v
+                    }
                 } else {
                     throw Error(
                         "[webgl.program.createWriter] Don't know how to deal arrays of FLOAT_VEC3 in uniform `" +
-                        item.name + "'!'"
-                    );
+                        item.name + "'!'",
+                    )
                 }
             case gl.FLOAT_VEC4:
                 if (item.size === 1) {
                     return function(this: {[key: string]: Float32List}, v: Float32List) {
-                        gl.uniform4fv(nameGL, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniform4fv(nameGL, v)
+                        this[nameJS] = v
+                    }
                 } else {
                     throw Error(
                         "[webgl.program.createWriter] Don't know how to deal arrays of FLOAT_VEC4 in uniform `" +
-                        item.name + "'!'"
-                    );
+                        item.name + "'!'",
+                    )
                 }
             case gl.FLOAT_MAT3:
                 if (item.size === 1) {
                     return function(this: {[key: string]: Float32List}, v: Float32List) {
-                        gl.uniformMatrix3fv(nameGL, false, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniformMatrix3fv(nameGL, false, v)
+                        this[nameJS] = v
+                    }
                 } else {
                     throw Error(
                         "[webgl.program.createWriter] Don't know how to deal arrays of FLOAT_MAT3 in uniform `" +
-                        item.name + "'!'"
-                    );
+                        item.name + "'!'",
+                    )
                 }
             case gl.FLOAT_MAT4:
                 if (item.size === 1) {
                     return function(this: {[key: string]: Float32List}, v: Float32List) {
-                        gl.uniformMatrix4fv(nameGL, false, v);
-                        this[nameJS] = v;
-                    };
+                        gl.uniformMatrix4fv(nameGL, false, v)
+                        this[nameJS] = v
+                    }
                 } else {
                     throw Error(
                         "[webgl.program.createWriter] Don't know how to deal arrays of FLOAT_MAT4 in uniform `" +
-                        item.name + "'!'"
-                    );
+                        item.name + "'!'",
+                    )
                 }
             default:
                 throw Error(
                     "[webgl.program.createWriter] Don't know how to deal with uniform `" +
-                    item.name + "` of type " + lookup[item.type] + "!"
-                );
+                    item.name + "` of type " + lookup[item.type] + "!",
+                )
         }
     }
 
     private createUniformGetter(item: WebGLActiveInfo) {
-        var name = '_$' + item.name;
+        const name = "_$" + item.name
         return function(this: {[key: string]: any}) {
-            return this[name];
-        };
+            return this[name]
+        }
     }
 
 }
@@ -307,69 +305,67 @@ export default class Program {
 function parseIncludes(codes: IShaders, includes: { [key: string]: string }): IShaders {
     return {
         vert: parseInclude(codes.vert, includes),
-        frag: parseInclude(codes.frag, includes)
+        frag: parseInclude(codes.frag, includes),
     }
 }
 
 function parseInclude(code: string, includes: { [key: string]: string }): string {
-    return code.split('\n').map(function(line) {
-        if (line.trim().substr(0, 8) !== '#include') return line;
-        const pos = line.indexOf('#include') + 8;
-        let includeName = line.substr(pos).trim();
+    return code.split("\n").map((line) => {
+        if (line.trim().substr(0, 8) !== "#include") { return line }
+        const pos = line.indexOf("#include") + 8
+        let includeName = line.substr(pos).trim()
         // We accept all this systaxes:
         // #include foo
         // #include 'foo'
         // #include <foo>
         // #include "foo"
         if ("'<\"".indexOf(includeName.charAt(0)) > -1) {
-            includeName = includeName.substr(1, includeName.length - 2);
+            includeName = includeName.substr(1, includeName.length - 2)
         }
-        const snippet = includes[includeName];
-        if (typeof snippet !== 'string') {
-            console.error("Include <" + includeName + "> not found in ", includes);
-            throw Error("Include not found in shader: " + includeName);
+        const snippet = includes[includeName]
+        if (typeof snippet !== "string") {
+            console.error("Include <" + includeName + "> not found in ", includes)
+            throw Error("Include not found in shader: " + includeName)
         }
-        return snippet;
-    }).join("\n");
+        return snippet
+    }).join("\n")
 }
-
-
-
 
 function getShader(type: number, gl: WebGLRenderingContext, code: string): WebGLShader {
     if (type !== gl.VERTEX_SHADER && type !== gl.FRAGMENT_SHADER) {
-        throw Error('Type must be VERTEX_SHADER or FRAGMENT_SHADER!')
+        throw Error("Type must be VERTEX_SHADER or FRAGMENT_SHADER!")
     }
-    const shader = gl.createShader(type);
+    const shader = gl.createShader(type)
     if (!shader) {
         throw Error(`Unable to create a ${type === gl.VERTEX_SHADER ? "VERTEX" : "FRAGMENT"} shader!`)
     }
-    gl.shaderSource(shader, code);
-    gl.compileShader(shader);
+    gl.shaderSource(shader, code)
+    gl.compileShader(shader)
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        console.log(code);
-        console.error("An error occurred compiling the shader: " + gl.getShaderInfoLog(shader));
+        console.info("Here is your buggy shader's code:")
+        console.info(code)
+        console.error("An error occurred compiling the shader: " + gl.getShaderInfoLog(shader))
         throw Error(`Unable to create a ${type === gl.VERTEX_SHADER ? "VERTEX" : "FRAGMENT"} shader!`)
     }
 
-    return shader;
+    return shader
 }
 
 function getFragmentShader(gl: WebGLRenderingContext, code: string) {
-    return getShader(gl.FRAGMENT_SHADER, gl, code);
+    return getShader(gl.FRAGMENT_SHADER, gl, code)
 }
 
 function getVertexShader(gl: WebGLRenderingContext, code: string) {
-    return getShader(gl.VERTEX_SHADER, gl, code);
+    return getShader(gl.VERTEX_SHADER, gl, code)
 }
 
 function getTypesNamesLookup(gl: WebGLRenderingContext): {} {
-    var lookup: {[key: number]: string} = {}
+    const lookup: {[key: number]: string} = {}
 
-    for (let k in gl) {
-        if (k !== k.toUpperCase()) continue
+    for (const k in gl) {
+        if (k !== k.toUpperCase()) { continue }
         const v = (gl as {[key: string]: any})[k]
-        if (typeof v === 'number') {
+        if (typeof v === "number") {
             lookup[v] = k
         }
     }

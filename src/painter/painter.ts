@@ -2,8 +2,8 @@
  * This is a virtual painter from which all the other will inherit.
  */
 
-import Scene from '../scene'
-import Program, { IShaders } from '../webgl/program'
+import Scene from "../scene"
+import Program, { IShaders } from "../webgl/program"
 
 let ID = 0
 
@@ -13,25 +13,27 @@ export interface IPainterParams {
 }
 
 export default abstract class Painter {
+
+    get name() { return this._name }
     protected _name: string = `${ID++}`
     protected readonly scene: Scene
 
     constructor(params: IPainterParams) {
-        if (!params.scene) throw Error('Argument "params.scene" is mandatory!')
+        if (!params.scene) { throw Error('Argument "params.scene" is mandatory!') }
         this.scene = params.scene
-        if (typeof params.name === 'string' && params.name.length > 0) {
+        if (typeof params.name === "string" && params.name.length > 0) {
             this._name = params.name
         }
         this.scene.$attachPainter(this)
     }
 
-    destroy() {
+    public destroy() {
         this.scene.$detachPainter(this.name)
     }
 
-    get name() { return this._name }
+    public abstract render(time: number): void
 
-    protected createProgram(shaders: IShaders, includes:{ [key: string]: string } = {}): Program {
+    protected createProgram(shaders: IShaders, includes: { [key: string]: string } = {}): Program {
         return new Program(this.scene.gl, shaders, includes)
     }
 
@@ -39,6 +41,4 @@ export default abstract class Painter {
         console.error(`Fatal error in Painter "${this.name}":`, message)
         return new Error(message)
     }
-
-    abstract render(time: number): void
 }

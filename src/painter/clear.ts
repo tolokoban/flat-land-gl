@@ -2,8 +2,8 @@
  * Clear the screen by filling it with a plain color.
  * This color is defined by attributes red, gree, blue and alpha, which must be between 0 and 1.
  */
-import Painter, { IPainterParams } from './painter'
-import Color from '../webgl/color'
+import Color from "../webgl/color"
+import Painter, { IPainterParams } from "./painter"
 
 interface IClearPainterParams extends IPainterParams {
     color?: string
@@ -48,7 +48,7 @@ export default class ClearPainter extends Painter {
         this._alpha = color.A
     }
 
-    render() {
+    public render() {
         const gl = this.scene.gl
         gl.clearColor(this._red, this._green, this._blue, this._alpha)
         gl.clear(gl.COLOR_BUFFER_BIT)

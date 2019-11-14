@@ -19,10 +19,10 @@ export default ( gl: WebGLRenderingContext, resolution: number = 0 ) => {
         canvas.height !== displayHeight ) {
 
         // Make the canvas the same size
-        canvas.width = displayWidth;
-        canvas.height = displayHeight;
-        gl.viewport( 0, 0, displayWidth, displayHeight );
-        return true;
+        canvas.width = displayWidth
+        canvas.height = displayHeight
+        gl.viewport( 0, 0, displayWidth, displayHeight )
+        return true
     }
-    return false;
-};
+    return false
+}

@@ -1,7 +1,12 @@
-import Painter from './painter'
-import Scene from './scene'
+import Painter from "./painter"
+import Scene from "./scene"
 
-export default {
+const FlatLand = {
     Painter,
     Scene
 }
+
+export default FlatLand
+
+// Global export for old vanilla Javascript users.
+window["FlatLand"] = FlatLand

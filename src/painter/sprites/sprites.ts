@@ -1,13 +1,13 @@
 /**
  *
  */
-import Painter, { IPainterParams } from '../painter'
-import Scene from '../../scene'
-import Atlas from '../../atlas'
-import Program from '../../webgl/program'
-import Sprite, { ISprite } from './sprite'
-import vert from './sprites.vert'
-import frag from './sprites.frag'
+import Atlas from "../../atlas"
+import Scene from "../../scene"
+import Program from "../../webgl/program"
+import Painter, { IPainterParams } from "../painter"
+import Sprite, { ISprite } from "./sprite"
+import frag from "./sprites.frag"
+import vert from "./sprites.vert"
 
 // Allocations will be done by pieces of BLOCK Sprites.
 const BLOCK = 64
@@ -41,7 +41,7 @@ export default class SpritesPainter extends Painter {
         this.prg = this.createProgram({ vert, frag })
         const { gl } = scene
 
-        const buffVert = gl.createBuffer();
+        const buffVert = gl.createBuffer()
         if (!buffVert) {
             throw this.fatal("Not enough memory to create an array buffer!")
         }
@@ -49,7 +49,7 @@ export default class SpritesPainter extends Painter {
         gl.bufferData( gl.ARRAY_BUFFER, this.dataVert, gl.DYNAMIC_DRAW )
         this.buffVert = buffVert
 
-        const buffElem = gl.createBuffer();
+        const buffElem = gl.createBuffer()
         if (!buffElem) {
             throw this.fatal("Not enough memory to create an array buffer!")
         }
@@ -61,7 +61,7 @@ export default class SpritesPainter extends Painter {
         this.buffElem = buffElem
     }
 
-    createSprite(params: Partial<ISprite>): Sprite {
+    public createSprite(params: Partial<ISprite>): Sprite {
         const index = this.count * CHUNK
         this.count++
         if (this.count >= this.capacity) {
@@ -73,13 +73,13 @@ export default class SpritesPainter extends Painter {
         const sprite = new Sprite(index, this.getData, {
             width,
             height,
-            ...params
+            ...params,
         })
         this.sprites.push(sprite)
         return sprite
     }
 
-    render() {
+    public render() {
         const { scene, prg, atlas, buffVert, buffElem } = this
         const gl = scene.gl
 
@@ -125,7 +125,6 @@ export default class SpritesPainter extends Painter {
     private getData = () => this.dataVert
 }
 
-
 /**
  * A--B
  * |  |
@@ -135,7 +134,7 @@ function createElements(capacity: number) {
     const dataElem = new Uint16Array(6 * capacity)
     let i = 0
     let a = 0
-    for (let k=0 ; k<capacity ; k++) {
+    for (let k = 0 ; k < capacity ; k++) {
         const b = a + 1
         const c = a + 2
         const d = a + 3
