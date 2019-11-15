@@ -75,6 +75,64 @@
 					<li><code>x</code> and <code>y</code> are defined between 0 and 1024,</li>
 					<li>and <code>z</code> is defined between -1 (background) and +1 (foreground).</li>
 				</ul>
+				<a href="#how-to-use-it" id="how-to-use-it" style="color: inherit; text-decoration: none;">
+					<h2>How to use it?</h2>
+				</a>
+				<a href="#vanilla-javascript" id="vanilla-javascript" style="color: inherit; text-decoration: none;">
+					<h3>Vanilla Javascript</h3>
+				</a>
+				<p>Download the <a href="https://raw.githubusercontent.com/tolokoban/flat-land-gl/master/dist/flat-land-gl.js"><code>flat-land-gl.js</code></a> file and save it in the same folder as your main HTML file: <code>index.html</code></p>
+				<pre><code class="language-html"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>The best game in the World!<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
+        <span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span>, <span class="hljs-selector-tag">canvas</span> {
+            <span class="hljs-attribute">position</span>: absolute;
+            <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>; <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>; <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+            <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>; <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+            <span class="hljs-attribute">overflow</span>: hidden;
+        }
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onload</span>=<span class="hljs-string">"start()"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">canvas</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"canvas"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">canvas</span>&gt;</span>    
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"flat-land-gl.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"main.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+				<p>Now you only need to create the <code>main.js</code> file with all your code.
+				You will find a variable called <strong><code>FlatGl</code></strong> in your global space.</p>
+				<pre><code class="language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">start</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> canvas = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"canvas"</span>)
+    <span class="hljs-keyword">const</span> scene = <span class="hljs-keyword">new</span> FlatLand.Scene(canvas)
+    scene.createAtlas({
+        <span class="hljs-attr">name</span>: <span class="hljs-string">"atlas"</span>,
+        <span class="hljs-attr">image</span>: <span class="hljs-string">"jumping-mushrooms.png"</span>
+    })
+    <span class="hljs-keyword">const</span> sprites = <span class="hljs-keyword">new</span> FlatLand.Painter.Sprites({
+        scene, <span class="hljs-attr">atlas</span>: <span class="hljs-string">"atlas"</span>
+    })
+    <span class="hljs-keyword">const</span> mushroom = sprites.createSprite({
+        <span class="hljs-attr">width</span>: <span class="hljs-number">75</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">120</span>
+    })
+    scene.createAtlas({
+        <span class="hljs-attr">name</span>: <span class="hljs-string">"background"</span>, <span class="hljs-attr">image</span>: <span class="hljs-string">"ferry-forest.jpg"</span>
+    })
+    <span class="hljs-keyword">new</span> FlatLand.Painter.Background({
+        scene, <span class="hljs-attr">atlas</span>: <span class="hljs-string">"background"</span>
+    })
+    scene.onAnimation = <span class="hljs-function">(<span class="hljs-params">time</span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> ang = time * <span class="hljs-number">0.001</span>
+        <span class="hljs-keyword">const</span> x = <span class="hljs-number">512</span> + <span class="hljs-number">0.5</span> * scene.width * <span class="hljs-built_in">Math</span>.cos(ang)
+        <span class="hljs-keyword">const</span> y = <span class="hljs-number">512</span> + <span class="hljs-number">0.5</span> * scene.height * <span class="hljs-built_in">Math</span>.sin(ang)
+        mushroom.update({ x, y })
+    }
+    scene.start()
+}</code></pre>
 				<a href="#more" id="more" style="color: inherit; text-decoration: none;">
 					<h2>More</h2>
 				</a>
