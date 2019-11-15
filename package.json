@@ -11,10 +11,12 @@
         "@types/node": "12.12.5"
     },
     "devDependencies": {
+        "gh-pages": "^2.1.1",
         "raw-loader": "^3.1.0",
         "react-scripts": "3.2.0",
         "ts-loader": "^6.2.1",
         "tslint": "^5.20.1",
+        "typedoc": "^0.15.2",
         "typescript": "^3.7.2",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.10",
@@ -25,10 +27,11 @@
         "url": "git+https://github.com/tolokoban/flat-land-gl.git"
     },
     "scripts": {
+        "doc": "typedoc --out doc src",
+        "deploy": "gh-pages --dist doc",
         "start": "webpack --mode development --watch",
         "build": "webpack --mode production",
         "lint": "tslint --fix -t verbose -c tslint.json 'src/**/*.ts'",
-        "postbuild": "rsync -av --exclude='**/*.ts' --exclude='**/*.js' src/ dist/",
         "test": "react-scripts test"
     },
     "browserslist": {

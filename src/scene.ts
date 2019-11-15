@@ -3,15 +3,7 @@ import Painter from "./painter/painter"
 import Resize from "./webgl/resize"
 
 export default class FlatLand {
-
-    get width() {
-        return this.gl.drawingBufferWidth
-    }
-
-    get height() {
-        return this.gl.drawingBufferHeight
-    }
-    public readonly gl: WebGLRenderingContext
+    private readonly _gl: WebGLRenderingContext
     public resolution = 1
     public onAnimation: ((time: number) => void) | null = null
     private readonly painters: Map<string, Painter>
@@ -25,9 +17,25 @@ export default class FlatLand {
         })
         if (!gl) { throw new Error("Unable to create a WegGL context!") }
 
-        this.gl = gl
+        this._gl = gl
         this.atlases = new Map()
         this.painters = new Map()
+    }
+
+    get gl(): WebGLRenderingContext {
+        return this._gl
+    }
+    /**
+     * Visible width. Between 0 and 1024.
+     */
+    get width(): number {
+        return this.gl.drawingBufferWidth
+    }
+    /**
+     * Visible height. Between 0 and 1024.
+     */
+    get height(): number {
+        return this.gl.drawingBufferHeight
     }
 
     public getAtlas(name: string): Atlas | null {
@@ -53,6 +61,7 @@ export default class FlatLand {
     }
 
     /**
+     * @hidden
      * If a painter with the same name already exists, return false and don't add the new one.
      */
     public $attachPainter(painter: Painter): boolean {
@@ -64,6 +73,9 @@ export default class FlatLand {
         return true
     }
 
+    /**
+     * @hidden
+     */
     public $detachPainter(name: string): boolean {
         if (this.painters.has(name)) { return false }
         this.painters.delete(name)
@@ -72,12 +84,19 @@ export default class FlatLand {
         return true
     }
 
+    /**
+     * Start rendering.
+     * When a frame is rendered, the function `onAnimation( time: number )` is called.
+     */
     public start() {
         if (this.isRendering) { return }
         this.isRendering = true
         window.requestAnimationFrame(this.render)
     }
 
+    /**
+     * Stop rendering.
+     */
     public stop() {
         this.isRendering = false
     }

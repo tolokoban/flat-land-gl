@@ -1,8 +1,8 @@
 import Atlas, { IAtlasParams } from "./atlas";
 import Painter from "./painter/painter";
 export default class FlatLand {
-    get width(): number;
-    get height(): number;
+    readonly width: number;
+    readonly height: number;
     readonly gl: WebGLRenderingContext;
     resolution: number;
     onAnimation: ((time: number) => void) | null;
