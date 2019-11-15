@@ -9,5 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Getting all dependencies
+      run: npm install
     - name: Build FlatLand library
       run: npm run build
