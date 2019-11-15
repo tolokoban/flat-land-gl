@@ -8,7 +8,7 @@ export interface IPainterParams {
     scene: Scene;
 }
 export default abstract class Painter {
-    readonly name: string;
+    get name(): string;
     protected _name: string;
     protected readonly scene: Scene;
     constructor(params: IPainterParams);

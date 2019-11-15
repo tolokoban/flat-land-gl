@@ -10,13 +10,13 @@ export default class Atlas {
     private _width;
     private _height;
     constructor(gl: WebGLRenderingContext, _name: string);
-    readonly name: string;
-    readonly width: number;
-    readonly height: number;
+    get name(): string;
+    get width(): number;
+    get height(): number;
     /**
      * Return `true` as soon as an image has been loaded into the graphic card.
      */
-    readonly ready: boolean;
+    get ready(): boolean;
     /**
      * Remove the texture from the graphic card memory.
      */

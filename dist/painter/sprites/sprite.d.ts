@@ -14,17 +14,17 @@ export interface ISprite {
 }
 export default class Sprite {
     private getData;
-    readonly x: number;
-    readonly y: number;
-    readonly z: number;
-    readonly width: number;
-    readonly height: number;
-    readonly originX: number;
-    readonly originY: number;
-    readonly u0: number;
-    readonly v0: number;
-    readonly u1: number;
-    readonly v1: number;
+    get x(): number;
+    get y(): number;
+    get z(): number;
+    get width(): number;
+    get height(): number;
+    get originX(): number;
+    get originY(): number;
+    get u0(): number;
+    get v0(): number;
+    get u1(): number;
+    get v1(): number;
     readonly extra: {
         [key: string]: any;
     };
