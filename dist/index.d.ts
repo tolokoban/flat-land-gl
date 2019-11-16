@@ -1,5 +1,9 @@
 import Scene from "./scene";
 declare const FlatLand: {
+    Calc: {
+        cos: (angle: number) => number;
+        sin: (angle: number) => number;
+    };
     Painter: {
         Background: typeof import("./painter/background").default;
         Clear: typeof import("./painter/clear").default;

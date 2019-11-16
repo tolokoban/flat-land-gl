@@ -11,7 +11,7 @@ import vert from "./sprites.vert"
 
 // Allocations will be done by pieces of BLOCK Sprites.
 const BLOCK = 64
-const NB_ATTRIBS = 5  // attXYZ and attUV.
+const NB_ATTRIBS = 6  // attXYZ and attUV and attAngle.
 const NB_CORNERS = 4
 const CHUNK = NB_ATTRIBS * NB_CORNERS
 

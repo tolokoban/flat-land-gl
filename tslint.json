@@ -8,6 +8,8 @@
         "semicolon": [true, "never"],
         "no-console": [true, "log"],
         "object-literal-sort-keys": false,
+        "ordered-imports": false,
+        "quote-mark": false,
         "variable-name": {
             "options": [
                 "ban-keywords",

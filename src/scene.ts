@@ -2,6 +2,10 @@ import Atlas, { IAtlasParams } from "./atlas"
 import Painter from "./painter/painter"
 import Resize from "./webgl/resize"
 
+interface IVector2 {
+    x: number, y: number
+}
+
 export default class FlatLand {
     private readonly _gl: WebGLRenderingContext
     public resolution = 1
@@ -10,8 +14,14 @@ export default class FlatLand {
     private readonly atlases: Map<string, Atlas>
     private activePainters: Painter[] = []
     private isRendering = false
+    private _pointerX = -1024
+    private _pointerY = -1024
 
     constructor(canvas: HTMLCanvasElement) {
+        canvas.addEventListener("mousemove", (evt: MouseEvent) => {
+            this.computeCoords(evt)
+        }, true)
+
         const gl = canvas.getContext("webgl", {
             // Specify WebGL options.
         })
@@ -36,6 +46,20 @@ export default class FlatLand {
      */
     get height(): number {
         return this.gl.drawingBufferHeight
+    }
+
+    /**
+     * Last X position of the pointer between 0 and 1024.
+     */
+    get pointerX(): number {
+        return this._pointerX
+    }
+
+    /**
+     * Last Y position of the pointer between 0 and 1024.
+     */
+    get pointerY(): number {
+        return this._pointerY
     }
 
     public getAtlas(name: string): Atlas | null {
@@ -99,6 +123,24 @@ export default class FlatLand {
      */
     public stop() {
         this.isRendering = false
+    }
+
+    private computeCoords(evt: MouseEvent) {
+        const canvas = evt.target as HTMLCanvasElement
+        const rect = canvas.getBoundingClientRect()
+
+        const x = evt.clientX - rect.left
+        const y = evt.clientY - rect.top
+        const w = this.width
+        const h = this.height
+
+        if (w > h) {
+            this._pointerX = 1024 * x / w
+            this._pointerY = 1024 * (0.5 * (1 - h / w) + (y / w))
+        } else {
+            this._pointerX = 1024 * (0.5 * (1 - w / h) + (x / h))
+            this._pointerY = 1024 * y / h
+        }
     }
 
     private render = (time: number) => {

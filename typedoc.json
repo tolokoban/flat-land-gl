@@ -8,6 +8,7 @@
     "exclude": [
         "**/index.*",
         "**/webgl/**/*",
+        "**/gesture/**/*",
         "**/converter/**/*"
     ]
 }

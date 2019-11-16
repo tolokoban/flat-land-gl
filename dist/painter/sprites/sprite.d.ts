@@ -11,6 +11,7 @@ export interface ISprite {
     u1: number;
     v1: number;
     scale: number;
+    angle: number;
 }
 export default class Sprite {
     private getData;

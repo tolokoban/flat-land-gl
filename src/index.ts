@@ -1,7 +1,9 @@
+import Calc from "./calc"
 import Painter from "./painter"
 import Scene from "./scene"
 
 const FlatLand = {
+    Calc,
     Painter,
     Scene
 }

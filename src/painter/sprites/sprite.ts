@@ -1,3 +1,5 @@
+import Calc from '../../calc'
+
 export interface ISprite {
     x: number,
     y: number,
@@ -10,7 +12,8 @@ export interface ISprite {
     v0: number,
     u1: number,
     v1: number,
-    scale: number
+    scale: number,
+    angle: number
 }
 
 export default class Sprite {
@@ -41,6 +44,7 @@ export default class Sprite {
             originY: height / 2,
             u0: 0, v0: 0, u1: 1, v1: 1,
             scale: 1,
+            angle: 0,
             ...params,
         }
         this.update(this.params)
@@ -51,7 +55,7 @@ export default class Sprite {
 
         const { getData, $index, params } = this
         const data = getData()
-        const { x, y, z, originX, originY, width, height, u0, v0, u1, v1, scale } = params
+        const { x, y, z, originX, originY, width, height, u0, v0, u1, v1, scale, angle } = params
         const xxA = -originX
         const yyA = -originY
         const xxB = xxA + width
@@ -61,14 +65,28 @@ export default class Sprite {
         const xxD = xxA
         const yyD = yyA + height
 
-        const xA = xxA * scale
-        const yA = yyA * scale
-        const xB = xxB * scale
-        const yB = yyB * scale
-        const xC = xxC * scale
-        const yC = yyC * scale
-        const xD = xxD * scale
-        const yD = yyD * scale
+        let xA = xxA * scale
+        let yA = yyA * scale
+        let xB = xxB * scale
+        let yB = yyB * scale
+        let xC = xxC * scale
+        let yC = yyC * scale
+        let xD = xxD * scale
+        let yD = yyD * scale
+
+        if ((angle|0) !== 0) {
+            const C = Calc.cos(angle)
+            const S = Calc.sin(angle)
+
+            xA = (xxA * C + yyA * S) * scale
+            yA = (yyA * C - xxA * S) * scale
+            xB = (xxB * C + yyB * S) * scale
+            yB = (yyB * C - xxB * S) * scale
+            xC = (xxC * C + yyC * S) * scale
+            yC = (yyC * C - xxC * S) * scale
+            xD = (xxD * C + yyD * S) * scale
+            yD = (yyD * C - xxD * S) * scale
+        }
 
         data[$index + 0] = xA + x
         data[$index + 1] = yA + y
