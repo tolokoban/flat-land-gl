@@ -7,6 +7,9 @@ Each painter work in a virtual 3D space:
 * `x` and `y` are defined between 0 and 1024,
 * and `z` is defined between -1 (background) and +1 (foreground).
 
+## Examples
+You can learn many tricks by [reading the examples](https://github.com/tolokoban/flat-land-gl/tree/master/examples).
+
 ## How to use it?
 ### Vanilla Javascript
 
