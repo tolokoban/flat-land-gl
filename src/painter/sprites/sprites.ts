@@ -79,6 +79,30 @@ export default class SpritesPainter extends Painter {
         return sprite
     }
 
+    /**
+     * Remove a sprite from the list of sprites to render.
+     */
+    public removeSprite(sprite: Sprite) {
+        if (sprite.$index < 0) return
+        const { sprites } = this
+        if (sprites.length === 0) {
+            sprite.$index = -1
+            return
+        }
+        if (sprites.length === 1) {
+            sprite.$index = -1
+            sprites.splice(0, sprites.length)
+            this.count = 0
+            return
+        }
+        const lastSprite = sprites.pop()
+        if (!lastSprite) return
+        lastSprite.$index = sprite.$index
+        lastSprite.update({})
+        this.count--
+        sprite.$index = -1
+    }
+
     public render() {
         const { scene, prg, atlas, buffVert, buffElem } = this
         const gl = scene.gl

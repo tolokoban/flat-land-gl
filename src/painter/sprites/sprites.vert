@@ -4,7 +4,7 @@ attribute vec3 attXYZ;
 attribute vec2 attUV;
 varying vec2 varUV;
 
-const float RESOLUTION = 500.0;
+const float RESOLUTION = 512.0;
 const float INV_RESOLUTION = 1.0 / RESOLUTION;
 
 void main() {

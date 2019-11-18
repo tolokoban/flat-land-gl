@@ -894,6 +894,31 @@ var SpritesPainter = /** @class */ (function (_super) {
         this.sprites.push(sprite);
         return sprite;
     };
+    /**
+     * Remove a sprite from the list of sprites to render.
+     */
+    SpritesPainter.prototype.removeSprite = function (sprite) {
+        if (sprite.$index < 0)
+            return;
+        var sprites = this.sprites;
+        if (sprites.length === 0) {
+            sprite.$index = -1;
+            return;
+        }
+        if (sprites.length === 1) {
+            sprite.$index = -1;
+            sprites.splice(0, sprites.length);
+            this.count = 0;
+            return;
+        }
+        var lastSprite = sprites.pop();
+        if (!lastSprite)
+            return;
+        lastSprite.$index = sprite.$index;
+        lastSprite.update({});
+        this.count--;
+        sprite.$index = -1;
+    };
     SpritesPainter.prototype.render = function () {
         var _a = this, scene = _a.scene, prg = _a.prg, atlas = _a.atlas, buffVert = _a.buffVert, buffElem = _a.buffElem;
         var gl = scene.gl;
@@ -963,7 +988,7 @@ function createElements(capacity) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("uniform float uniWidth;\nuniform float uniHeight;\nattribute vec3 attXYZ;\nattribute vec2 attUV;\nvarying vec2 varUV;\n\nconst float RESOLUTION = 500.0;\nconst float INV_RESOLUTION = 1.0 / RESOLUTION;\n\nvoid main() {\n  varUV = attUV;\n  float widestSide = max(uniWidth, uniHeight);\n  float w = widestSide / uniWidth;\n  float h = widestSide / uniHeight;\n  float x = w * (attXYZ.x - RESOLUTION) * INV_RESOLUTION;\n  float y = h * (attXYZ.y - RESOLUTION) * INV_RESOLUTION;\n\n  gl_Position = vec4(x, -y, attXYZ.z, 1.0);\n}\n");
+/* harmony default export */ __webpack_exports__["default"] = ("uniform float uniWidth;\nuniform float uniHeight;\nattribute vec3 attXYZ;\nattribute vec2 attUV;\nvarying vec2 varUV;\n\nconst float RESOLUTION = 512.0;\nconst float INV_RESOLUTION = 1.0 / RESOLUTION;\n\nvoid main() {\n  varUV = attUV;\n  float widestSide = max(uniWidth, uniHeight);\n  float w = widestSide / uniWidth;\n  float h = widestSide / uniHeight;\n  float x = w * (attXYZ.x - RESOLUTION) * INV_RESOLUTION;\n  float y = h * (attXYZ.y - RESOLUTION) * INV_RESOLUTION;\n\n  gl_Position = vec4(x, -y, attXYZ.z, 1.0);\n}\n");
 
 /***/ }),
 
@@ -977,6 +1002,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var Pointer = /** @class */ (function () {
+    /** @hidden */
     function Pointer(canvas) {
         var _this = this;
         this.canvas = canvas;
@@ -1015,8 +1041,10 @@ var Pointer = /** @class */ (function () {
         window.addEventListener("mouseup", this.onMouseUp, true);
         window.addEventListener("touchend", this.onTouchEnd, true);
     }
+    /** @hidden */
     Pointer.prototype.reset = function () {
         this._eventDown = false;
+        this._eventUp = false;
     };
     Object.defineProperty(Pointer.prototype, "x", {
         get: function () { return this._x; },
@@ -1029,16 +1057,19 @@ var Pointer = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Pointer.prototype, "down", {
+        /** Test if the pointer is touching the screen. */
         get: function () { return this._down; },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Pointer.prototype, "eventUp", {
-        get: function () { return this._eventup; },
+        /** `true` only if the pointer started touching the screen this very last frame. */
+        get: function () { return this._eventUp; },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Pointer.prototype, "eventDown", {
+        /** `true` only if the pointer stopped touching the screen this very last frame. */
         get: function () { return this._eventDown; },
         enumerable: true,
         configurable: true

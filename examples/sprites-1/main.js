@@ -51,7 +51,11 @@ function start() {
             const y = 500 + radius * Math.sin(angle)
             const z = radius / 500
 
-            item.update({ x, y, z, scale: (radius + 250) / 1000 })
+            item.update({
+                x, y, z,
+                scale: (radius + 250) / 1000,
+                angle: time * (speed1 - speed2) * 3000
+            })
         }
     }
     scene.start()

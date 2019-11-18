@@ -14,6 +14,10 @@ export default class SpritesPainter extends Painter {
     private capacity;
     constructor(params: ISpritesPainterParams);
     createSprite(params: Partial<ISprite>): Sprite;
+    /**
+     * Remove a sprite from the list of sprites to render.
+     */
+    removeSprite(sprite: Sprite): void;
     render(): void;
     private allocateNewBlock;
     /**

@@ -7,6 +7,7 @@ export default class Pointer {
     private _eventDown = false
     private _eventUp = false
 
+    /** @hidden */
     constructor(private canvas: HTMLCanvasElement) {
         window.addEventListener("mousemove", this.onMouseMove, true)
         window.addEventListener("touchmove", this.onTouchMove, true)
@@ -16,14 +17,20 @@ export default class Pointer {
         window.addEventListener("touchend", this.onTouchEnd, true)
     }
 
+    /** @hidden */
     public reset() {
         this._eventDown = false
+        this._eventUp = false
     }
 
     get x() { return this._x }
     get y() { return this._y }
+
+    /** Test if the pointer is touching the screen. */
     get down() { return this._down }
-    get eventUp() { return this._eventup }
+    /** `true` only if the pointer started touching the screen this very last frame. */
+    get eventUp() { return this._eventUp }
+    /** `true` only if the pointer stopped touching the screen this very last frame. */
     get eventDown() { return this._eventDown }
 
     private onMouseMove = (evt: MouseEvent) => {

@@ -29,6 +29,7 @@ export default class Sprite {
     get v0() { return this.params.v0 }
     get u1() { return this.params.u1 }
     get v1() { return this.params.v1 }
+
     public readonly extra: {[key: string]: any} = {}
     public $index: number = 0
     private params: ISprite
