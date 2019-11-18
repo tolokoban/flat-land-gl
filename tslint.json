@@ -5,6 +5,7 @@
     ],
     "jsRules": {},
     "rules": {
+        "curly": false,
         "semicolon": [true, "never"],
         "no-console": [true, "log"],
         "object-literal-sort-keys": false,

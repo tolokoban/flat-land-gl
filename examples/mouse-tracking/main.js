@@ -1,6 +1,7 @@
 "use strict"
 
 function start() {
+    let scale = 1
     const canvas = document.getElementById("canvas")
     const scene = new FlatLand.Scene(canvas)
     scene.createAtlas({ name: "missile", image: "missile.png" })
@@ -17,11 +18,20 @@ function start() {
     scene.onAnimation = time => {
         const ang = time
 
-        const dx = 150 * FlatLand.Calc.cos(ang)
-        const dy = 150 * FlatLand.Calc.sin(ang)
+        const dx = 100 * FlatLand.Calc.cos(ang)
+        const dy = 100 * FlatLand.Calc.sin(ang)
+
+        if (scene.pointer.down) {
+            if (scale > 0.5) scale -= 0.01
+        }
+        else {
+            if (scale < 1) scale += 0.01
+        }
+
         missile.update({
-            x: scene.pointerX + dx,
-            y: scene.pointerY + dy,
+            x: scene.pointer.x + dx,
+            y: scene.pointer.y + dy,
+            scale,
             angle: -2 * ang
         })
     }

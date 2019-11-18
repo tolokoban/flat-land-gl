@@ -967,6 +967,121 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/pointer.ts":
+/*!************************!*\
+  !*** ./src/pointer.ts ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var Pointer = /** @class */ (function () {
+    function Pointer(canvas) {
+        var _this = this;
+        this.canvas = canvas;
+        this._x = 0;
+        this._y = 0;
+        this._down = false;
+        // If 0, pointer is up.
+        this._downTime = 0;
+        this._eventDown = false;
+        this._eventUp = false;
+        this.onMouseMove = function (evt) {
+            _this.computeCoords(evt.clientX, evt.clientY);
+        };
+        this.onTouchMove = function (te) {
+            var evt = te.touches[0];
+            _this.computeCoords(evt.clientX, evt.clientY);
+        };
+        this.onMouseDown = function (evt) {
+            _this.onDown(evt.clientX, evt.clientY);
+        };
+        this.onTouchStart = function (te) {
+            var evt = te.touches[0];
+            _this.onDown(evt.clientX, evt.clientY);
+        };
+        this.onMouseUp = function (evt) {
+            _this.onUp(evt.clientX, evt.clientY);
+        };
+        this.onTouchEnd = function (te) {
+            var evt = te.touches[0];
+            _this.onUp(evt.clientX, evt.clientY);
+        };
+        window.addEventListener("mousemove", this.onMouseMove, true);
+        window.addEventListener("touchmove", this.onTouchMove, true);
+        window.addEventListener("mousedown", this.onMouseDown, true);
+        window.addEventListener("touchstart", this.onTouchStart, true);
+        window.addEventListener("mouseup", this.onMouseUp, true);
+        window.addEventListener("touchend", this.onTouchEnd, true);
+    }
+    Pointer.prototype.reset = function () {
+        this._eventDown = false;
+    };
+    Object.defineProperty(Pointer.prototype, "x", {
+        get: function () { return this._x; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Pointer.prototype, "y", {
+        get: function () { return this._y; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Pointer.prototype, "down", {
+        get: function () { return this._down; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Pointer.prototype, "eventUp", {
+        get: function () { return this._eventup; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Pointer.prototype, "eventDown", {
+        get: function () { return this._eventDown; },
+        enumerable: true,
+        configurable: true
+    });
+    Pointer.prototype.onDown = function (x, y) {
+        if (this._downTime !== 0)
+            return;
+        this.computeCoords(x, y);
+        this._down = true;
+        this._eventDown = true;
+        this._downTime = Date.now();
+    };
+    Pointer.prototype.onUp = function (x, y) {
+        if (this._downTime === 0)
+            return;
+        this.computeCoords(x, y);
+        this._down = false;
+        this._eventUp = true;
+        this._downTime = 0;
+    };
+    Pointer.prototype.computeCoords = function (pointerX, pointerY) {
+        var canvas = this.canvas;
+        var rect = canvas.getBoundingClientRect();
+        var x = pointerX - rect.left;
+        var y = pointerY - rect.top;
+        var w = rect.width;
+        var h = rect.height;
+        if (w > h) {
+            this._x = 1024 * x / w;
+            this._y = 1024 * (0.5 * (1 - h / w) + (y / w));
+        }
+        else {
+            this._x = 1024 * (0.5 * (1 - w / h) + (x / h));
+            this._y = 1024 * y / h;
+        }
+    };
+    return Pointer;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (Pointer);
+
+
+/***/ }),
+
 /***/ "./src/scene.ts":
 /*!**********************!*\
   !*** ./src/scene.ts ***!
@@ -978,6 +1093,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _atlas__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./atlas */ "./src/atlas.ts");
 /* harmony import */ var _webgl_resize__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./webgl/resize */ "./src/webgl/resize.ts");
+/* harmony import */ var _pointer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pointer */ "./src/pointer.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1027,6 +1143,7 @@ var __values = (undefined && undefined.__values) || function(o) {
 };
 
 
+
 var FlatLand = /** @class */ (function () {
     function FlatLand(canvas) {
         var _this = this;
@@ -1036,6 +1153,9 @@ var FlatLand = /** @class */ (function () {
         this.isRendering = false;
         this._pointerX = -1024;
         this._pointerY = -1024;
+        this._pointerTap = false;
+        // When 0
+        this._pointerDownTime = 0;
         this.render = function (time) {
             var e_1, _a;
             if (_this.isRendering) {
@@ -1066,6 +1186,7 @@ var FlatLand = /** @class */ (function () {
                 var onAnimation = _this.onAnimation;
                 if (typeof onAnimation === "function") {
                     onAnimation(time);
+                    _this.pointer.reset();
                 }
             }
             catch (ex) {
@@ -1076,9 +1197,7 @@ var FlatLand = /** @class */ (function () {
                 console.error("###############################");
             }
         };
-        canvas.addEventListener("mousemove", function (evt) {
-            _this.computeCoords(evt);
-        }, true);
+        this._pointer = new _pointer__WEBPACK_IMPORTED_MODULE_2__["default"](canvas);
         var gl = canvas.getContext("webgl", {
         // Specify WebGL options.
         });
@@ -1093,6 +1212,14 @@ var FlatLand = /** @class */ (function () {
         get: function () {
             return this._gl;
         },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlatLand.prototype, "pointer", {
+        /**
+         * Retreive information about pointer (mouse, pen, finger, ...) state.
+         */
+        get: function () { return this._pointer; },
         enumerable: true,
         configurable: true
     });
@@ -1136,6 +1263,20 @@ var FlatLand = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(FlatLand.prototype, "pointerTap", {
+        get: function () {
+            return this._pointerTap;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Define which painter to use and in what order.
+     * For better performance, prefer putting background painters at the end of the list.
+     */
+    FlatLand.prototype.use = function (painters) {
+        this.activePainters = painters.slice();
+    };
     FlatLand.prototype.getAtlas = function (name) {
         var atlases = this.atlases;
         return atlases.get(name) || null;
@@ -1209,22 +1350,6 @@ var FlatLand = /** @class */ (function () {
      */
     FlatLand.prototype.stop = function () {
         this.isRendering = false;
-    };
-    FlatLand.prototype.computeCoords = function (evt) {
-        var canvas = evt.target;
-        var rect = canvas.getBoundingClientRect();
-        var x = evt.clientX - rect.left;
-        var y = evt.clientY - rect.top;
-        var w = this.width;
-        var h = this.height;
-        if (w > h) {
-            this._pointerX = 1024 * x / w;
-            this._pointerY = 1024 * (0.5 * (1 - h / w) + (y / w));
-        }
-        else {
-            this._pointerX = 1024 * (0.5 * (1 - w / h) + (x / h));
-            this._pointerY = 1024 * y / h;
-        }
     };
     return FlatLand;
 }());

@@ -1,6 +1,7 @@
 import Atlas, { IAtlasParams } from "./atlas"
 import Painter from "./painter/painter"
 import Resize from "./webgl/resize"
+import Pointer from './pointer'
 
 interface IVector2 {
     x: number, y: number
@@ -8,6 +9,7 @@ interface IVector2 {
 
 export default class FlatLand {
     private readonly _gl: WebGLRenderingContext
+    private readonly _pointer: Pointer
     public resolution = 1
     public onAnimation: ((time: number) => void) | null = null
     private readonly painters: Map<string, Painter>
@@ -16,12 +18,12 @@ export default class FlatLand {
     private isRendering = false
     private _pointerX = -1024
     private _pointerY = -1024
+    private _pointerTap = false
+    // When 0
+    private _pointerDownTime = 0
 
     constructor(canvas: HTMLCanvasElement) {
-        canvas.addEventListener("mousemove", (evt: MouseEvent) => {
-            this.computeCoords(evt)
-        }, true)
-
+        this._pointer = new Pointer(canvas)
         const gl = canvas.getContext("webgl", {
             // Specify WebGL options.
         })
@@ -35,6 +37,12 @@ export default class FlatLand {
     get gl(): WebGLRenderingContext {
         return this._gl
     }
+
+    /**
+     * Retreive information about pointer (mouse, pen, finger, ...) state.
+     */
+    get pointer() { return this._pointer }
+
     /**
      * Visible width. Between 0 and 1024.
      */
@@ -60,6 +68,18 @@ export default class FlatLand {
      */
     get pointerY(): number {
         return this._pointerY
+    }
+
+    get pointerTap(): boolean {
+        return this._pointerTap
+    }
+
+    /**
+     * Define which painter to use and in what order.
+     * For better performance, prefer putting background painters at the end of the list.
+     */
+    public use(painters: Painter[]) {
+        this.activePainters = painters.slice()
     }
 
     public getAtlas(name: string): Atlas | null {
@@ -125,24 +145,6 @@ export default class FlatLand {
         this.isRendering = false
     }
 
-    private computeCoords(evt: MouseEvent) {
-        const canvas = evt.target as HTMLCanvasElement
-        const rect = canvas.getBoundingClientRect()
-
-        const x = evt.clientX - rect.left
-        const y = evt.clientY - rect.top
-        const w = this.width
-        const h = this.height
-
-        if (w > h) {
-            this._pointerX = 1024 * x / w
-            this._pointerY = 1024 * (0.5 * (1 - h / w) + (y / w))
-        } else {
-            this._pointerX = 1024 * (0.5 * (1 - w / h) + (x / h))
-            this._pointerY = 1024 * y / h
-        }
-    }
-
     private render = (time: number) => {
         if (this.isRendering) { window.requestAnimationFrame(this.render) } else { return }
 
@@ -161,6 +163,8 @@ export default class FlatLand {
             const { onAnimation } = this
             if (typeof onAnimation === "function") {
                 onAnimation(time)
+                
+                this.pointer.reset()
             }
         } catch (ex) {
             console.error(ex)
