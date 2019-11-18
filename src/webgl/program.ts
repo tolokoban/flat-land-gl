@@ -1,4 +1,4 @@
-const BPE = (new Float32Array()).BYTES_PER_ELEMENT
+const BPE = Float32Array.BYTES_PER_ELEMENT
 
 export interface IShaders { vert: string, frag: string }
 
