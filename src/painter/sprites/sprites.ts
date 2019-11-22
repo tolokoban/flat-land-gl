@@ -4,7 +4,7 @@
 import Atlas from "../../atlas"
 import Scene from "../../scene"
 import Program from "../../webgl/program"
-import Painter, { IPainterParams } from "../painter"
+import Painter from "../painter"
 import Sprite, { ISprite } from "./sprite"
 import frag from "./sprites.frag"
 import vert from "./sprites.vert"
@@ -15,23 +15,39 @@ const NB_ATTRIBS = 6  // attXYZ and attUV and attAngle.
 const NB_CORNERS = 4
 const CHUNK = NB_ATTRIBS * NB_CORNERS
 
-interface ISpritesPainterParams extends IPainterParams {
+interface ISpritesPainterParams {
+    scene: Scene,
     atlas: string
 }
 
 export default class SpritesPainter extends Painter {
-    private readonly atlas: Atlas
-    private readonly prg: Program
+    private atlas: Atlas
+    private prg: Program
     private dataVert = new Float32Array(BLOCK * CHUNK)
-    private readonly buffVert: WebGLBuffer
-    private readonly buffElem: WebGLBuffer
+    private buffVert: WebGLBuffer
+    private buffElem: WebGLBuffer
     private sprites: Sprite[] = []
     private count = 0
     private capacity = BLOCK
 
-    constructor(params: ISpritesPainterParams) {
-        super(params)
-        const { scene, atlas } = params
+    constructor(private params: ISpritesPainterParams) {
+        super()
+        if (params.scene instanceof Scene) {
+            this.scene = params.scene
+        } else {
+            throw Error('Attribute "scene" is mandatory for "Sprites" painter!')
+        }
+    }
+
+    protected destroy(scene: Scene) {
+        const { gl } = scene
+        const { buffElem, buffVert } = this
+        gl.deleteBuffer(buffElem)
+        gl.deleteBuffer(buffVert)
+    }
+
+    protected initialize(scene: Scene) {
+        const { atlas } = this.params
         const atlasObj = scene.getAtlas(atlas)
         if (!atlasObj) {
             throw this.fatal(`Atlas "${atlas}" not found!`)
@@ -105,6 +121,7 @@ export default class SpritesPainter extends Painter {
 
     public render() {
         const { scene, prg, atlas, buffVert, buffElem } = this
+        if (!scene) return
         const gl = scene.gl
 
         // Update sprites' attributes.
@@ -128,6 +145,9 @@ export default class SpritesPainter extends Painter {
         this.capacity += BLOCK
 
         const { scene } = this
+        if (!scene) {
+            throw Error("No scene!")
+        }
         const { gl } = scene
 
         const buffElem = this.buffElem
@@ -143,8 +163,9 @@ export default class SpritesPainter extends Painter {
     }
 
     /**
-     * Since the vertex array can be reallocated, we cannot give a reference to the Float32Array
-     * to any Sprite. Instead, we will give them this function that will return the current array.
+     * Since the vertex array can be reallocated, we cannot give a reference to the
+     * Float32Array to any Sprite. Instead, we will give them this function that will
+     * return the current array.
      */
     private getData = () => this.dataVert
 }

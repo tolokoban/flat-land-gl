@@ -1,20 +1,22 @@
 /**
  * Background the screen by filling it with an image that covers it entirely.
  */
-  import Atlas from "../../atlas"
-  import castString from "../../converter/string"
-  import Program from "../../webgl/program"
-  import Painter, { IPainterParams } from "../painter"
 
-  interface IBackgroundPainterParams extends IPainterParams {
+import Scene from "../../scene"
+import Atlas from "../../atlas"
+import castString from "../../converter/string"
+import Program from "../../webgl/program"
+import Painter from "../painter"
+
+interface IBackgroundPainterParams {
     atlas: string,
     align?: string
 }
 
-  export default class BackgroundPainter extends Painter {
-    private readonly atlas: Atlas
-    private readonly prg: Program
-    private readonly buff: WebGLBuffer
+export default class BackgroundPainter extends Painter {
+    private atlas: Atlas
+    private prg: Program
+    private buff: WebGLBuffer
 
     /**
      * params: { atlas, align }
@@ -24,9 +26,19 @@
      *          "T" for Top.
      *          "B" for "Bottom".
      */
-    constructor(params: IBackgroundPainterParams) {
-        super(params)
-        const { scene, atlas } = params
+    constructor(private params: IBackgroundPainterParams) {
+        super()
+    }
+
+    protected destroy(scene: Scene) {
+        const { gl } = scene
+        const { buff } = this
+        gl.deleteBuffer(buff)
+    }
+
+    protected initialize(scene: Scene) {
+        const { params } = this
+        const { atlas } = params
         const atlasObj = scene.getAtlas(atlas)
         if (!atlasObj) {
             throw this.fatal(`Atlas "${atlas}" not found!`)
@@ -52,6 +64,7 @@
 
     public render() {
         const { scene, prg, atlas, buff } = this
+        if (!scene) return
         const gl = scene.gl
         gl.enable(gl.DEPTH_TEST)
         prg.use()

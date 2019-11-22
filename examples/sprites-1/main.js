@@ -1,3 +1,5 @@
+"use strict"
+
 const TYPES = {
     bol: newType(0, 0, 542, 318),
     corbeille: newType(0, 320, 402, 524),
@@ -24,11 +26,14 @@ function start() {
         scene,
         atlas: "atlas"
     })
-    new FlatLand.Painter.Background({
+    const background = new FlatLand.Painter.Background({
         scene,
         atlas: "background",
         align: "B"
     })
+
+    // Tell the scene to use these painters, in that order.
+    scene.use([ sprites, background ])
 
     const items = []
     add(sprites, items, "bol")
@@ -40,8 +45,8 @@ function start() {
     add(sprites, items, "noisette", 20)
     add(sprites, items, "the", 10)
 
-    scene.onAnimation = (time) => {
-        for (let k=0 ; k<items.length ; k++) {
+    scene.onAnimation = time => {
+        for (let k = 0; k < items.length; k++) {
             const item = items[k]
             const speed1 = item.extra.speed1
             const speed2 = item.extra.speed2
@@ -75,7 +80,7 @@ function newType(x, y, w, h) {
 
 
 function add(sprites, items, name, count = 1) {
-    for (let k=0 ; k<count ; k++) {
+    for (let k = 0; k < count; k++) {
         const type = TYPES[name]
         const item = sprites.createSprite(type)
         item.extra.speed1 = (1 + Math.random()) * 0.001

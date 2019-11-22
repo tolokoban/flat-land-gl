@@ -20,7 +20,8 @@ function start() {
         scene, atlas: "missile"
     })
     const missile = sprites.createSprite({
-        width: 387, height: 335
+        width: 387, height: 335,
+        x: 512, y: 512
     })
 
     // Use painters in this order.
@@ -33,10 +34,11 @@ function start() {
         const dx = 150 * FlatLand.Calc.cos(ang)
         const dy = 150 * FlatLand.Calc.sin(ang)
         missile.update({
-            x: scene.pointerX + dx,
-            y: scene.pointerY + dy,
+            x: scene.pointer.x + dx,
+            y: scene.pointer.y + dy,
             angle: -2 * ang
         })
     }
+
     scene.start()
 }

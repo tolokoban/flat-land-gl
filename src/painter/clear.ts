@@ -3,9 +3,9 @@
  * This color is defined by attributes red, gree, blue and alpha, which must be between 0 and 1.
  */
 import Color from "../webgl/color"
-import Painter, { IPainterParams } from "./painter"
+import Painter from "./painter"
 
-interface IClearPainterParams extends IPainterParams {
+interface IClearPainterParams {
     color?: string
 }
 
@@ -15,10 +15,16 @@ export default class ClearPainter extends Painter {
     private _blue = 0.2
     private _alpha = 1
 
-    constructor(params: IClearPainterParams) {
-        super(params)
-        this.color = params.color || "#d72"
+    constructor(private params: IClearPainterParams) {
+        super()
     }
+
+    protected initialize() {
+        if (this.params) {
+            this.color = this.params.color || "#d72"        
+        }
+    }
+    protected destroy() {}
 
     get red() { return this._red }
     set red(v: number) { this._red = v }
@@ -49,7 +55,9 @@ export default class ClearPainter extends Painter {
     }
 
     public render() {
-        const gl = this.scene.gl
+        const { scene } = this
+        if (!scene) return
+        const { gl } = scene
         gl.clearColor(this._red, this._green, this._blue, this._alpha)
         gl.clear(gl.COLOR_BUFFER_BIT)
     }

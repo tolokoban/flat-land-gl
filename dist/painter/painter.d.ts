@@ -3,16 +3,14 @@
  */
 import Scene from "../scene";
 import Program, { IShaders } from "../webgl/program";
-export interface IPainterParams {
-    name?: string;
-    scene: Scene;
-}
 export default abstract class Painter {
-    get name(): string;
-    protected _name: string;
-    protected readonly scene: Scene;
-    constructor(params: IPainterParams);
-    destroy(): void;
+    private _programs;
+    private _scene;
+    get scene(): Scene | null;
+    set scene(scene: Scene | null);
+    private internalDestroy;
+    protected abstract initialize(scene: Scene): void;
+    protected abstract destroy(scene: Scene): void;
     abstract render(time: number): void;
     protected createProgram(shaders: IShaders, includes?: {
         [key: string]: string;

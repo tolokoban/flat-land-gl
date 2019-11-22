@@ -16,8 +16,6 @@ export default class FlatLand {
     private readonly atlases: Map<string, Atlas>
     private activePainters: Painter[] = []
     private isRendering = false
-    private _pointerX = -1024
-    private _pointerY = -1024
     private _pointerTap = false
     // When 0
     private _pointerDownTime = 0
@@ -56,20 +54,6 @@ export default class FlatLand {
         return this.gl.drawingBufferHeight
     }
 
-    /**
-     * Last X position of the pointer between 0 and 1024.
-     */
-    get pointerX(): number {
-        return this._pointerX
-    }
-
-    /**
-     * Last Y position of the pointer between 0 and 1024.
-     */
-    get pointerY(): number {
-        return this._pointerY
-    }
-
     get pointerTap(): boolean {
         return this._pointerTap
     }
@@ -79,6 +63,9 @@ export default class FlatLand {
      * For better performance, prefer putting background painters at the end of the list.
      */
     public use(painters: Painter[]) {
+        for (const painter of painters) {
+            painter.scene = this
+        }
         this.activePainters = painters.slice()
     }
 
@@ -101,30 +88,6 @@ export default class FlatLand {
         if (!atlas) { return false }
         atlases.delete(name)
         atlas.destroy()
-        return true
-    }
-
-    /**
-     * @hidden
-     * If a painter with the same name already exists, return false and don't add the new one.
-     */
-    public $attachPainter(painter: Painter): boolean {
-        if (this.painters.has(painter.name)) { return false }
-        this.painters.set(painter.name, painter)
-        this.activePainters = this.activePainters
-            .filter( (p: Painter) => p.name)
-        this.activePainters.push(painter)
-        return true
-    }
-
-    /**
-     * @hidden
-     */
-    public $detachPainter(name: string): boolean {
-        if (this.painters.has(name)) { return false }
-        this.painters.delete(name)
-        this.activePainters = this.activePainters
-            .filter( (p: Painter) => p.name)
         return true
     }
 
@@ -163,7 +126,7 @@ export default class FlatLand {
             const { onAnimation } = this
             if (typeof onAnimation === "function") {
                 onAnimation(time)
-                
+
                 this.pointer.reset()
             }
         } catch (ex) {

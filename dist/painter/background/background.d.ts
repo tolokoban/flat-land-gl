@@ -1,12 +1,17 @@
-import Painter, { IPainterParams } from "../painter";
-interface IBackgroundPainterParams extends IPainterParams {
+/**
+ * Background the screen by filling it with an image that covers it entirely.
+ */
+import Scene from "../../scene";
+import Painter from "../painter";
+interface IBackgroundPainterParams {
     atlas: string;
     align?: string;
 }
 export default class BackgroundPainter extends Painter {
-    private readonly atlas;
-    private readonly prg;
-    private readonly buff;
+    private params;
+    private atlas;
+    private prg;
+    private buff;
     /**
      * params: { atlas, align }
      * - align: if undefined, the background will be centered.
@@ -16,6 +21,8 @@ export default class BackgroundPainter extends Painter {
      *          "B" for "Bottom".
      */
     constructor(params: IBackgroundPainterParams);
+    protected destroy(scene: Scene): void;
+    protected initialize(scene: Scene): void;
     render(): void;
 }
 export {};

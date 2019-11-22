@@ -43,8 +43,9 @@
     no-underscore-dangle: [0, { "allowAfterThis": true }]
     no-use-before-define: [2, { functions: false, classes: true }]
     no-sync: 0
+    object-curly-newline: 0
     object-curly-spacing: 0
-    object-property-newline: [2, { allowAllPropertiesOnSameLine: true}]
+    object-property-newline: 0
     object-shorthand: 1    # Can't do this because of IE11
     one-var: 0
     padded-blocks: 0

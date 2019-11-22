@@ -8,7 +8,8 @@ function start() {
     scene.createAtlas({ name: "hero", image: "hero.png" })
     scene.createAtlas({ name: "background", image: "background.png" })
     const sprites = new FlatLand.Painter.Sprites({ scene, atlas: "hero" })
-    new FlatLand.Painter.Background({ scene, atlas: "background", align: "B" })
+    const background = new FlatLand.Painter.Background({
+        atlas: "background", align: "B" })
     const heros = []
     for (let loop = 0; loop < NB_INVADERS; loop++) {
         const hero = sprites.createSprite({
@@ -88,5 +89,7 @@ function start() {
             })
         }
     }
+
+    scene.use([ sprites, background ])
     scene.start()
 }

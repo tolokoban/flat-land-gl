@@ -342,6 +342,9 @@ window["FlatLand"] = FlatLand;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _converter_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../converter/string */ "./src/converter/string.ts");
 /* harmony import */ var _painter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../painter */ "./src/painter/painter.ts");
+/**
+ * Background the screen by filling it with an image that covers it entirely.
+ */
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -368,31 +371,42 @@ var BackgroundPainter = /** @class */ (function (_super) {
      *          "B" for "Bottom".
      */
     function BackgroundPainter(params) {
-        var _this = _super.call(this, params) || this;
-        var scene = params.scene, atlas = params.atlas;
+        var _this = _super.call(this) || this;
+        _this.params = params;
+        return _this;
+    }
+    BackgroundPainter.prototype.destroy = function (scene) {
+        var gl = scene.gl;
+        var buff = this.buff;
+        gl.deleteBuffer(buff);
+    };
+    BackgroundPainter.prototype.initialize = function (scene) {
+        var params = this.params;
+        var atlas = params.atlas;
         var atlasObj = scene.getAtlas(atlas);
         if (!atlasObj) {
-            throw _this.fatal("Atlas \"" + atlas + "\" not found!");
+            throw this.fatal("Atlas \"" + atlas + "\" not found!");
         }
-        _this.atlas = atlasObj;
-        _this.prg = _this.createProgram({
+        this.atlas = atlasObj;
+        this.prg = this.createProgram({
             frag: FRAG,
             vert: getVert(Object(_converter_string__WEBPACK_IMPORTED_MODULE_0__["default"])(params.align).toUpperCase()),
         });
         var gl = scene.gl;
         var buff = gl.createBuffer();
         if (!buff) {
-            throw _this.fatal("Not enough memory to create an array buffer!");
+            throw this.fatal("Not enough memory to create an array buffer!");
         }
         gl.bindBuffer(gl.ARRAY_BUFFER, buff);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
             0, 0, 0, 1, 1, 0, 1, 1,
         ]), gl.STATIC_DRAW);
-        _this.buff = buff;
-        return _this;
-    }
+        this.buff = buff;
+    };
     BackgroundPainter.prototype.render = function () {
         var _a = this, scene = _a.scene, prg = _a.prg, atlas = _a.atlas, buff = _a.buff;
+        if (!scene)
+            return;
         var gl = scene.gl;
         gl.enable(gl.DEPTH_TEST);
         prg.use();
@@ -479,14 +493,20 @@ var __extends = (undefined && undefined.__extends) || (function () {
 var ClearPainter = /** @class */ (function (_super) {
     __extends(ClearPainter, _super);
     function ClearPainter(params) {
-        var _this = _super.call(this, params) || this;
+        var _this = _super.call(this) || this;
+        _this.params = params;
         _this._red = 0.8;
         _this._green = 0.4;
         _this._blue = 0.2;
         _this._alpha = 1;
-        _this.color = params.color || "#d72";
         return _this;
     }
+    ClearPainter.prototype.initialize = function () {
+        if (this.params) {
+            this.color = this.params.color || "#d72";
+        }
+    };
+    ClearPainter.prototype.destroy = function () { };
     Object.defineProperty(ClearPainter.prototype, "red", {
         get: function () { return this._red; },
         set: function (v) { this._red = v; },
@@ -531,7 +551,10 @@ var ClearPainter = /** @class */ (function (_super) {
         configurable: true
     });
     ClearPainter.prototype.render = function () {
-        var gl = this.scene.gl;
+        var scene = this.scene;
+        if (!scene)
+            return;
+        var gl = scene.gl;
         gl.clearColor(this._red, this._green, this._blue, this._alpha);
         gl.clear(gl.COLOR_BUFFER_BIT);
     };
@@ -579,37 +602,68 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _webgl_program__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../webgl/program */ "./src/webgl/program.ts");
-/**
- * This is a virtual painter from which all the other will inherit.
- */
+var __values = (undefined && undefined.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 
-var ID = 0;
 var Painter = /** @class */ (function () {
-    function Painter(params) {
-        this._name = "" + ID++;
-        if (!params.scene) {
-            throw Error('Argument "params.scene" is mandatory!');
-        }
-        this.scene = params.scene;
-        if (typeof params.name === "string" && params.name.length > 0) {
-            this._name = params.name;
-        }
-        this.scene.$attachPainter(this);
+    function Painter() {
+        this._programs = [];
+        this._scene = null;
     }
-    Object.defineProperty(Painter.prototype, "name", {
-        get: function () { return this._name; },
+    Object.defineProperty(Painter.prototype, "scene", {
+        get: function () { return this._scene; },
+        set: function (scene) {
+            if (scene === this._scene)
+                return;
+            if (this._scene) {
+                this.internalDestroy(this._scene);
+            }
+            this._scene = scene;
+            if (scene) {
+                this.initialize(scene);
+            }
+        },
         enumerable: true,
         configurable: true
     });
-    Painter.prototype.destroy = function () {
-        this.scene.$detachPainter(this.name);
+    Painter.prototype.internalDestroy = function (scene) {
+        var e_1, _a;
+        var gl = scene.gl;
+        try {
+            for (var _b = __values(this._programs), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var prg = _c.value;
+                gl.deleteProgram(prg);
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
     };
     Painter.prototype.createProgram = function (shaders, includes) {
         if (includes === void 0) { includes = {}; }
-        return new _webgl_program__WEBPACK_IMPORTED_MODULE_0__["default"](this.scene.gl, shaders, includes);
+        var scene = this._scene;
+        if (!scene) {
+            throw Error("This painter has no scene!\ncreateProfram() should only be called from initialize().");
+        }
+        var prg = new _webgl_program__WEBPACK_IMPORTED_MODULE_0__["default"](scene.gl, shaders, includes);
+        this._programs.push(prg);
+        return prg;
     };
     Painter.prototype.fatal = function (message) {
-        console.error("Fatal error in Painter \"" + this.name + "\":", message);
+        console.error("Fatal error in Painter:", message);
         return new Error(message);
     };
     return Painter;
@@ -807,10 +861,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _painter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../painter */ "./src/painter/painter.ts");
-/* harmony import */ var _sprite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sprite */ "./src/painter/sprites/sprite.ts");
-/* harmony import */ var _sprites_frag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sprites.frag */ "./src/painter/sprites/sprites.frag");
-/* harmony import */ var _sprites_vert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sprites.vert */ "./src/painter/sprites/sprites.vert");
+/* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../scene */ "./src/scene.ts");
+/* harmony import */ var _painter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../painter */ "./src/painter/painter.ts");
+/* harmony import */ var _sprite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sprite */ "./src/painter/sprites/sprite.ts");
+/* harmony import */ var _sprites_frag__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sprites.frag */ "./src/painter/sprites/sprites.frag");
+/* harmony import */ var _sprites_vert__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sprites.vert */ "./src/painter/sprites/sprites.vert");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -839,6 +894,7 @@ var __assign = (undefined && undefined.__assign) || function () {
 
 
 
+
 // Allocations will be done by pieces of BLOCK Sprites.
 var BLOCK = 64;
 var NB_ATTRIBS = 6; // attXYZ and attUV and attAngle.
@@ -847,40 +903,56 @@ var CHUNK = NB_ATTRIBS * NB_CORNERS;
 var SpritesPainter = /** @class */ (function (_super) {
     __extends(SpritesPainter, _super);
     function SpritesPainter(params) {
-        var _this = _super.call(this, params) || this;
+        var _this = _super.call(this) || this;
+        _this.params = params;
         _this.dataVert = new Float32Array(BLOCK * CHUNK);
         _this.sprites = [];
         _this.count = 0;
         _this.capacity = BLOCK;
         /**
-         * Since the vertex array can be reallocated, we cannot give a reference to the Float32Array
-         * to any Sprite. Instead, we will give them this function that will return the current array.
+         * Since the vertex array can be reallocated, we cannot give a reference to the
+         * Float32Array to any Sprite. Instead, we will give them this function that will
+         * return the current array.
          */
         _this.getData = function () { return _this.dataVert; };
-        var scene = params.scene, atlas = params.atlas;
+        if (params.scene instanceof _scene__WEBPACK_IMPORTED_MODULE_0__["default"]) {
+            _this.scene = params.scene;
+        }
+        else {
+            throw Error('Attribute "scene" is mandatory for "Sprites" painter!');
+        }
+        return _this;
+    }
+    SpritesPainter.prototype.destroy = function (scene) {
+        var gl = scene.gl;
+        var _a = this, buffElem = _a.buffElem, buffVert = _a.buffVert;
+        gl.deleteBuffer(buffElem);
+        gl.deleteBuffer(buffVert);
+    };
+    SpritesPainter.prototype.initialize = function (scene) {
+        var atlas = this.params.atlas;
         var atlasObj = scene.getAtlas(atlas);
         if (!atlasObj) {
-            throw _this.fatal("Atlas \"" + atlas + "\" not found!");
+            throw this.fatal("Atlas \"" + atlas + "\" not found!");
         }
-        _this.atlas = atlasObj;
-        _this.prg = _this.createProgram({ vert: _sprites_vert__WEBPACK_IMPORTED_MODULE_3__["default"], frag: _sprites_frag__WEBPACK_IMPORTED_MODULE_2__["default"] });
+        this.atlas = atlasObj;
+        this.prg = this.createProgram({ vert: _sprites_vert__WEBPACK_IMPORTED_MODULE_4__["default"], frag: _sprites_frag__WEBPACK_IMPORTED_MODULE_3__["default"] });
         var gl = scene.gl;
         var buffVert = gl.createBuffer();
         if (!buffVert) {
-            throw _this.fatal("Not enough memory to create an array buffer!");
+            throw this.fatal("Not enough memory to create an array buffer!");
         }
         gl.bindBuffer(gl.ARRAY_BUFFER, buffVert);
-        gl.bufferData(gl.ARRAY_BUFFER, _this.dataVert, gl.DYNAMIC_DRAW);
-        _this.buffVert = buffVert;
+        gl.bufferData(gl.ARRAY_BUFFER, this.dataVert, gl.DYNAMIC_DRAW);
+        this.buffVert = buffVert;
         var buffElem = gl.createBuffer();
         if (!buffElem) {
-            throw _this.fatal("Not enough memory to create an array buffer!");
+            throw this.fatal("Not enough memory to create an array buffer!");
         }
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, createElements(BLOCK), gl.DYNAMIC_DRAW);
-        _this.buffElem = buffElem;
-        return _this;
-    }
+        this.buffElem = buffElem;
+    };
     SpritesPainter.prototype.createSprite = function (params) {
         var index = this.count * CHUNK;
         this.count++;
@@ -889,7 +961,7 @@ var SpritesPainter = /** @class */ (function (_super) {
             this.allocateNewBlock();
         }
         var _a = this.atlas, width = _a.width, height = _a.height;
-        var sprite = new _sprite__WEBPACK_IMPORTED_MODULE_1__["default"](index, this.getData, __assign({ width: width,
+        var sprite = new _sprite__WEBPACK_IMPORTED_MODULE_2__["default"](index, this.getData, __assign({ width: width,
             height: height }, params));
         this.sprites.push(sprite);
         return sprite;
@@ -921,6 +993,8 @@ var SpritesPainter = /** @class */ (function (_super) {
     };
     SpritesPainter.prototype.render = function () {
         var _a = this, scene = _a.scene, prg = _a.prg, atlas = _a.atlas, buffVert = _a.buffVert, buffElem = _a.buffElem;
+        if (!scene)
+            return;
         var gl = scene.gl;
         // Update sprites' attributes.
         gl.bindBuffer(gl.ARRAY_BUFFER, buffVert);
@@ -940,6 +1014,9 @@ var SpritesPainter = /** @class */ (function (_super) {
     SpritesPainter.prototype.allocateNewBlock = function () {
         this.capacity += BLOCK;
         var scene = this.scene;
+        if (!scene) {
+            throw Error("No scene!");
+        }
         var gl = scene.gl;
         var buffElem = this.buffElem;
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem);
@@ -949,7 +1026,7 @@ var SpritesPainter = /** @class */ (function (_super) {
         this.dataVert = dataVert;
     };
     return SpritesPainter;
-}(_painter__WEBPACK_IMPORTED_MODULE_0__["default"]));
+}(_painter__WEBPACK_IMPORTED_MODULE_1__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (SpritesPainter);
 /**
  * A--B
@@ -1182,8 +1259,6 @@ var FlatLand = /** @class */ (function () {
         this.onAnimation = null;
         this.activePainters = [];
         this.isRendering = false;
-        this._pointerX = -1024;
-        this._pointerY = -1024;
         this._pointerTap = false;
         // When 0
         this._pointerDownTime = 0;
@@ -1274,26 +1349,6 @@ var FlatLand = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlatLand.prototype, "pointerX", {
-        /**
-         * Last X position of the pointer between 0 and 1024.
-         */
-        get: function () {
-            return this._pointerX;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlatLand.prototype, "pointerY", {
-        /**
-         * Last Y position of the pointer between 0 and 1024.
-         */
-        get: function () {
-            return this._pointerY;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(FlatLand.prototype, "pointerTap", {
         get: function () {
             return this._pointerTap;
@@ -1306,6 +1361,20 @@ var FlatLand = /** @class */ (function () {
      * For better performance, prefer putting background painters at the end of the list.
      */
     FlatLand.prototype.use = function (painters) {
+        var e_2, _a;
+        try {
+            for (var painters_1 = __values(painters), painters_1_1 = painters_1.next(); !painters_1_1.done; painters_1_1 = painters_1.next()) {
+                var painter = painters_1_1.value;
+                painter.scene = this;
+            }
+        }
+        catch (e_2_1) { e_2 = { error: e_2_1 }; }
+        finally {
+            try {
+                if (painters_1_1 && !painters_1_1.done && (_a = painters_1.return)) _a.call(painters_1);
+            }
+            finally { if (e_2) throw e_2.error; }
+        }
         this.activePainters = painters.slice();
     };
     FlatLand.prototype.getAtlas = function (name) {
@@ -1337,32 +1406,6 @@ var FlatLand = /** @class */ (function () {
         }
         atlases.delete(name);
         atlas.destroy();
-        return true;
-    };
-    /**
-     * @hidden
-     * If a painter with the same name already exists, return false and don't add the new one.
-     */
-    FlatLand.prototype.$attachPainter = function (painter) {
-        if (this.painters.has(painter.name)) {
-            return false;
-        }
-        this.painters.set(painter.name, painter);
-        this.activePainters = this.activePainters
-            .filter(function (p) { return p.name; });
-        this.activePainters.push(painter);
-        return true;
-    };
-    /**
-     * @hidden
-     */
-    FlatLand.prototype.$detachPainter = function (name) {
-        if (this.painters.has(name)) {
-            return false;
-        }
-        this.painters.delete(name);
-        this.activePainters = this.activePainters
-            .filter(function (p) { return p.name; });
         return true;
     };
     /**
@@ -1834,7 +1877,7 @@ var __values = (undefined && undefined.__values) || function(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-var BPE = (new Float32Array()).BYTES_PER_ELEMENT;
+var BPE = Float32Array.BYTES_PER_ELEMENT;
 /**
  * Creating  a  WebGL  program  for shaders  is  painful.  This  class
  * simplifies the process.

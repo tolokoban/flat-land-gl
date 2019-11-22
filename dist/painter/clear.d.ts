@@ -1,13 +1,16 @@
-import Painter, { IPainterParams } from "./painter";
-interface IClearPainterParams extends IPainterParams {
+import Painter from "./painter";
+interface IClearPainterParams {
     color?: string;
 }
 export default class ClearPainter extends Painter {
+    private params;
     private _red;
     private _green;
     private _blue;
     private _alpha;
     constructor(params: IClearPainterParams);
+    protected initialize(): void;
+    protected destroy(): void;
     get red(): number;
     set red(v: number);
     get green(): number;

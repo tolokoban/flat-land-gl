@@ -1,44 +1,49 @@
 /**
  * This is a virtual painter from which all the other will inherit.
  */
-
 import Scene from "../scene"
 import Program, { IShaders } from "../webgl/program"
 
-let ID = 0
-
-export interface IPainterParams {
-    name?: string,
-    scene: Scene
-}
-
 export default abstract class Painter {
+    private _programs: Program[] = []
+    private _scene: Scene | null = null
 
-    get name() { return this._name }
-    protected _name: string = `${ID++}`
-    protected readonly scene: Scene
-
-    constructor(params: IPainterParams) {
-        if (!params.scene) { throw Error('Argument "params.scene" is mandatory!') }
-        this.scene = params.scene
-        if (typeof params.name === "string" && params.name.length > 0) {
-            this._name = params.name
+    public get scene() { return this._scene }
+    public set scene(scene: Scene | null) {
+        if (scene === this._scene) return
+        if (this._scene) {
+            this.internalDestroy(this._scene)
         }
-        this.scene.$attachPainter(this)
+        this._scene = scene
+        if (scene) {
+            this.initialize(scene)
+        }
     }
 
-    public destroy() {
-        this.scene.$detachPainter(this.name)
+    private internalDestroy(scene: Scene) {
+        const { gl } = scene
+        for (const prg of this._programs) {
+            gl.deleteProgram(prg)
+        }
     }
+
+    protected abstract initialize(scene: Scene): void
+    protected abstract destroy(scene: Scene): void
 
     public abstract render(time: number): void
 
     protected createProgram(shaders: IShaders, includes: { [key: string]: string } = {}): Program {
-        return new Program(this.scene.gl, shaders, includes)
+        const scene = this._scene
+        if (!scene) {
+            throw Error("This painter has no scene!\ncreateProfram() should only be called from initialize().")
+        }
+        const prg = new Program(scene.gl, shaders, includes)
+        this._programs.push(prg)
+        return prg
     }
 
     protected fatal(message: any) {
-        console.error(`Fatal error in Painter "${this.name}":`, message)
+        console.error(`Fatal error in Painter:`, message)
         return new Error(message)
     }
 }
