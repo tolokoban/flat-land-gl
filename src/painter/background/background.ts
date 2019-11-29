@@ -9,7 +9,7 @@ import Program from "../../webgl/program"
 import Painter from "../painter"
 
 interface IBackgroundPainterParams {
-    atlas: string,
+    atlas: Atlas,
     align?: string
 }
 
@@ -39,12 +39,7 @@ export default class BackgroundPainter extends Painter {
     protected initialize(scene: Scene) {
         const { params } = this
         const { atlas } = params
-        const atlasObj = scene.getAtlas(atlas)
-        if (!atlasObj) {
-            throw this.fatal(`Atlas "${atlas}" not found!`)
-        }
-
-        this.atlas = atlasObj
+        this.atlas = atlas
         this.prg = this.createProgram({
             frag: FRAG,
             vert: getVert(castString(params.align).toUpperCase()),

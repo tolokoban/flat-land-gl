@@ -383,11 +383,7 @@ var BackgroundPainter = /** @class */ (function (_super) {
     BackgroundPainter.prototype.initialize = function (scene) {
         var params = this.params;
         var atlas = params.atlas;
-        var atlasObj = scene.getAtlas(atlas);
-        if (!atlasObj) {
-            throw this.fatal("Atlas \"" + atlas + "\" not found!");
-        }
-        this.atlas = atlasObj;
+        this.atlas = atlas;
         this.prg = this.createProgram({
             frag: FRAG,
             vert: getVert(Object(_converter_string__WEBPACK_IMPORTED_MODULE_0__["default"])(params.align).toUpperCase()),
@@ -1205,8 +1201,8 @@ var __values = (undefined && undefined.__values) || function(o) {
 
 
 var ID = 1;
-var FlatLand = /** @class */ (function () {
-    function FlatLand(canvas) {
+var Scene = /** @class */ (function () {
+    function Scene(canvas) {
         var _this = this;
         this.resolution = 1;
         this.onAnimation = null;
@@ -1264,14 +1260,14 @@ var FlatLand = /** @class */ (function () {
         this._gl = gl;
         this.atlases = new Map();
     }
-    Object.defineProperty(FlatLand.prototype, "gl", {
+    Object.defineProperty(Scene.prototype, "gl", {
         get: function () {
             return this._gl;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlatLand.prototype, "pointer", {
+    Object.defineProperty(Scene.prototype, "pointer", {
         /**
          * Retreive information about pointer (mouse, pen, finger, ...) state.
          */
@@ -1279,7 +1275,7 @@ var FlatLand = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlatLand.prototype, "width", {
+    Object.defineProperty(Scene.prototype, "width", {
         /**
          * Visible width. Between 0 and 1024.
          */
@@ -1289,7 +1285,7 @@ var FlatLand = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlatLand.prototype, "height", {
+    Object.defineProperty(Scene.prototype, "height", {
         /**
          * Visible height. Between 0 and 1024.
          */
@@ -1299,7 +1295,7 @@ var FlatLand = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlatLand.prototype, "pointerTap", {
+    Object.defineProperty(Scene.prototype, "pointerTap", {
         get: function () {
             return this._pointerTap;
         },
@@ -1310,7 +1306,7 @@ var FlatLand = /** @class */ (function () {
      * Define which painter to use and in what order.
      * For better performance, prefer putting background painters at the end of the list.
      */
-    FlatLand.prototype.use = function (painters) {
+    Scene.prototype.use = function (painters) {
         var e_2, _a;
         try {
             for (var painters_1 = __values(painters), painters_1_1 = painters_1.next(); !painters_1_1.done; painters_1_1 = painters_1.next()) {
@@ -1327,18 +1323,18 @@ var FlatLand = /** @class */ (function () {
         }
         this.activePainters = painters.slice();
     };
-    FlatLand.prototype.getAtlas = function (name) {
+    Scene.prototype.getAtlas = function (name) {
         var atlases = this.atlases;
         return atlases.get(name) || null;
     };
-    FlatLand.prototype.getNewName = function () {
+    Scene.prototype.getNewName = function () {
         while (true) {
             var name_1 = "atlas-" + ID++;
             if (!this.atlases.has(name_1))
                 return name_1;
         }
     };
-    FlatLand.prototype.createAtlas = function (params) {
+    Scene.prototype.createAtlas = function (params) {
         var name = params.name;
         var sanitizedName = name || this.getNewName();
         var atlas = new _atlas__WEBPACK_IMPORTED_MODULE_0__["default"](this.gl, sanitizedName);
@@ -1346,7 +1342,7 @@ var FlatLand = /** @class */ (function () {
         atlas.load(params);
         return atlas;
     };
-    FlatLand.prototype.destroyAtlas = function (name) {
+    Scene.prototype.destroyAtlas = function (name) {
         var atlases = this.atlases;
         var atlas = atlases.get(name);
         if (!atlas) {
@@ -1360,7 +1356,7 @@ var FlatLand = /** @class */ (function () {
      * Start rendering.
      * When a frame is rendered, the function `onAnimation( time: number )` is called.
      */
-    FlatLand.prototype.start = function () {
+    Scene.prototype.start = function () {
         if (this.isRendering) {
             return;
         }
@@ -1370,12 +1366,12 @@ var FlatLand = /** @class */ (function () {
     /**
      * Stop rendering.
      */
-    FlatLand.prototype.stop = function () {
+    Scene.prototype.stop = function () {
         this.isRendering = false;
     };
-    return FlatLand;
+    return Scene;
 }());
-/* harmony default export */ __webpack_exports__["default"] = (FlatLand);
+/* harmony default export */ __webpack_exports__["default"] = (Scene);
 
 
 /***/ }),
@@ -2215,4 +2211,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=flat-land-gl.js.map
+//# sourceMappingURL=index.js.map

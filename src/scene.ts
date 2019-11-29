@@ -7,18 +7,17 @@ interface IVector2 {
     x: number, y: number
 }
 
-export default class FlatLand {
+let ID = 1
+
+export default class Scene {
     private readonly _gl: WebGLRenderingContext
     private readonly _pointer: Pointer
     public resolution = 1
     public onAnimation: ((time: number) => void) | null = null
-    private readonly painters: Map<string, Painter>
     private readonly atlases: Map<string, Atlas>
     private activePainters: Painter[] = []
     private isRendering = false
     private _pointerTap = false
-    // When 0
-    private _pointerDownTime = 0
 
     constructor(canvas: HTMLCanvasElement) {
         this._pointer = new Pointer(canvas)
@@ -29,7 +28,6 @@ export default class FlatLand {
 
         this._gl = gl
         this.atlases = new Map()
-        this.painters = new Map()
     }
 
     get gl(): WebGLRenderingContext {
@@ -74,11 +72,18 @@ export default class FlatLand {
         return atlases.get(name) || null
     }
 
-    public async createAtlas(params: IAtlasParams): Promise<Atlas> {
+    private getNewName() {
+        while (true) {
+            const name = `atlas-${ID++}`
+            if (!this.atlases.has(name)) return name
+        }
+    }
+    public createAtlas(params: IAtlasParams): Atlas {
         const { name } = params
-        const atlas = new Atlas(this.gl, name)
-        this.atlases.set(name, atlas)
-        await atlas.load(params)
+        const sanitizedName = name || this.getNewName()
+        const atlas = new Atlas(this.gl, sanitizedName)
+        this.atlases.set(sanitizedName, atlas)
+        atlas.load(params)
         return atlas
     }
 

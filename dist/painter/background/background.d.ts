@@ -2,9 +2,10 @@
  * Background the screen by filling it with an image that covers it entirely.
  */
 import Scene from "../../scene";
+import Atlas from "../../atlas";
 import Painter from "../painter";
 interface IBackgroundPainterParams {
-    atlas: string;
+    atlas: Atlas;
     align?: string;
 }
 export default class BackgroundPainter extends Painter {

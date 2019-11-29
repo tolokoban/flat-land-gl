@@ -4,7 +4,7 @@
     "author": "Tolokoban <contact@tolokoban.org>",
     "private": false,
     "license": "GPL-3.0",
-    "main": "dist/flat-land-gl.js",
+    "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "dependencies": {
         "@types/jest": "24.0.21",

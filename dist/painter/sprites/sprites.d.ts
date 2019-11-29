@@ -1,9 +1,12 @@
+/**
+ *
+ */
+import Atlas from "../../atlas";
 import Scene from "../../scene";
 import Painter from "../painter";
 import Sprite, { ISprite } from "./sprite";
 interface ISpritesPainterParams {
-    scene: Scene;
-    atlas: string;
+    atlas: Atlas;
 }
 export default class SpritesPainter extends Painter {
     private params;

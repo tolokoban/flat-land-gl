@@ -1,5 +1,5 @@
 export interface IAtlasParams {
-    name: string;
+    name?: string;
     image: string;
 }
 export default class Atlas {

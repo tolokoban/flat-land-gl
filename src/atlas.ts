@@ -1,5 +1,5 @@
 export interface IAtlasParams {
-    name: string,
+    name?: string,
     // URL of an image JPG, PNG, GIF or WEBP.
     image: string
 }

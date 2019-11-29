@@ -1,17 +1,15 @@
 import Atlas, { IAtlasParams } from "./atlas";
 import Painter from "./painter/painter";
 import Pointer from './pointer';
-export default class FlatLand {
+export default class Scene {
     private readonly _gl;
     private readonly _pointer;
     resolution: number;
     onAnimation: ((time: number) => void) | null;
-    private readonly painters;
     private readonly atlases;
     private activePainters;
     private isRendering;
     private _pointerTap;
-    private _pointerDownTime;
     constructor(canvas: HTMLCanvasElement);
     get gl(): WebGLRenderingContext;
     /**
@@ -33,7 +31,8 @@ export default class FlatLand {
      */
     use(painters: Painter[]): void;
     getAtlas(name: string): Atlas | null;
-    createAtlas(params: IAtlasParams): Promise<Atlas>;
+    private getNewName;
+    createAtlas(params: IAtlasParams): Atlas;
     destroyAtlas(name: string): boolean;
     /**
      * Start rendering.

@@ -16,8 +16,7 @@ const NB_CORNERS = 4
 const CHUNK = NB_ATTRIBS * NB_CORNERS
 
 interface ISpritesPainterParams {
-    scene: Scene,
-    atlas: string
+    atlas: Atlas
 }
 
 export default class SpritesPainter extends Painter {
@@ -32,11 +31,6 @@ export default class SpritesPainter extends Painter {
 
     constructor(private params: ISpritesPainterParams) {
         super()
-        if (params.scene instanceof Scene) {
-            this.scene = params.scene
-        } else {
-            throw Error('Attribute "scene" is mandatory for "Sprites" painter!')
-        }
     }
 
     protected destroy(scene: Scene) {
@@ -48,12 +42,8 @@ export default class SpritesPainter extends Painter {
 
     protected initialize(scene: Scene) {
         const { atlas } = this.params
-        const atlasObj = scene.getAtlas(atlas)
-        if (!atlasObj) {
-            throw this.fatal(`Atlas "${atlas}" not found!`)
-        }
 
-        this.atlas = atlasObj
+        this.atlas = atlas
         this.prg = this.createProgram({ vert, frag })
         const { gl } = scene
 
