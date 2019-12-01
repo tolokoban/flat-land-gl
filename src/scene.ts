@@ -1,35 +1,11 @@
-import Atlas, { IAtlasParams } from "./atlas"
-import Painter from "./painter/painter"
-import Resize from "./webgl/resize"
+import Atlas, { IAtlasParams } from './atlas'
+import Painter from './painter/painter'
 import Pointer from './pointer'
-
-interface IVector2 {
-    x: number, y: number
-}
+import Resize from './webgl/resize'
 
 let ID = 1
 
 export default class Scene {
-    private readonly _gl: WebGLRenderingContext
-    private readonly _pointer: Pointer
-    public resolution = 1
-    public onAnimation: ((time: number) => void) | null = null
-    private readonly atlases: Map<string, Atlas>
-    private activePainters: Painter[] = []
-    private isRendering = false
-    private _pointerTap = false
-
-    constructor(canvas: HTMLCanvasElement) {
-        this._pointer = new Pointer(canvas)
-        const gl = canvas.getContext("webgl", {
-            // Specify WebGL options.
-        })
-        if (!gl) { throw new Error("Unable to create a WegGL context!") }
-
-        this._gl = gl
-        this.atlases = new Map()
-    }
-
     get gl(): WebGLRenderingContext {
         return this._gl
     }
@@ -37,7 +13,9 @@ export default class Scene {
     /**
      * Retreive information about pointer (mouse, pen, finger, ...) state.
      */
-    get pointer() { return this._pointer }
+    get pointer() {
+        return this._pointer
+    }
 
     /**
      * Visible width. Between 0 and 1024.
@@ -55,42 +33,71 @@ export default class Scene {
     get pointerTap(): boolean {
         return this._pointerTap
     }
+    resolution = 1
+    onAnimation: ((time: number) => void) | null = null
+    private readonly _gl: WebGLRenderingContext
+    private readonly _pointer: Pointer
+    private readonly atlases: Map<string, Atlas>
+    private activePainters: Painter[] = []
+    private isRendering = false
+    private _pointerTap = false
+
+    constructor(canvas: HTMLCanvasElement) {
+        this._pointer = new Pointer(canvas)
+        const gl = canvas.getContext('webgl', {
+            // Specify WebGL options.
+        })
+        if (!gl) {
+            throw new Error('Unable to create a WegGL context!')
+        }
+
+        this._gl = gl
+        this.atlases = new Map()
+    }
 
     /**
      * Define which painter to use and in what order.
      * For better performance, prefer putting background painters at the end of the list.
      */
-    public use(painters: Painter[]) {
+    use(painters: Painter[]) {
         for (const painter of painters) {
             painter.scene = this
         }
         this.activePainters = painters.slice()
     }
 
-    public getAtlas(name: string): Atlas | null {
+    getAtlas(name: string): Atlas | null {
         const { atlases } = this
         return atlases.get(name) || null
     }
 
-    private getNewName() {
-        while (true) {
-            const name = `atlas-${ID++}`
-            if (!this.atlases.has(name)) return name
-        }
-    }
-    public createAtlas(params: IAtlasParams): Atlas {
+    /**
+     * Create an atlas that can be used immediatly even if the needed assets are not yet loaded.
+     * @param  params
+     * @param  onLoad You can provide a callback function that will be called when the assets
+     * are loaded.
+     */
+    createAtlas(params: IAtlasParams, onLoad?: (params: IAtlasParams) => void): Atlas {
         const { name } = params
         const sanitizedName = name || this.getNewName()
         const atlas = new Atlas(this.gl, sanitizedName)
         this.atlases.set(sanitizedName, atlas)
-        atlas.load(params)
+
+        // tslint:disable:no-floating-promises
+        atlas.load(params).then(() => {
+            if (typeof onLoad === 'function') {
+                onLoad(params)
+            }
+        })
         return atlas
     }
 
-    public destroyAtlas(name: string): boolean {
+    destroyAtlas(name: string): boolean {
         const { atlases } = this
         const atlas = atlases.get(name)
-        if (!atlas) { return false }
+        if (!atlas) {
+            return false
+        }
         atlases.delete(name)
         atlas.destroy()
         return true
@@ -100,8 +107,10 @@ export default class Scene {
      * Start rendering.
      * When a frame is rendered, the function `onAnimation( time: number )` is called.
      */
-    public start() {
-        if (this.isRendering) { return }
+    start() {
+        if (this.isRendering) {
+            return
+        }
         this.isRendering = true
         window.requestAnimationFrame(this.render)
     }
@@ -109,12 +118,23 @@ export default class Scene {
     /**
      * Stop rendering.
      */
-    public stop() {
+    stop() {
         this.isRendering = false
     }
 
+    private getNewName() {
+        while (true) {
+            const name = `atlas-${ID++}`
+            if (!this.atlases.has(name)) return name
+        }
+    }
+
     private render = (time: number) => {
-        if (this.isRendering) { window.requestAnimationFrame(this.render) } else { return }
+        if (this.isRendering) {
+            window.requestAnimationFrame(this.render)
+        } else {
+            return
+        }
 
         const { gl } = this
         Resize(gl, this.resolution)
@@ -129,7 +149,7 @@ export default class Scene {
             }
 
             const { onAnimation } = this
-            if (typeof onAnimation === "function") {
+            if (typeof onAnimation === 'function') {
                 onAnimation(time)
 
                 this.pointer.reset()
@@ -137,9 +157,9 @@ export default class Scene {
         } catch (ex) {
             console.error(ex)
             this.stop()
-            console.error("###############################")
-            console.error("# Rendering has been stopped! #")
-            console.error("###############################")
+            console.error('###############################')
+            console.error('# Rendering has been stopped! #')
+            console.error('###############################')
         }
     }
 }

@@ -1,1 +1,0 @@
-{"version":3,"file":"finger.d.ts","sourceRoot":"","sources":["../../src/gesture/finger.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,OAAO,OAAO,MAAM;IACvB,OAAO,CAAC,OAAO,CAAqB;IAEpC,QAAQ,CAAC,UAAU,EAAE,MAAM,GAAG,MAAM;IAYpC,MAAM,CAAC,UAAU,EAAE,MAAM;CAI5B"}

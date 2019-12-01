@@ -1,3 +1,6 @@
+const VIRTUAL_SCREEN_RESOLUTION = 1024
+const HALF = 0.5
+
 export default class Pointer {
     private _x = 0
     private _y = 0
@@ -9,29 +12,39 @@ export default class Pointer {
 
     /** @hidden */
     constructor(private canvas: HTMLCanvasElement) {
-        window.addEventListener("mousemove", this.onMouseMove, true)
-        window.addEventListener("touchmove", this.onTouchMove, true)
-        window.addEventListener("mousedown", this.onMouseDown, true)
-        window.addEventListener("touchstart", this.onTouchStart, true)
-        window.addEventListener("mouseup", this.onMouseUp, true)
-        window.addEventListener("touchend", this.onTouchEnd, true)
+        window.addEventListener('mousemove', this.onMouseMove, true)
+        window.addEventListener('touchmove', this.onTouchMove, true)
+        window.addEventListener('mousedown', this.onMouseDown, true)
+        window.addEventListener('touchstart', this.onTouchStart, true)
+        window.addEventListener('mouseup', this.onMouseUp, true)
+        window.addEventListener('touchend', this.onTouchEnd, true)
     }
 
     /** @hidden */
-    public reset() {
+    reset() {
         this._eventDown = false
         this._eventUp = false
     }
 
-    get x() { return this._x }
-    get y() { return this._y }
+    get x() {
+        return this._x
+    }
+    get y() {
+        return this._y
+    }
 
     /** Test if the pointer is touching the screen. */
-    get down() { return this._down }
+    get down() {
+        return this._down
+    }
     /** `true` only if the pointer started touching the screen this very last frame. */
-    get eventUp() { return this._eventUp }
+    get eventUp() {
+        return this._eventUp
+    }
     /** `true` only if the pointer stopped touching the screen this very last frame. */
-    get eventDown() { return this._eventDown }
+    get eventDown() {
+        return this._eventDown
+    }
 
     private onMouseMove = (evt: MouseEvent) => {
         this.computeCoords(evt.clientX, evt.clientY)
@@ -86,11 +99,11 @@ export default class Pointer {
         const h = rect.height
 
         if (w > h) {
-            this._x = 1024 * x / w
-            this._y = 1024 * (0.5 * (1 - h / w) + (y / w))
+            this._x = (VIRTUAL_SCREEN_RESOLUTION * x) / w
+            this._y = VIRTUAL_SCREEN_RESOLUTION * (HALF * (1 - h / w) + y / w)
         } else {
-            this._x = 1024 * (0.5 * (1 - w / h) + (x / h))
-            this._y = 1024 * y / h
+            this._x = VIRTUAL_SCREEN_RESOLUTION * (HALF * (1 - w / h) + x / h)
+            this._y = (VIRTUAL_SCREEN_RESOLUTION * y) / h
         }
     }
 }

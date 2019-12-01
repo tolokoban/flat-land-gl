@@ -1,16 +1,22 @@
+// tslint:disable:no-any
+
 export default function castBoolean(v: any, defaultValue = false): boolean {
     switch (typeof v) {
-        case "undefined":
+        case 'undefined':
             return defaultValue
-        case "boolean":
+        case 'boolean':
             return v
-        case "number":
+        case 'number':
             return v !== 0
-        case "string":
+        case 'string':
             const text = v.trim().toLowerCase()
-            if (text === "true" || text === "yes") { return true }
-            const num = parseInt(text, 10)
-            if (!isNaN(num)) { return num !== 0 }
+            if (text === 'true' || text === 'yes') {
+                return true
+            }
+            const num = Number(text)
+            if (!isNaN(num)) {
+                return num !== 0
+            }
             return false
         default:
             return false

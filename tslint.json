@@ -1,24 +1,86 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended"
-    ],
-    "jsRules": {},
-    "rules": {
-        "curly": false,
-        "semicolon": [true, "never"],
-        "no-console": [true, "log"],
-        "object-literal-sort-keys": false,
-        "ordered-imports": false,
-        "quote-mark": false,
-        "variable-name": {
-            "options": [
-                "ban-keywords",
-                "check-format",
-                "allow-leading-underscore",
-                "allow-pascal-case"
-            ]
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-standard",
+    "tslint-etc",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "ban": {
+      "options": [{
+          "name": "parseInt",
+          "message": "use #type-coercion -> Number(val)"
+        },
+        {
+          "name": "parseFloat",
+          "message": "use #type-coercion -> Number(val)"
+        },
+        {
+          "name": "Array",
+          "message": "use #array-constructor"
+        },
+        {
+          "name": [
+            "describe",
+            "only"
+          ],
+          "message": "don't focus spec blocks"
+        },
+        {
+          "name": [
+            "it",
+            "only"
+          ],
+          "message": "don't focus tests"
         }
+      ]
     },
-    "rulesDirectory": []
+    "file-name-casing": {
+      "options": [
+        "kebab-case"
+      ]
+    },
+    "interface-name": {
+      "options": "always-prefix"
+    },
+    "interface-over-type-literal": false,
+    "jsx-boolean-value": {
+      "options": "never"
+  },
+    "match-default-export-name": true,
+    "member-access": {
+      "options": [
+        "no-public"
+      ]
+    },
+    "newline-before-return": false,
+    "no-any": true,
+    "no-assign-mutated-array": true,
+    "no-bitwise": true,
+    "no-boolean-literal-compare": true,
+    "no-console": [true, "log", "info"],
+    "no-inferrable-types": true,
+    "no-invalid-template-strings": true,
+    "no-invalid-this": {
+      "options": "check-function-in-method"
+    },
+    "no-magic-numbers": true,
+    "no-missing-dollar-expect": true,
+    "no-namespace": {
+      "options": [
+        "allow-declarations"
+      ]
+    },
+    "no-parameter-reassignment": true,
+    "no-require-imports": true,
+    "no-unsafe-any": true,
+    "no-unused-declaration": true,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "prefer-template": true,
+    "switch-default": true
+  },
+  // apply the same rules for any JS if allowJS is gonna be used
+  "jsRules": true
 }

@@ -1,38 +1,33 @@
 {
-    "compilerOptions": {
-        "alwaysStrict": false,
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": "./src",
-        "composite": false,
-        "declaration": true,
-        "declarationMap": true,
-        "diagnostics": true,
-        "downlevelIteration": true,
-        "esModuleInterop": true,
-        "incremental": false,
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "es6"
-        ],
-        "module": "es6",
-        "moduleResolution": "node",
-        "noImplicitAny": false,
-        "noImplicitReturns": false,
-        "outDir": "./dist/",
-        "removeComments": false,
-        "rootDir": "./src/",
-        "sourceMap": true,
-        "strict": false,
-        "strictNullChecks": true,
-        "target": "es5"
-    },
-    "include": [
-        "src/"
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es5",
+    "lib": [
+      "dom",
+      "es2018"
     ],
-    "exclude": [
-        "src/**/color.ts",
-        "src/**/*.spec.*",
-        "src/**/*.test.*"
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "sourceMap": true,
+    "stripInternal": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "dist/types",
+    "outDir": "dist/esm5",
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "alwaysShowRuleFailuresAsWarnings": false
+      }
     ]
+  },
+  "include": [
+    "./src"
+  ],
+  "compileOnSave": false
 }

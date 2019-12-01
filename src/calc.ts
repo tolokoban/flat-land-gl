@@ -1,9 +1,15 @@
-const COS = new Float32Array(4096)
-const SIN = new Float32Array(4096)
+// tslint:disable:no-bitwise
+
+const FULL_TURN = 4096
+const MODULO = FULL_TURN - 1
+const HALF_TURN = 2048
+
+const COS = new Float32Array(FULL_TURN)
+const SIN = new Float32Array(FULL_TURN)
 
 // Prepare acceleration table for COS and SIN.
-for (let i = 0 ; i < 4096 ; i++) {
-    const angle = Math.PI * i / 2048
+for (let i = 0; i < FULL_TURN; i++) {
+    const angle = (Math.PI * i) / HALF_TURN
     COS[i] = Math.cos(angle)
     SIN[i] = Math.sin(angle)
 }
@@ -18,7 +24,7 @@ export default { cos, sin }
  * * 3*PI/2  <=>  3071
  */
 function cos(angle: number) {
-    return COS[(angle|0) & 4095]
+    return COS[(angle | 0) & MODULO]
 }
 
 /**
@@ -29,5 +35,5 @@ function cos(angle: number) {
  * * 3*PI/2  <=>  3071
  */
 function sin(angle: number) {
-    return SIN[(angle|0) & 4095]
+    return SIN[(angle | 0) & MODULO]
 }

@@ -1,77 +1,70 @@
+<p align="center">
+  <!--<img src="https://user-images.githubusercontent.com/1223799/50992071-73562500-1516-11e9-99fa-9f73b0f0eee2.png" width="597" alt="flat-land-gl">-->
+</p>
+
 # flat-land-gl
-WebGL library for flat images display management.
 
-## Principle
-The rendering is made by __Painters__.
-Each painter work in a virtual 3D space:
-* `x` and `y` are defined between 0 and 1024,
-* and `z` is defined between -1 (background) and +1 (foreground).
+> WebGL library for flat images display management
 
-## Examples
-You can learn many tricks by [reading the examples](https://github.com/tolokoban/flat-land-gl/tree/master/examples).
+[![Build Status](https://travis-ci.org/contact@tolokoban.org/flat-land-gl.svg?branch=master)](https://travis-ci.org/contact@tolokoban.org/flat-land-gl)
+[![NPM version](https://img.shields.io/npm/v/flat-land-gl.svg)](https://www.npmjs.com/package/flat-land-gl)
+![Downloads](https://img.shields.io/npm/dm/flat-land-gl.svg)
+[![Standard Version](https://img.shields.io/badge/release-standard%20version-brightgreen.svg)](https://github.com/conventional-changelog/standard-version)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-## How to use it?
-### Vanilla Javascript
+---
 
-Download the [`flat-land-gl.js`](https://raw.githubusercontent.com/tolokoban/flat-land-gl/master/dist/flat-land-gl.js) file and save it in the same folder as your main HTML file: `index.html`
+## ✨ Features
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The best game in the World!</title>
-    <style>
-        html, body, canvas {
-            position: absolute;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            padding: 0; margin: 0;
-            overflow: hidden;
-        }
-    </style>
-</head>
-<body onload="start()">
-    <canvas id="canvas"></canvas>    
-    <script src="flat-land-gl.js"></script>
-    <script src="main.js"></script>
-</body>
-</html>
+-   feature one
+-   feature two
+
+## 🔧 Installation
+
+```sh
+npm add --save flat-land-gl
+```
+or
+```sh
+yarn add flat-land-gl
 ```
 
-Now you only need to create the `main.js` file with all your code.
-You will find a variable called __`FlatGl`__ in your global space.
+## 🎬 Getting started
 
-```js
-function start() {
-    const canvas = document.getElementById("canvas")
-    const scene = new FlatLand.Scene(canvas)
-    scene.createAtlas({
-        name: "atlas",
-        image: "jumping-mushrooms.png"
-    })
-    const sprites = new FlatLand.Painter.Sprites({
-        scene, atlas: "atlas"
-    })
-    const mushroom = sprites.createSprite({
-        width: 75, height: 120
-    })
-    scene.createAtlas({
-        name: "background", image: "ferry-forest.jpg"
-    })
-    new FlatLand.Painter.Background({
-        scene, atlas: "background"
-    })
-    scene.onAnimation = (time) => {
-        const ang = time * 0.001
-        const x = 512 + 0.5 * scene.width * Math.cos(ang)
-        const y = 512 + 0.5 * scene.height * Math.sin(ang)
-        mushroom.update({ x, y })
-    }
-    scene.start()
-}
+Let's demonstrate simple usage with ... example:
+
+```ts
+// your code example
 ```
 
-## More
-Read the [manual](https://tolokoban.github.io/flat-land-gl/) for more details.
+## 🎭 Examples
+
+Go checkout [examples](./examples) !
+
+## 📜 API
+
+> Document your API here
+
+### `publicMethodOne(value:string): string`
+
+This methods does foo bar moo...
+
+**Example:**
+
+```ts
+// example
+```
+
+## 🎓 Guides
+
+<details>
+<summary>How to do Foo</summary>
+Today we're gonna build Foo....
+</details>
+
+### 🕵️ Troubleshooting
+
+## 🥂 License
+
+[MIT](./LICENSE.md) as always

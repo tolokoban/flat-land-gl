@@ -1,11 +1,11 @@
-import Background from "./background"
-import Clear from "./clear"
-import Painter from "./painter"
-import Sprites from "./sprites"
+import BackgroundPainter from './background'
+import ClearPainter from './clear'
+import Painter from './painter'
+import SpritesPainter from './sprites'
 
 export default {
-    Background,
-    Clear,
+    Background: BackgroundPainter,
+    Clear: ClearPainter,
     Painter,
-    Sprites,
+    Sprites: SpritesPainter,
 }

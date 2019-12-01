@@ -1,5 +1,5 @@
 export interface IAtlasParams {
-    name?: string,
+    name?: string
     // URL of an image JPG, PNG, GIF or WEBP.
     image: string
 }
@@ -12,7 +12,9 @@ export default class Atlas {
 
     constructor(private gl: WebGLRenderingContext, private _name: string) {
         const texture = gl.createTexture()
-        if (!texture) { throw new Error("Unable to create a new texture!") }
+        if (!texture) {
+            throw new Error('Unable to create a new texture!')
+        }
         this.texture = texture
         gl.bindTexture(gl.TEXTURE_2D, texture)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
@@ -21,24 +23,32 @@ export default class Atlas {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
     }
 
-    get name() { return this._name }
-    get width() { return this._width }
-    get height() { return this._height }
+    get name() {
+        return this._name
+    }
+    get width() {
+        return this._width
+    }
+    get height() {
+        return this._height
+    }
     /**
      * Return `true` as soon as an image has been loaded into the graphic card.
      */
-    get ready() { return this._ready }
+    get ready() {
+        return this._ready
+    }
 
     /**
      * Remove the texture from the graphic card memory.
      */
-    public destroy() {
+    destroy() {
         this._ready = false
         const { gl, texture } = this
         gl.deleteTexture(texture)
     }
 
-    public activate(unit = 0) {
+    activate(unit = 0) {
         const { gl, texture } = this
         const UNITS = [
             gl.TEXTURE0,
@@ -54,8 +64,9 @@ export default class Atlas {
         gl.bindTexture(gl.TEXTURE_2D, texture)
     }
 
-    public async load(params: IAtlasParams) {
+    async load(params: IAtlasParams): Promise<void> {
         this._ready = false
+
         return this.loadImage(params.image)
     }
 
