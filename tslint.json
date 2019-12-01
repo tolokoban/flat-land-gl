@@ -32,11 +32,14 @@
         }
       ]
     },
+    "comment-format": false,
+    "completed-docs": false,
     "file-name-casing": {
       "options": [
         "kebab-case"
       ]
     },
+    "increment-decrement": false,
     "interface-name": {
       "options": "always-prefix"
     },
@@ -50,6 +53,7 @@
         "no-public"
       ]
     },
+    "member-ordering": false,
     "newline-before-return": false,
     "no-any": true,
     "no-assign-mutated-array": true,
@@ -72,13 +76,16 @@
     },
     "no-parameter-reassignment": true,
     "no-require-imports": true,
+    "no-this-assignment": false,
     "no-unsafe-any": true,
     "no-unused-declaration": true,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "prefer-template": true,
     "quotemark": false,
-    "switch-default": true
+    "semicolon": false,
+    "switch-default": true,
+    "typedef": false
   },
   // apply the same rules for any JS if allowJS is gonna be used
   "jsRules": true

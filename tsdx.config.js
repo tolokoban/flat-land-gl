@@ -36,7 +36,7 @@ module.exports = {
       // Undefined by default
       exclude: ['**/index.html'],
       // Source maps are on by default
-      sourceMap: false
+      sourceMap: true
     }))
     return config; // always return a config.
   }

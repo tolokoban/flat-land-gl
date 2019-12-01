@@ -80,10 +80,9 @@ export default class Sprite {
             angle: 0,
             ...params,
         }
-        this.update(this.params)
     }
 
-    update(newParams: Partial<ISprite>) {
+    update(newParams: Partial<ISprite> = {}) {
         this.params = { ...this.params, ...newParams }
 
         const { getData, $index, params } = this
