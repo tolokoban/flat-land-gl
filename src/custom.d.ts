@@ -1,9 +1,9 @@
 declare module '*.vert' {
-    const vert: string
+    const vert: any
     export default vert
 }
 
 declare module '*.frag' {
-    const frag: string
+    const frag: any
     export default frag
 }

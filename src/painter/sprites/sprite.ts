@@ -1,5 +1,5 @@
 import Calc from '../../calc'
-import { IExtra } from '../types'
+import { IExtra } from '../../types'
 
 const DEFAULT_WIDTH = 64
 const DEFAULT_HEIGHT = 64

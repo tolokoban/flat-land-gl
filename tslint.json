@@ -1,10 +1,6 @@
 {
   "extends": [
-    "tslint:recommended",
-    "tslint-config-standard",
-    "tslint-etc",
-    "tslint-react",
-    "tslint-config-prettier"
+    "tslint:all"
   ],
   "rules": {
     "ban": {
@@ -60,6 +56,8 @@
     "no-bitwise": true,
     "no-boolean-literal-compare": true,
     "no-console": [true, "log", "info"],
+    "no-default-export": false,
+    "no-default-import": false,
     "no-inferrable-types": true,
     "no-invalid-template-strings": true,
     "no-invalid-this": {
@@ -79,6 +77,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "prefer-template": true,
+    "quotemark": false,
     "switch-default": true
   },
   // apply the same rules for any JS if allowJS is gonna be used
