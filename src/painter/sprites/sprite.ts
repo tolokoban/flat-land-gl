@@ -1,3 +1,9 @@
+/**
+ * Sprites management is complex because we must be able to add sprites
+ * even for Painters that are not yet used in a Scene.
+ */
+
+
 import Calc from '../../calc'
 import { IExtra } from '../../types'
 
@@ -56,12 +62,16 @@ export default class Sprite {
         return this.params.v1
     }
 
+    private _dead = false
     readonly extra: IExtra = {}
-    $index = 0
+    private _index = 0
     private params: ISprite
 
-    constructor(index: number, private getData: () => Float32Array, params: Partial<ISprite>) {
-        this.$index = index
+    constructor(private getData: () => Float32Array,
+                private allocateSprite: (currentIndex: number) => number,
+                private releaseSprite: (currentIndex: number) => void,
+                params: Partial<ISprite>) {
+        this._index = -1
         const width = params.width || DEFAULT_WIDTH
         const height = params.height || DEFAULT_HEIGHT
         this.params = {
@@ -82,10 +92,34 @@ export default class Sprite {
         }
     }
 
+    get dead() {
+        return this._dead
+    }
+
+    set dead(newValue: boolean) {
+        if (newValue === this._dead) {
+            return
+        }
+        this._dead = newValue
+        if (newValue) {
+            // Kill the sprite!
+            this.releaseSprite(this._index)
+            this._index = -1
+        }
+    }
+
     update(newParams: Partial<ISprite> = {}) {
         this.params = { ...this.params, ...newParams }
+        //
+        this._index = this.allocateSprite(this._index)
+        if (this._index < 0) {
+            // If we didn't receive a new allocation,
+            // that can only means that the Painter
+            // is still not in use in the scene.
+            return
+        }
 
-        const { getData, $index, params } = this
+        const { getData, _index, params } = this
         const data = getData()
         const { x, y, z, originX, originY, width, height, u0, v0, u1, v1, scale, angle } = params
         const xxA = -originX
@@ -122,29 +156,29 @@ export default class Sprite {
         }
 
         // tslint:disable:no-magic-numbers
-        data[$index + 0] = xA + x
-        data[$index + 1] = yA + y
-        data[$index + 2] = z
-        data[$index + 3] = u0
-        data[$index + 4] = v0
+        data[_index + 0] = xA + x
+        data[_index + 1] = yA + y
+        data[_index + 2] = z
+        data[_index + 3] = u0
+        data[_index + 4] = v0
 
-        data[$index + 5] = xB + x
-        data[$index + 6] = yB + y
-        data[$index + 7] = z
-        data[$index + 8] = u1
-        data[$index + 9] = v0
+        data[_index + 5] = xB + x
+        data[_index + 6] = yB + y
+        data[_index + 7] = z
+        data[_index + 8] = u1
+        data[_index + 9] = v0
 
-        data[$index + 10] = xC + x
-        data[$index + 11] = yC + y
-        data[$index + 12] = z
-        data[$index + 13] = u1
-        data[$index + 14] = v1
+        data[_index + 10] = xC + x
+        data[_index + 11] = yC + y
+        data[_index + 12] = z
+        data[_index + 13] = u1
+        data[_index + 14] = v1
 
-        data[$index + 15] = xD + x
-        data[$index + 16] = yD + y
-        data[$index + 17] = z
-        data[$index + 18] = u0
-        data[$index + 19] = v1
+        data[_index + 15] = xD + x
+        data[_index + 16] = yD + y
+        data[_index + 17] = z
+        data[_index + 18] = u0
+        data[_index + 19] = v1
         // tslint:enable:no-magic-numbers
     }
 }

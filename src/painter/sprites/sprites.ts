@@ -24,10 +24,8 @@ export default class SpritesPainter extends Painter {
   private capacity = BLOCK
   private count = 0
   private dataVert = new Float32Array(BLOCK * CHUNK)
-  private deferedSpriteCreations: Partial<ISprite>[] = []
   private readonly params: ISpritesPainterParams
   private prg?: Program
-  private sprites: Sprite[] = []
 
   constructor(params: ISpritesPainterParams) {
     super()
@@ -39,27 +37,15 @@ export default class SpritesPainter extends Painter {
   }
 
   createSprite(params: Partial<ISprite>): Sprite {
-    if (!this.scene) {
-      // The sprite creation will be performed once this painter is initialized.
-      this.deferedSpriteCreations.push(params)
-    }
     if (!this.atlas) {
       throw Error('Unable to create a Sprite because no Atlas has been provided!')
     }
-    const index = this.count * CHUNK
-    this.count += 1
-    if (this.count >= this.capacity) {
-      // Allocate a new block.
-      this.allocateNewBlock()
-    }
-
     const { width, height } = this.atlas
-    const sprite = new Sprite(index, this.getData, {
+    const sprite = new Sprite(this.getData, this.allocateSprite, {
       width,
       height,
       ...params,
     })
-    this.sprites.push(sprite)
     return sprite
   }
 
@@ -172,6 +158,21 @@ export default class SpritesPainter extends Painter {
    * return the current array.
    */
   private getData = () => this.dataVert
+
+  private allocateSprite = (currentIndex: number): number => {
+      if (currentIndex >= 0) {
+          // Already allocated.
+          return currentIndex
+      }
+      const index = this.count * CHUNK
+      this.count += 1
+      if (this.count >= this.capacity) {
+        // Allocate a new block.
+        this.allocateNewBlock()
+      }
+
+      return index
+  }
 }
 
 const CORNER_B = 1
