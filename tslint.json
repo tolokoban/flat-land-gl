@@ -3,6 +3,7 @@
     "tslint:all"
   ],
   "rules": {
+    "only-arrow-functions": [true, "allow-named-functions"],
     "ban": {
       "options": [{
           "name": "parseInt",
@@ -46,7 +47,7 @@
     "interface-over-type-literal": false,
     "jsx-boolean-value": {
       "options": "never"
-  },
+    },
     "match-default-export-name": true,
     "member-access": {
       "options": [
@@ -85,7 +86,13 @@
     "quotemark": false,
     "semicolon": false,
     "switch-default": true,
-    "typedef": false
+    "trailing-comma": false,
+    "typedef": false,
+    "variable-name": {
+      "options": [
+        "allow-leading-underscore"
+      ]
+    }
   },
   // apply the same rules for any JS if allowJS is gonna be used
   "jsRules": true

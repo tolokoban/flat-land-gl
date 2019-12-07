@@ -12,6 +12,11 @@ const BLOCK = 64
 const NB_ATTRIBS = 6 // attXYZ and attUV and attAngle.
 const NB_CORNERS = 4
 const CHUNK = NB_ATTRIBS * NB_CORNERS
+const DEFAULT_WIDTH = 64
+const DEFAULT_HEIGHT = 64
+const HALF = 0.5
+
+let globalID = 1
 
 interface ISpritesPainterParams {
   // Atlas which contains all the sprite images.
@@ -19,100 +24,154 @@ interface ISpritesPainterParams {
 }
 
 export default class SpritesPainter extends Painter {
-  private buffElem?: WebGLBuffer
-  private buffVert?: WebGLBuffer
-  private capacity = BLOCK
-  private count = 0
-  private dataVert = new Float32Array(BLOCK * CHUNK)
-  private readonly params: ISpritesPainterParams
-  private prg?: Program
+  private _capacity = BLOCK
+  private _dataVert = new Float32Array(BLOCK * CHUNK)
+  private _buffElem?: WebGLBuffer
+  private _buffVert?: WebGLBuffer
+  private readonly _atlas: Atlas
+  private _prg?: Program
+  // If a sprite wnats to be updated but the painter is not yet initialized,
+  // we put this sprite in this map in order to update it as soon as the initialization
+  // will be done.
+  private _deferedSpritesUpdate: Map<string, [Sprite, Float32Array]> = new Map()
+  // We need to keep track of all the inserted sprites because when we want to destroy
+  // one, we wnat to exchange its position with the one at the end of the list for
+  // optimisation purpose.
+  private _sprites: Sprite[] = []
 
   constructor(params: ISpritesPainterParams) {
     super()
-    this.params = params
+    this._atlas = params.atlas
   }
 
-  private get atlas(): Atlas {
-    return this.params.atlas
+  get atlas(): Atlas {
+    return this._atlas
   }
 
-  createSprite(params: Partial<ISprite>): Sprite {
-    if (!this.atlas) {
-      throw Error('Unable to create a Sprite because no Atlas has been provided!')
-    }
-    const { width, height } = this.atlas
-    const sprite = new Sprite(this.getData, this.allocateSprite, {
-      width,
-      height,
-      ...params,
-    })
-    return sprite
+  get count() {
+    return this._sprites.length
   }
 
   /**
-   * Remove a sprite from the list of sprites to render.
+   * Register a new sprite that will be immediatly visible.
    */
-  removeSprite(sprite: Sprite) {
+  create(params: Partial<ISprite>): Sprite {
+    const { atlas } = this
+    const width = atlas.width || DEFAULT_WIDTH
+    const height = atlas.height || DEFAULT_HEIGHT
+    const data = new Float32Array(CHUNK)
+    const sprite = new Sprite(
+      `${globalID++}`,
+      data,
+      this._update,
+      this._destroy, {
+        x: 0, y: 0, z: 0,
+        width, height,
+        originX: width * HALF, originY: width * HALF,
+        u0: 0, v0: 0, u1: 1, v1: 1,
+        scale: 1, angle: 0,
+        ...params
+      })
+    sprite.update()
+    return sprite
+  }
+
+  private _update(sprite: Sprite, data: Float32Array) {
+    if (!this.scene) {
+      // If this painter has not yet been initialized, then update has to be defered.
+      this._deferedSpritesUpdate.set(
+        sprite.id,
+        [sprite, data]
+      )
+      return
+    }
+
     if (sprite.$index < 0) {
-      return
+      this._allocate(sprite)
     }
-    const { sprites } = this
-    if (sprites.length === 0) {
-      sprite.$index = -1
-      return
+    this._dataVert.set(data, CHUNK * sprite.$index)
+  }
+
+  /**
+   * Only called by an instance os Sprite.
+   */
+  private _allocate(sprite: Sprite) {
+    if (this._capacity <= this.count) {
+      this._allocateNewBlock()
     }
-    if (sprites.length === 1) {
-      sprite.$index = -1
-      sprites.splice(0, sprites.length)
-      this.count = 0
-      return
-    }
-    const lastSprite = sprites.pop()
+    sprite.$index = this.count
+    this._sprites.push(sprite)
+  }
+
+  /**
+   * Only called by an instance os Sprite.
+   */
+  private _destroy(sprite: Sprite) {
+    const lastSprite = this._sprites.pop()
     if (!lastSprite) {
+      console.error("You tried to destroy a Sprite that is not owned by this painter!", sprite)
       return
     }
-    lastSprite.$index = sprite.$index
-    lastSprite.update({})
-    this.count -= 1
+    const indexOfLastSprite = lastSprite.$index
+    if (indexOfLastSprite !== sprite.$index) {
+      // Swap positions of destroyed sprite and last sprite in the list.
+      lastSprite.$index = sprite.$index
+      this._sprites[lastSprite.$index] = lastSprite
+      lastSprite.update()
+    }
     sprite.$index = -1
   }
 
+  /**
+   * When the number of sprites exceeds the current capacity, we must allocate a new BLOCK.
+   * This function cannot be called before painter initialization.
+   */
+  private _allocateNewBlock() {
+    this._capacity += BLOCK
+
+    const { scene, _buffElem } = this
+    if (!scene) {
+      throw Error('No scene!')
+    }
+    if (!_buffElem) {
+      throw Error('No buffElem!')
+    }
+    const { gl } = scene
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, _buffElem)
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, createElements(this._capacity), gl.DYNAMIC_DRAW)
+
+    const dataVert = new Float32Array(this._capacity * CHUNK)
+    dataVert.set(this._dataVert)
+    this._dataVert = dataVert
+  }
+
   render() {
-    const { scene, prg, atlas, buffVert, buffElem } = this
-    if (!scene || !prg || !atlas || !buffVert || !buffElem) {
+    const { scene, _prg, atlas, _buffVert, _buffElem } = this
+    if (!scene || !_prg || !atlas || !_buffVert || !_buffElem) {
       return
     }
     const gl = scene.gl
 
     // Update sprites' attributes.
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffVert)
-    gl.bufferData(gl.ARRAY_BUFFER, this.dataVert, gl.DYNAMIC_DRAW)
+    gl.bindBuffer(gl.ARRAY_BUFFER, _buffVert)
+    gl.bufferData(gl.ARRAY_BUFFER, this._dataVert, gl.DYNAMIC_DRAW)
 
     gl.enable(gl.DEPTH_TEST)
-    prg.use()
+    _prg.use()
     atlas.activate()
-    const uniforms = (prg as unknown) as IUniforms
+    const uniforms = (_prg as unknown) as IUniforms
     uniforms.$uniTexture = 0
     uniforms.$uniWidth = scene.width
     uniforms.$uniHeight = scene.height
-    prg.bindAttribs(buffVert, 'attXYZ', 'attUV')
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffVert)
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem)
+    _prg.bindAttribs(_buffVert, 'attXYZ', 'attUV')
+    gl.bindBuffer(gl.ARRAY_BUFFER, _buffVert)
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, _buffElem)
     gl.drawElements(gl.TRIANGLES, NB_ATTRIBS * this.count, gl.UNSIGNED_SHORT, 0)
   }
 
-  protected destroy(scene: Scene) {
-    const { gl } = scene
-    const { buffElem, buffVert } = this
-    if (!buffElem || !buffVert) {
-      return
-    }
-    gl.deleteBuffer(buffElem)
-    gl.deleteBuffer(buffVert)
-  }
-
   protected initialize(scene: Scene) {
-    this.prg = this.createProgram({ vert, frag })
+    this._prg = this.createProgram({ vert, frag })
     const { gl } = scene
 
     const buffVert = gl.createBuffer()
@@ -120,8 +179,8 @@ export default class SpritesPainter extends Painter {
       throw this.fatal('Not enough memory to create an array buffer!')
     }
     gl.bindBuffer(gl.ARRAY_BUFFER, buffVert)
-    gl.bufferData(gl.ARRAY_BUFFER, this.dataVert, gl.DYNAMIC_DRAW)
-    this.buffVert = buffVert
+    gl.bufferData(gl.ARRAY_BUFFER, this._dataVert, gl.DYNAMIC_DRAW)
+    this._buffVert = buffVert
 
     const buffElem = gl.createBuffer()
     if (!buffElem) {
@@ -129,49 +188,32 @@ export default class SpritesPainter extends Painter {
     }
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem)
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, createElements(BLOCK), gl.DYNAMIC_DRAW)
-    this.buffElem = buffElem
+    this._buffElem = buffElem
+
+    this.manageDeferedSpritesUpdates()
   }
 
-  private allocateNewBlock() {
-    this.capacity += BLOCK
-
-    const { scene, buffElem } = this
-    if (!scene) {
-      throw Error('No scene!')
+  protected destroy() {
+    const { scene, _buffVert, _buffElem } = this
+    if (!scene || !_buffVert || !_buffElem) {
+      return
     }
-    if (!buffElem) {
-      throw Error('No buffElem!')
-    }
-    const { gl } = scene
 
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffElem)
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, createElements(this.capacity), gl.DYNAMIC_DRAW)
-
-    const dataVert = new Float32Array(this.capacity * CHUNK)
-    dataVert.set(this.dataVert)
-    this.dataVert = dataVert
+    const gl = scene.gl
+    gl.deleteBuffer(_buffVert)
+    gl.deleteBuffer(_buffElem)
   }
 
-  /**
-   * Since the vertex array can be reallocated, we cannot give a reference to the
-   * Float32Array to any Sprite. Instead, we will give them this function that will
-   * return the current array.
-   */
-  private getData = () => this.dataVert
+  private manageDeferedSpritesUpdates() {
+    if (this._deferedSpritesUpdate.size === 0) {
+      // Nothing to do.
+      return
+    }
 
-  private allocateSprite = (currentIndex: number): number => {
-      if (currentIndex >= 0) {
-          // Already allocated.
-          return currentIndex
-      }
-      const index = this.count * CHUNK
-      this.count += 1
-      if (this.count >= this.capacity) {
-        // Allocate a new block.
-        this.allocateNewBlock()
-      }
-
-      return index
+    for (const item of this._deferedSpritesUpdate.values()) {
+      const [sprite, data] = item
+      this._update(sprite, data)
+    }
   }
 }
 
