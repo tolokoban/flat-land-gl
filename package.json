@@ -1,6 +1,6 @@
 {
   "name": "flat-land-gl",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "license": "GPL-3.0",
   "description": "WebGL library for flat images display management",
   "keywords": [
@@ -10,11 +10,11 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
-    "dist"
+    "lib"
   ],
   "scripts": {
-    "start": "watch npm run build src/",
-    "build": "tsc --build tsconfig.json && node script/copy-assets.js src/ lib/",
+    "start": "watch 'npm run build' src/ -u -d",
+    "build": "clear && date && echo Compiling TypeScript... && tsc --build tsconfig.json && node script/copy-assets.js src/ lib/",
     "test": "jest",
     "lint": "tslint --project tsconfig.json --config tslint.json --fix"
   },
@@ -37,6 +37,7 @@
     "rollup-plugin-json": "^4.0.0",
     "tslib": "^1.10.0",
     "tslint": "^5.20.1",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "watch": "^1.0.2"
   }
 }

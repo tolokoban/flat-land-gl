@@ -33,7 +33,7 @@ export default class SpritesPainter extends Painter {
   // If a sprite wnats to be updated but the painter is not yet initialized,
   // we put this sprite in this map in order to update it as soon as the initialization
   // will be done.
-  private readonly _deferedSpritesUpdate: Map<string, [Sprite, Float32Array]> = new Map()
+  private readonly _deferedSpritesUpdate: Map<string, [Sprite, Float32Array]>
   // We need to keep track of all the inserted sprites because when we want to destroy
   // one, we wnat to exchange its position with the one at the end of the list for
   // optimisation purpose.
@@ -42,6 +42,7 @@ export default class SpritesPainter extends Painter {
   constructor(params: ISpritesPainterParams) {
     super()
     this._atlas = params.atlas
+    this._deferedSpritesUpdate = new Map<string, [Sprite, Float32Array]>()
   }
 
   get atlas(): Atlas {
@@ -76,7 +77,7 @@ export default class SpritesPainter extends Painter {
     return sprite
   }
 
-  private _update(sprite: Sprite, data: Float32Array) {
+  private _update = (sprite: Sprite, data: Float32Array) => {
     if (!this.scene) {
       // If this painter has not yet been initialized, then update has to be defered.
       this._deferedSpritesUpdate.set(
@@ -106,7 +107,7 @@ export default class SpritesPainter extends Painter {
   /**
    * Only called by an instance os Sprite.
    */
-  private _destroy(sprite: Sprite) {
+  private _destroy = (sprite: Sprite) => {
     const lastSprite = this._sprites.pop()
     if (!lastSprite) {
       console.error("You tried to destroy a Sprite that is not owned by this painter!", sprite)
