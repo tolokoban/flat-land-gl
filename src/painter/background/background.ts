@@ -29,13 +29,13 @@ export default class BackgroundPainter extends Painter {
      *          "T" for Top.
      *          "B" for "Bottom".
      */
-    constructor(private params: IBackgroundPainterParams) {
+    constructor(private readonly params: IBackgroundPainterParams) {
         super()
     }
 
     render() {
         const { scene, prg, atlas, buff } = this
-        if (!scene || !prg || !atlas || !buff) return
+        if (!scene || !prg || !atlas || !buff) { return }
         const gl = scene.gl
         gl.enable(gl.DEPTH_TEST)
         prg.use()
@@ -51,7 +51,7 @@ export default class BackgroundPainter extends Painter {
     protected destroy(scene: Scene) {
         const { gl } = scene
         const { buff } = this
-        if (!buff) return
+        if (!buff) { return }
         gl.deleteBuffer(buff)
     }
 

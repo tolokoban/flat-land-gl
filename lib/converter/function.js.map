@@ -1,0 +1,1 @@
+{"version":3,"file":"function.js","sourceRoot":"","sources":["../../src/converter/function.ts"],"names":[],"mappings":"AAAA,wBAAwB;AAExB,IAAM,cAAc,GAAG;IACnB,8CAA8C;AAClD,CAAC,CAAA;AAID,MAAM,CAAC,OAAO,UAAU,YAAY,CAChC,KAAU,EACV,YAAwC;IAAxC,6BAAA,EAAA,6BAAwC;IAExC,IAAI,OAAO,KAAK,KAAK,UAAU,EAAE;QAC7B,OAAO,KAAkB,CAAA;KAC5B;IACD,OAAO,YAAY,CAAA;AACvB,CAAC"}

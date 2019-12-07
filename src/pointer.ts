@@ -47,43 +47,43 @@ export default class Pointer {
     return this._eventDown
   }
 
-  private onMouseMove = (evt: MouseEvent) => {
+  private readonly onMouseMove = (evt: MouseEvent) => {
     this.computeCoords(evt.clientX, evt.clientY)
   }
 
-  private onTouchMove = (te: TouchEvent) => {
+  private readonly onTouchMove = (te: TouchEvent) => {
     const evt = te.touches[0]
     this.computeCoords(evt.clientX, evt.clientY)
   }
 
-  private onMouseDown = (evt: MouseEvent) => {
+  private readonly onMouseDown = (evt: MouseEvent) => {
     this.onDown(evt.clientX, evt.clientY)
   }
 
-  private onTouchStart = (te: TouchEvent) => {
+  private readonly onTouchStart = (te: TouchEvent) => {
     const evt = te.touches[0]
     this.onDown(evt.clientX, evt.clientY)
   }
 
   private onDown(x: number, y: number) {
-    if (this._downTime !== 0) return
+    if (this._downTime !== 0) { return }
     this.computeCoords(x, y)
     this._down = true
     this._eventDown = true
     this._downTime = Date.now()
   }
 
-  private onMouseUp = (evt: MouseEvent) => {
+  private readonly onMouseUp = (evt: MouseEvent) => {
     this.onUp(evt.clientX, evt.clientY)
   }
 
-  private onTouchEnd = (te: TouchEvent) => {
+  private readonly onTouchEnd = (te: TouchEvent) => {
     const evt = te.touches[0]
     this.onUp(evt.clientX, evt.clientY)
   }
 
   private onUp(x: number, y: number) {
-    if (this._downTime === 0) return
+    if (this._downTime === 0) { return }
     this.computeCoords(x, y)
     this._down = false
     this._eventUp = true

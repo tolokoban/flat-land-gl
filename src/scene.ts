@@ -40,7 +40,7 @@ export default class Scene {
     private readonly atlases: Map<string, Atlas>
     private activePainters: Painter[] = []
     private isRendering = false
-    private _pointerTap = false
+    private readonly _pointerTap = false
 
     constructor(canvas: HTMLCanvasElement) {
         this._pointer = new Pointer(canvas)
@@ -125,11 +125,11 @@ export default class Scene {
     private getNewName() {
         while (true) {
             const name = `atlas-${ID++}`
-            if (!this.atlases.has(name)) return name
+            if (!this.atlases.has(name)) { return name }
         }
     }
 
-    private render = (time: number) => {
+    private readonly render = (time: number) => {
         if (this.isRendering) {
             window.requestAnimationFrame(this.render)
         } else {

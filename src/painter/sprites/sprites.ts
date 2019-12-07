@@ -33,11 +33,11 @@ export default class SpritesPainter extends Painter {
   // If a sprite wnats to be updated but the painter is not yet initialized,
   // we put this sprite in this map in order to update it as soon as the initialization
   // will be done.
-  private _deferedSpritesUpdate: Map<string, [Sprite, Float32Array]> = new Map()
+  private readonly _deferedSpritesUpdate: Map<string, [Sprite, Float32Array]> = new Map()
   // We need to keep track of all the inserted sprites because when we want to destroy
   // one, we wnat to exchange its position with the one at the end of the list for
   // optimisation purpose.
-  private _sprites: Sprite[] = []
+  private readonly _sprites: Sprite[] = []
 
   constructor(params: ISpritesPainterParams) {
     super()

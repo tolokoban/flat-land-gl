@@ -1,6 +1,6 @@
 {
   "extends": [
-    "tslint:all"
+    "tslint:recommended"
   ],
   "rules": {
     "only-arrow-functions": [true, "allow-named-functions"],
@@ -45,9 +45,6 @@
       "options": "always-prefix"
     },
     "interface-over-type-literal": false,
-    "jsx-boolean-value": {
-      "options": "never"
-    },
     "match-default-export-name": true,
     "member-access": {
       "options": [
@@ -57,7 +54,6 @@
     "member-ordering": false,
     "newline-before-return": false,
     "no-any": true,
-    "no-assign-mutated-array": true,
     "no-bitwise": true,
     "no-boolean-literal-compare": true,
     "no-console": [true, "log", "info"],
@@ -69,7 +65,6 @@
       "options": "check-function-in-method"
     },
     "no-magic-numbers": true,
-    "no-missing-dollar-expect": true,
     "no-namespace": {
       "options": [
         "allow-declarations"
@@ -79,7 +74,6 @@
     "no-require-imports": true,
     "no-this-assignment": false,
     "no-unsafe-any": true,
-    "no-unused-declaration": true,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "prefer-template": true,

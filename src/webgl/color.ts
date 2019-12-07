@@ -23,7 +23,7 @@ export default class Color {
     }
 
     for (const len of CODE_CSS_LENGTHS) {
-      if (codeCSS.length === len) return true
+      if (codeCSS.length === len) { return true }
     }
 
     return false
@@ -49,12 +49,12 @@ export default class Color {
 
   static fromArrayRGB(rgb: [number, number, number]): Color {
     const [R, G, B] = rgb
-    return this.newRGB(R, G, B)
+    return Color.newRGB(R, G, B)
   }
 
   static fromArrayRGBA(rgba: [number, number, number, number]): Color {
     const [R, G, B, A] = rgba
-    return this.newRGBA(R, G, B, A)
+    return Color.newRGBA(R, G, B, A)
   }
 
   /**
@@ -217,7 +217,7 @@ export default class Color {
    * @returns String value of the color. `#fd45a7`.
    */
   stringify() {
-    const FF = 0xff
+    const FF = 0xFF
     let color = hexa2(this.R * FF) + hexa2(this.G * FF) + hexa2(this.B * FF)
     if (this.A < 1) {
       color += hexa2(this.A * FF)
