@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -91,11 +89,6 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_painter_sprites_sprite_.sprite.html#_index" class="tsd-kind-icon">$index</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_sprites_sprite_.sprite.html#_data" class="tsd-kind-icon">_data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_sprites_sprite_.sprite.html#_destroy" class="tsd-kind-icon">_destroy</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_sprites_sprite_.sprite.html#_id" class="tsd-kind-icon">_id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_sprites_sprite_.sprite.html#_params" class="tsd-kind-icon">_params</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_sprites_sprite_.sprite.html#_update" class="tsd-kind-icon">_update</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_painter_sprites_sprite_.sprite.html#extra" class="tsd-kind-icon">extra</a></li>
 							</ul>
 						</section>
@@ -132,13 +125,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Sprite<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span>, update<span class="tsd-signature-symbol">: </span><a href="../modules/_painter_sprites_sprite_.html#iupdatefunction" class="tsd-signature-type">IUpdateFunction</a>, destroy<span class="tsd-signature-symbol">: </span><a href="../modules/_painter_sprites_sprite_.html#idestroyfunction" class="tsd-signature-type">IDestroyFunction</a>, params<span class="tsd-signature-symbol">: </span><a href="../interfaces/_painter_sprites_sprite_.isprite.html" class="tsd-signature-type">ISprite</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_painter_sprites_sprite_.sprite.html" class="tsd-signature-type">Sprite</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Sprite<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span>, update<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IUpdateFunction</span>, destroy<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IDestroyFunction</span>, params<span class="tsd-signature-symbol">: </span><a href="../interfaces/_painter_sprites_sprite_.isprite.html" class="tsd-signature-type">ISprite</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_painter_sprites_sprite_.sprite.html" class="tsd-signature-type">Sprite</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L69">src/painter/sprites/sprite.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L69">painter/sprites/sprite.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -150,10 +143,10 @@
 									<h5>data: <span class="tsd-signature-type">Float32Array</span></h5>
 								</li>
 								<li>
-									<h5>update: <a href="../modules/_painter_sprites_sprite_.html#iupdatefunction" class="tsd-signature-type">IUpdateFunction</a></h5>
+									<h5>update: <span class="tsd-signature-type">IUpdateFunction</span></h5>
 								</li>
 								<li>
-									<h5>destroy: <a href="../modules/_painter_sprites_sprite_.html#idestroyfunction" class="tsd-signature-type">IDestroyFunction</a></h5>
+									<h5>destroy: <span class="tsd-signature-type">IDestroyFunction</span></h5>
 								</li>
 								<li>
 									<h5>params: <a href="../interfaces/_painter_sprites_sprite_.isprite.html" class="tsd-signature-type">ISprite</a></h5>
@@ -172,57 +165,7 @@
 					<div class="tsd-signature tsd-kind-icon">$index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L64">src/painter/sprites/sprite.ts:64</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_data" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _data</h3>
-					<div class="tsd-signature tsd-kind-icon">_data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Float32Array</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L65">src/painter/sprites/sprite.ts:65</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_destroy" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _destroy</h3>
-					<div class="tsd-signature tsd-kind-icon">_destroy<span class="tsd-signature-symbol">:</span> <a href="../modules/_painter_sprites_sprite_.html#idestroyfunction" class="tsd-signature-type">IDestroyFunction</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L69">src/painter/sprites/sprite.ts:69</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_id" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _id</h3>
-					<div class="tsd-signature tsd-kind-icon">_id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L67">src/painter/sprites/sprite.ts:67</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_params" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _params</h3>
-					<div class="tsd-signature tsd-kind-icon">_params<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_painter_sprites_sprite_.isprite.html" class="tsd-signature-type">ISprite</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L66">src/painter/sprites/sprite.ts:66</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_update" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _update</h3>
-					<div class="tsd-signature tsd-kind-icon">_update<span class="tsd-signature-symbol">:</span> <a href="../modules/_painter_sprites_sprite_.html#iupdatefunction" class="tsd-signature-type">IUpdateFunction</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L68">src/painter/sprites/sprite.ts:68</a></li>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L64">painter/sprites/sprite.ts:64</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -232,7 +175,7 @@
 					<div class="tsd-signature tsd-kind-icon">extra<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_.iextra.html" class="tsd-signature-type">IExtra</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L63">src/painter/sprites/sprite.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L63">painter/sprites/sprite.ts:63</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -249,7 +192,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L41">src/painter/sprites/sprite.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L41">painter/sprites/sprite.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -266,7 +209,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L81">src/painter/sprites/sprite.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L81">painter/sprites/sprite.ts:81</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -283,7 +226,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L44">src/painter/sprites/sprite.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L44">painter/sprites/sprite.ts:44</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -300,7 +243,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L47">src/painter/sprites/sprite.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L47">painter/sprites/sprite.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -317,7 +260,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L50">src/painter/sprites/sprite.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L50">painter/sprites/sprite.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -334,7 +277,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L56">src/painter/sprites/sprite.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L56">painter/sprites/sprite.ts:56</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -351,7 +294,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L53">src/painter/sprites/sprite.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L53">painter/sprites/sprite.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -368,7 +311,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L59">src/painter/sprites/sprite.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L59">painter/sprites/sprite.ts:59</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -385,7 +328,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L38">src/painter/sprites/sprite.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L38">painter/sprites/sprite.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -402,7 +345,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L29">src/painter/sprites/sprite.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L29">painter/sprites/sprite.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -419,7 +362,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L32">src/painter/sprites/sprite.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L32">painter/sprites/sprite.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -436,7 +379,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L35">src/painter/sprites/sprite.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L35">painter/sprites/sprite.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -456,7 +399,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L83">src/painter/sprites/sprite.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L83">painter/sprites/sprite.ts:83</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -473,7 +416,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L87">src/painter/sprites/sprite.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L87">painter/sprites/sprite.ts:87</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -511,21 +454,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_painter_sprites_sprite_.sprite.html#_index" class="tsd-kind-icon">$index</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_painter_sprites_sprite_.sprite.html#_data" class="tsd-kind-icon">_data</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_painter_sprites_sprite_.sprite.html#_destroy" class="tsd-kind-icon">_destroy</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_painter_sprites_sprite_.sprite.html#_id" class="tsd-kind-icon">_id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_painter_sprites_sprite_.sprite.html#_params" class="tsd-kind-icon">_params</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_painter_sprites_sprite_.sprite.html#_update" class="tsd-kind-icon">_update</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_painter_sprites_sprite_.sprite.html#extra" class="tsd-kind-icon">extra</a>
@@ -578,12 +506,6 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_painter_sprites_sprite_.isprite.html" class="tsd-kind-icon">ISprite</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_painter_sprites_sprite_.html#idestroyfunction" class="tsd-kind-icon">IDestroy<wbr>Function</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_painter_sprites_sprite_.html#iupdatefunction" class="tsd-kind-icon">IUpdate<wbr>Function</a>
 					</li>
 				</ul>
 			</nav>
