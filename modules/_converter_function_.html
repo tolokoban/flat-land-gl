@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;painter/sprites/sprite&quot; | flat-land-gl</title>
+	<title>&quot;converter/function&quot; | flat-land-gl</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_painter_sprites_sprite_.html">&quot;painter/sprites/sprite&quot;</a>
+					<a href="_converter_function_.html">&quot;converter/function&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;painter/sprites/sprite&quot;</h1>
+			<h1>External module &quot;converter/function&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -70,23 +70,17 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Classes</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_painter_sprites_sprite_.sprite.html" class="tsd-kind-icon">Sprite</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Interfaces</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_painter_sprites_sprite_.isprite.html" class="tsd-kind-icon">ISprite</a></li>
-							</ul>
-						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_painter_sprites_sprite_.html#idestroyfunction" class="tsd-kind-icon">IDestroy<wbr>Function</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_painter_sprites_sprite_.html#iupdatefunction" class="tsd-kind-icon">IUpdate<wbr>Function</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_converter_function_.html#tfunction" class="tsd-kind-icon">TFunction</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_converter_function_.html#empty_function" class="tsd-kind-icon">EMPTY_<wbr>FUNCTION</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_converter_function_.html#castfunction" class="tsd-kind-icon">cast<wbr>Function</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,12 +89,12 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Type aliases</h2>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="idestroyfunction" class="tsd-anchor"></a>
-					<h3>IDestroy<wbr>Function</h3>
-					<div class="tsd-signature tsd-kind-icon">IDestroy<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<a name="tfunction" class="tsd-anchor"></a>
+					<h3>TFunction</h3>
+					<div class="tsd-signature tsd-kind-icon">TFunction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L26">src/painter/sprites/sprite.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/converter/function.ts#L7">src/converter/function.ts:7</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -108,16 +102,10 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>sprite<span class="tsd-signature-symbol">: </span><a href="../classes/_painter_sprites_sprite_.sprite.html" class="tsd-signature-type">Sprite</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>sprite: <a href="../classes/_painter_sprites_sprite_.sprite.html" class="tsd-signature-type">Sprite</a></h5>
-											</li>
-										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 									</li>
 								</ul>
@@ -125,39 +113,51 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="iupdatefunction" class="tsd-anchor"></a>
-					<h3>IUpdate<wbr>Function</h3>
-					<div class="tsd-signature tsd-kind-icon">IUpdate<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/sprites/sprite.ts#L25">src/painter/sprites/sprite.ts:25</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>sprite<span class="tsd-signature-symbol">: </span><a href="../classes/_painter_sprites_sprite_.sprite.html" class="tsd-signature-type">Sprite</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="empty_function" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> EMPTY_<wbr>FUNCTION</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">EMPTY_<wbr>FUNCTION<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/converter/function.ts#L3">src/converter/function.ts:3</a></li>
 								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>sprite: <a href="../classes/_painter_sprites_sprite_.sprite.html" class="tsd-signature-type">Sprite</a></h5>
-											</li>
-											<li>
-												<h5>data: <span class="tsd-signature-type">Float32Array</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-									</li>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="castfunction" class="tsd-anchor"></a>
+					<h3>cast<wbr>Function</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">cast<wbr>Function<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, defaultValue<span class="tsd-signature-symbol">?: </span><a href="_converter_function_.html#tfunction" class="tsd-signature-type">TFunction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_converter_function_.html#tfunction" class="tsd-signature-type">TFunction</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/converter/function.ts#L9">src/converter/function.ts:9</a></li>
 								</ul>
-							</li>
-						</ul>
-					</div>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> defaultValue: <a href="_converter_function_.html#tfunction" class="tsd-signature-type">TFunction</a><span class="tsd-signature-symbol"> =&nbsp;EMPTY_FUNCTION</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_converter_function_.html#tfunction" class="tsd-signature-type">TFunction</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -168,23 +168,20 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_painter_sprites_sprite_.html">&quot;painter/sprites/sprite&quot;</a>
+						<a href="_converter_function_.html">&quot;converter/function&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_painter_sprites_sprite_.sprite.html" class="tsd-kind-icon">Sprite</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_painter_sprites_sprite_.isprite.html" class="tsd-kind-icon">ISprite</a>
-					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_painter_sprites_sprite_.html#idestroyfunction" class="tsd-kind-icon">IDestroy<wbr>Function</a>
+						<a href="_converter_function_.html#tfunction" class="tsd-kind-icon">TFunction</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_painter_sprites_sprite_.html#iupdatefunction" class="tsd-kind-icon">IUpdate<wbr>Function</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_converter_function_.html#empty_function" class="tsd-kind-icon">EMPTY_<wbr>FUNCTION</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_converter_function_.html#castfunction" class="tsd-kind-icon">cast<wbr>Function</a>
 					</li>
 				</ul>
 			</nav>

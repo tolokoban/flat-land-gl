@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClearPainter | FlatLand Documentation</title>
+	<title>ClearPainter | flat-land-gl</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">FlatLand Documentation</a>
+					<a href="../index.html" class="title">flat-land-gl</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,6 +40,8 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -87,7 +89,17 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_painter_clear_.clearpainter.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_painter_clear_.clearpainter.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_clear_.clearpainter.html#_alpha" class="tsd-kind-icon">_alpha</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_clear_.clearpainter.html#_blue" class="tsd-kind-icon">_blue</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_clear_.clearpainter.html#_green" class="tsd-kind-icon">_green</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_clear_.clearpainter.html#_red" class="tsd-kind-icon">_red</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_painter_clear_.clearpainter.html#params" class="tsd-kind-icon">params</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -97,14 +109,17 @@
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_painter_clear_.clearpainter.html#blue" class="tsd-kind-icon">blue</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_painter_clear_.clearpainter.html#color" class="tsd-kind-icon">color</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_painter_clear_.clearpainter.html#green" class="tsd-kind-icon">green</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_painter_clear_.clearpainter.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_painter_clear_.clearpainter.html#red" class="tsd-kind-icon">red</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="_painter_clear_.clearpainter.html#scene" class="tsd-kind-icon">scene</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_painter_clear_.clearpainter.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_painter_clear_.clearpainter.html#createprogram" class="tsd-kind-icon">create<wbr>Program</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="_painter_clear_.clearpainter.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_painter_clear_.clearpainter.html#fatal" class="tsd-kind-icon">fatal</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="_painter_clear_.clearpainter.html#initialize" class="tsd-kind-icon">initialize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_painter_clear_.clearpainter.html#render" class="tsd-kind-icon">render</a></li>
 							</ul>
 						</section>
@@ -113,29 +128,81 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Clear<wbr>Painter<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IClearPainterParams</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_painter_clear_.clearpainter.html" class="tsd-signature-type">ClearPainter</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Clear<wbr>Painter<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../interfaces/_painter_clear_.iclearpainterparams.html" class="tsd-signature-type">IClearPainterParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_painter_clear_.clearpainter.html" class="tsd-signature-type">ClearPainter</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L16">painter/clear.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L59">src/painter/clear.ts:59</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>params: <span class="tsd-signature-type">IClearPainterParams</span></h5>
+									<h5>params: <a href="../interfaces/_painter_clear_.iclearpainterparams.html" class="tsd-signature-type">IClearPainterParams</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_painter_clear_.clearpainter.html" class="tsd-signature-type">ClearPainter</a></h4>
 						</li>
 					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_alpha" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _alpha</h3>
+					<div class="tsd-signature tsd-kind-icon">_alpha<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L59">src/painter/clear.ts:59</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_blue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _blue</h3>
+					<div class="tsd-signature tsd-kind-icon">_blue<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L58">src/painter/clear.ts:58</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_green" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _green</h3>
+					<div class="tsd-signature tsd-kind-icon">_green<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.4</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L57">src/painter/clear.ts:57</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_red" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _red</h3>
+					<div class="tsd-signature tsd-kind-icon">_red<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.8</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L56">src/painter/clear.ts:56</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="params" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> params</h3>
+					<div class="tsd-signature tsd-kind-icon">params<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_painter_clear_.iclearpainterparams.html" class="tsd-signature-type">IClearPainterParams</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L61">src/painter/clear.ts:61</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -151,7 +218,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L32">painter/clear.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L34">src/painter/clear.ts:34</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -159,7 +226,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L33">painter/clear.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L37">src/painter/clear.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -183,7 +250,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L29">painter/clear.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L27">src/painter/clear.ts:27</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -191,7 +258,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L30">painter/clear.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L30">src/painter/clear.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -215,7 +282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L35">painter/clear.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L41">src/painter/clear.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -223,7 +290,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L43">painter/clear.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L49">src/painter/clear.ts:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -247,7 +314,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L26">painter/clear.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L20">src/painter/clear.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -255,7 +322,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L27">painter/clear.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L23">src/painter/clear.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -265,24 +332,6 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#name">name</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/painter.ts#L17">painter/painter.ts:17</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -297,7 +346,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L23">painter/clear.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L13">src/painter/clear.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -305,7 +354,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L24">painter/clear.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L16">src/painter/clear.ts:16</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -318,21 +367,132 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+					<a name="scene" class="tsd-anchor"></a>
+					<h3>scene</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> scene<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="_scene_.scene.html" class="tsd-signature-type">Scene</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> scene<span class="tsd-signature-symbol">(</span>scene<span class="tsd-signature-symbol">: </span><a href="_scene_.scene.html" class="tsd-signature-type">Scene</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#scene">scene</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/painter.ts#L8">src/painter/painter.ts:8</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<a href="_scene_.scene.html" class="tsd-signature-type">Scene</a>
+							</h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#scene">scene</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/painter.ts#L11">src/painter/painter.ts:11</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>scene: <a href="_scene_.scene.html" class="tsd-signature-type">Scene</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="createprogram" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Program</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Program<span class="tsd-signature-symbol">(</span>shaders<span class="tsd-signature-symbol">: </span><a href="../interfaces/_webgl_program_.ishaders.html" class="tsd-signature-type">IShaders</a>, includes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_webgl_program_.program.html" class="tsd-signature-type">Program</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#createprogram">createProgram</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/painter.ts#L29">src/painter/painter.ts:29</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>shaders: <a href="../interfaces/_webgl_program_.ishaders.html" class="tsd-signature-type">IShaders</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> includes: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-index-signature">
+											<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_webgl_program_.program.html" class="tsd-signature-type">Program</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="destroy" class="tsd-anchor"></a>
-					<h3>destroy</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> destroy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#destroy">destroy</a></p>
+								<p>Overrides <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#destroy">destroy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/painter.ts#L30">painter/painter.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L79">src/painter/clear.ts:79</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="fatal" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> fatal</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">fatal<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#fatal">fatal</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/painter.ts#L41">src/painter/painter.ts:41</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> message: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Error</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="initialize" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> initialize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">initialize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#initialize">initialize</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L73">src/painter/clear.ts:73</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -350,7 +510,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_painter_painter_.painter.html">Painter</a>.<a href="_painter_painter_.painter.html#render">render</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/painter/clear.ts#L51">painter/clear.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/painter/clear.ts#L65">src/painter/clear.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -365,32 +525,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_atlas_.html">&quot;atlas&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_calc_.html">&quot;calc&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_background_background_.html">&quot;painter/background/background&quot;</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/_painter_clear_.html">&quot;painter/clear&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_painter_.html">&quot;painter/painter&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_sprites_sprite_.html">&quot;painter/sprites/sprite&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_sprites_sprites_.html">&quot;painter/sprites/sprites&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_pointer_.html">&quot;pointer&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_scene_.html">&quot;scene&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -401,8 +537,23 @@
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
 						<a href="_painter_clear_.clearpainter.html" class="tsd-kind-icon">Clear<wbr>Painter</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="_painter_clear_.clearpainter.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_painter_clear_.clearpainter.html#_alpha" class="tsd-kind-icon">_alpha</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_painter_clear_.clearpainter.html#_blue" class="tsd-kind-icon">_blue</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_painter_clear_.clearpainter.html#_green" class="tsd-kind-icon">_green</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_painter_clear_.clearpainter.html#_red" class="tsd-kind-icon">_red</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_painter_clear_.clearpainter.html#params" class="tsd-kind-icon">params</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class">
 								<a href="_painter_clear_.clearpainter.html#alpha" class="tsd-kind-icon">alpha</a>
@@ -416,14 +567,23 @@
 							<li class=" tsd-kind-accessor tsd-parent-kind-class">
 								<a href="_painter_clear_.clearpainter.html#green" class="tsd-kind-icon">green</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="_painter_clear_.clearpainter.html#name" class="tsd-kind-icon">name</a>
-							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class">
 								<a href="_painter_clear_.clearpainter.html#red" class="tsd-kind-icon">red</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+								<a href="_painter_clear_.clearpainter.html#scene" class="tsd-kind-icon">scene</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="_painter_clear_.clearpainter.html#createprogram" class="tsd-kind-icon">create<wbr>Program</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 								<a href="_painter_clear_.clearpainter.html#destroy" class="tsd-kind-icon">destroy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="_painter_clear_.clearpainter.html#fatal" class="tsd-kind-icon">fatal</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="_painter_clear_.clearpainter.html#initialize" class="tsd-kind-icon">initialize</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="_painter_clear_.clearpainter.html#render" class="tsd-kind-icon">render</a>
@@ -432,6 +592,9 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/_painter_clear_.iclearpainterparams.html" class="tsd-kind-icon">IClear<wbr>Painter<wbr>Params</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>FlatLand | FlatLand Documentation</title>
+	<title>Scene | flat-land-gl</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">FlatLand Documentation</a>
+					<a href="../index.html" class="title">flat-land-gl</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,6 +40,8 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -57,10 +59,10 @@
 					<a href="../modules/_scene_.html">&quot;scene&quot;</a>
 				</li>
 				<li>
-					<a href="_scene_.flatland.html">FlatLand</a>
+					<a href="_scene_.scene.html">Scene</a>
 				</li>
 			</ul>
-			<h1>Class FlatLand</h1>
+			<h1>Class Scene</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">FlatLand</span>
+						<span class="target">Scene</span>
 					</li>
 				</ul>
 			</section>
@@ -82,37 +84,43 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_scene_.flatland.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_scene_.scene.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_scene_.flatland.html#onanimation" class="tsd-kind-icon">on<wbr>Animation</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_scene_.flatland.html#resolution" class="tsd-kind-icon">resolution</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_scene_.scene.html#_gl" class="tsd-kind-icon">_gl</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_scene_.scene.html#_pointer" class="tsd-kind-icon">_pointer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_scene_.scene.html#_pointertap" class="tsd-kind-icon">_pointer<wbr>Tap</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_scene_.scene.html#activepainters" class="tsd-kind-icon">active<wbr>Painters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_scene_.scene.html#atlases" class="tsd-kind-icon">atlases</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_scene_.scene.html#isrendering" class="tsd-kind-icon">is<wbr>Rendering</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_scene_.scene.html#onanimation" class="tsd-kind-icon">on<wbr>Animation</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_scene_.scene.html#resolution" class="tsd-kind-icon">resolution</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.flatland.html#gl" class="tsd-kind-icon">gl</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.flatland.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.flatland.html#pointer" class="tsd-kind-icon">pointer</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.flatland.html#pointertap" class="tsd-kind-icon">pointer<wbr>Tap</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.flatland.html#pointerx" class="tsd-kind-icon">pointerX</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.flatland.html#pointery" class="tsd-kind-icon">pointerY</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.flatland.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.scene.html#gl" class="tsd-kind-icon">gl</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.scene.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.scene.html#pointer" class="tsd-kind-icon">pointer</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.scene.html#pointertap" class="tsd-kind-icon">pointer<wbr>Tap</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_scene_.scene.html#width" class="tsd-kind-icon">width</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.flatland.html#createatlas" class="tsd-kind-icon">create<wbr>Atlas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.flatland.html#destroyatlas" class="tsd-kind-icon">destroy<wbr>Atlas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.flatland.html#getatlas" class="tsd-kind-icon">get<wbr>Atlas</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.flatland.html#start" class="tsd-kind-icon">start</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.flatland.html#stop" class="tsd-kind-icon">stop</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.flatland.html#use" class="tsd-kind-icon">use</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.scene.html#createatlas" class="tsd-kind-icon">create<wbr>Atlas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.scene.html#destroyatlas" class="tsd-kind-icon">destroy<wbr>Atlas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.scene.html#getatlas" class="tsd-kind-icon">get<wbr>Atlas</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_scene_.scene.html#getnewname" class="tsd-kind-icon">get<wbr>New<wbr>Name</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_scene_.scene.html#render" class="tsd-kind-icon">render</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.scene.html#start" class="tsd-kind-icon">start</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.scene.html#stop" class="tsd-kind-icon">stop</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_scene_.scene.html#use" class="tsd-kind-icon">use</a></li>
 							</ul>
 						</section>
 					</div>
@@ -124,13 +132,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Flat<wbr>Land<span class="tsd-signature-symbol">(</span>canvas<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLCanvasElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_scene_.flatland.html" class="tsd-signature-type">FlatLand</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Scene<span class="tsd-signature-symbol">(</span>canvas<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLCanvasElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_scene_.scene.html" class="tsd-signature-type">Scene</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L23">scene.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L43">src/scene.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -139,20 +147,80 @@
 									<h5>canvas: <span class="tsd-signature-type">HTMLCanvasElement</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_scene_.flatland.html" class="tsd-signature-type">FlatLand</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_scene_.scene.html" class="tsd-signature-type">Scene</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_gl" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _gl</h3>
+					<div class="tsd-signature tsd-kind-icon">_gl<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderingContext</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L38">src/scene.ts:38</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_pointer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _pointer</h3>
+					<div class="tsd-signature tsd-kind-icon">_pointer<span class="tsd-signature-symbol">:</span> <a href="_pointer_.pointer.html" class="tsd-signature-type">Pointer</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L39">src/scene.ts:39</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_pointertap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _pointer<wbr>Tap</h3>
+					<div class="tsd-signature tsd-kind-icon">_pointer<wbr>Tap<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L43">src/scene.ts:43</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="activepainters" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> active<wbr>Painters</h3>
+					<div class="tsd-signature tsd-kind-icon">active<wbr>Painters<span class="tsd-signature-symbol">:</span> <a href="_painter_painter_.painter.html" class="tsd-signature-type">Painter</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L41">src/scene.ts:41</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="atlases" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> atlases</h3>
+					<div class="tsd-signature tsd-kind-icon">atlases<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_atlas_.atlas.html" class="tsd-signature-type">Atlas</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L40">src/scene.ts:40</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="isrendering" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> is<wbr>Rendering</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Rendering<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L42">src/scene.ts:42</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="onanimation" class="tsd-anchor"></a>
 					<h3>on<wbr>Animation</h3>
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Animation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L14">scene.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L37">src/scene.ts:37</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -162,7 +230,7 @@
 					<div class="tsd-signature tsd-kind-icon">resolution<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L13">scene.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L36">src/scene.ts:36</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -179,7 +247,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L37">scene.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L9">src/scene.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">WebGLRenderingContext</span></h4>
@@ -196,7 +264,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L55">scene.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L29">src/scene.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -218,7 +286,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L44">scene.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L16">src/scene.ts:16</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -240,54 +308,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L73">scene.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L33">src/scene.ts:33</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
-					<a name="pointerx" class="tsd-anchor"></a>
-					<h3>pointerX</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> pointerX<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L62">scene.ts:62</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Last X position of the pointer between 0 and 1024.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
-					<a name="pointery" class="tsd-anchor"></a>
-					<h3>pointerY</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> pointerY<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L69">scene.ts:69</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Last Y position of the pointer between 0 and 1024.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -301,7 +325,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L49">scene.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L23">src/scene.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -320,22 +344,34 @@
 					<a name="createatlas" class="tsd-anchor"></a>
 					<h3>create<wbr>Atlas</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Atlas<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../interfaces/_atlas_.iatlasparams.html" class="tsd-signature-type">IAtlasParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_atlas_.atlas.html" class="tsd-signature-type">Atlas</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Atlas<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../interfaces/_atlas_.iatlasparams.html" class="tsd-signature-type">IAtlasParams</a>, onLoad<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_atlas_.atlas.html" class="tsd-signature-type">Atlas</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L90">scene.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L80">src/scene.ts:80</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create an atlas that can be used immediatly even if the needed assets are not yet loaded.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>params: <a href="../interfaces/_atlas_.iatlasparams.html" class="tsd-signature-type">IAtlasParams</a></h5>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> onLoad: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>You can provide a callback function that will be called when the assets
+										are loaded.</p>
+									</div>
+								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_atlas_.atlas.html" class="tsd-signature-type">Atlas</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_atlas_.atlas.html" class="tsd-signature-type">Atlas</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -349,7 +385,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L98">scene.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L95">src/scene.ts:95</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -372,7 +408,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L85">scene.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L69">src/scene.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -388,6 +424,46 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="getnewname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>New<wbr>Name</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>New<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L125">src/scene.ts:125</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="render" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> render</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L132">src/scene.ts:132</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>time: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="start" class="tsd-anchor"></a>
 					<h3>start</h3>
@@ -398,7 +474,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L135">scene.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L110">src/scene.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -421,7 +497,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L144">scene.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L121">src/scene.ts:121</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -443,7 +519,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/4f02e4e/src/scene.ts#L81">scene.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/tolokoban/flat-land-gl/blob/efb72d0/src/scene.ts#L62">src/scene.ts:62</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -470,30 +546,6 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_atlas_.html">&quot;atlas&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_calc_.html">&quot;calc&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_background_background_.html">&quot;painter/background/background&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_clear_.html">&quot;painter/clear&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_painter_.html">&quot;painter/painter&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_sprites_sprite_.html">&quot;painter/sprites/sprite&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_painter_sprites_sprites_.html">&quot;painter/sprites/sprites&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_pointer_.html">&quot;pointer&quot;</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/_scene_.html">&quot;scene&quot;</a>
 					</li>
@@ -504,60 +556,81 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_scene_.flatland.html" class="tsd-kind-icon">Flat<wbr>Land</a>
+						<a href="_scene_.scene.html" class="tsd-kind-icon">Scene</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_scene_.scene.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_scene_.scene.html#_gl" class="tsd-kind-icon">_gl</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_scene_.scene.html#_pointer" class="tsd-kind-icon">_pointer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_scene_.scene.html#_pointertap" class="tsd-kind-icon">_pointer<wbr>Tap</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_scene_.scene.html#activepainters" class="tsd-kind-icon">active<wbr>Painters</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_scene_.scene.html#atlases" class="tsd-kind-icon">atlases</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_scene_.scene.html#isrendering" class="tsd-kind-icon">is<wbr>Rendering</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#onanimation" class="tsd-kind-icon">on<wbr>Animation</a>
+								<a href="_scene_.scene.html#onanimation" class="tsd-kind-icon">on<wbr>Animation</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#resolution" class="tsd-kind-icon">resolution</a>
+								<a href="_scene_.scene.html#resolution" class="tsd-kind-icon">resolution</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#gl" class="tsd-kind-icon">gl</a>
+								<a href="_scene_.scene.html#gl" class="tsd-kind-icon">gl</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#height" class="tsd-kind-icon">height</a>
+								<a href="_scene_.scene.html#height" class="tsd-kind-icon">height</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#pointer" class="tsd-kind-icon">pointer</a>
+								<a href="_scene_.scene.html#pointer" class="tsd-kind-icon">pointer</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#pointertap" class="tsd-kind-icon">pointer<wbr>Tap</a>
+								<a href="_scene_.scene.html#pointertap" class="tsd-kind-icon">pointer<wbr>Tap</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#pointerx" class="tsd-kind-icon">pointerX</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#pointery" class="tsd-kind-icon">pointerY</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#width" class="tsd-kind-icon">width</a>
+								<a href="_scene_.scene.html#width" class="tsd-kind-icon">width</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#createatlas" class="tsd-kind-icon">create<wbr>Atlas</a>
+								<a href="_scene_.scene.html#createatlas" class="tsd-kind-icon">create<wbr>Atlas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#destroyatlas" class="tsd-kind-icon">destroy<wbr>Atlas</a>
+								<a href="_scene_.scene.html#destroyatlas" class="tsd-kind-icon">destroy<wbr>Atlas</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#getatlas" class="tsd-kind-icon">get<wbr>Atlas</a>
+								<a href="_scene_.scene.html#getatlas" class="tsd-kind-icon">get<wbr>Atlas</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_scene_.scene.html#getnewname" class="tsd-kind-icon">get<wbr>New<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_scene_.scene.html#render" class="tsd-kind-icon">render</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#start" class="tsd-kind-icon">start</a>
+								<a href="_scene_.scene.html#start" class="tsd-kind-icon">start</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#stop" class="tsd-kind-icon">stop</a>
+								<a href="_scene_.scene.html#stop" class="tsd-kind-icon">stop</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_scene_.flatland.html#use" class="tsd-kind-icon">use</a>
+								<a href="_scene_.scene.html#use" class="tsd-kind-icon">use</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_scene_.html#id" class="tsd-kind-icon">ID</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
