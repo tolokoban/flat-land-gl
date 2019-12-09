@@ -1,31 +1,41 @@
 {
-  "include": ["src", "types", "test"],
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.frag",
+    "./src/**/*.vert"
+  ],
+  "files": ["./src/index.ts"],
+  "compileOnSave": true,
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
-    "importHelpers": true,
-    "declaration": true,
-    "sourceMap": true,
-    "rootDir": "./",
-    "strict": true,
-    "noImplicitAny": true,
-    "resolveJsonModule": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
     "alwaysStrict": true,
+    "baseUrl": "./src/",
+    "declaration": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "lib": ["dom", "esnext"],
+    "listEmittedFiles": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "baseUrl": "./",
+    "outDir": "./lib",
     "paths": {
       "*": ["src/*", "node_modules/*"]
     },
-    "jsx": "react",
-    "esModuleInterop": true
-  }
+    "resolveJsonModule": true,
+    "rootDir": "./src",
+    "sourceMap": true,
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
+    "target": "es5"
+  },
+  "output": ["./lib"]
 }

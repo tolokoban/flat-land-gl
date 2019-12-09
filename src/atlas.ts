@@ -10,7 +10,7 @@ export default class Atlas {
     private _width = 0
     private _height = 0
 
-    constructor(private gl: WebGLRenderingContext, private _name: string) {
+    constructor(private readonly gl: WebGLRenderingContext, private readonly _name: string) {
         const texture = gl.createTexture()
         if (!texture) {
             throw new Error('Unable to create a new texture!')

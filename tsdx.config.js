@@ -27,6 +27,7 @@ module.exports = {
     }
    */
   rollup(config, options) {
+    console.info("config=", config.output.file)
     if (!Array.isArray(config.plugins)) {
       config.plugins = []
     }

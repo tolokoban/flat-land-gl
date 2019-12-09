@@ -1,13 +1,9 @@
-import Package from '../package.json'
 import Calc from './calc'
 import Painter from './painter'
 import Scene from './scene'
 
-const FlatLand = {
+export default {
     Calc,
     Painter,
-    Scene,
-    version: Package.version
+    Scene
 }
-
-export default FlatLand

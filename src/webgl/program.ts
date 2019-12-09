@@ -47,7 +47,7 @@ export default class Program {
     readonly program: WebGLProgram
     readonly attribs: IAttribsDic
     readonly uniforms: IUniformsDic
-    private _typesNamesLookup: { [key: number]: string }
+    private readonly _typesNamesLookup: { [key: number]: string }
 
     constructor(
         gl: WebGLRenderingContext,
@@ -103,10 +103,9 @@ export default class Program {
                     `Cannot find attribute "${name}!
 It may be not active because unused in the shader.
 Available attributes are: ${Object.keys(that.attribs)
-                        .map((n) => {
-                            return `"${n}"`
-                        })
-                        .join(', ')} (${that.attribs.length})`
+                        .map((n) =>
+                            `"${n}"`)
+                        .join(', ')} (${String(that.attribs.length)})`
                 )
             }
             totalSize += attrib.size * attrib.length * BPE

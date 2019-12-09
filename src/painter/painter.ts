@@ -9,7 +9,7 @@ export default abstract class Painter {
         return this._scene
     }
     set scene(scene: Scene | null) {
-        if (scene === this._scene) return
+        if (scene === this._scene) { return }
         if (this._scene) {
             this.internalDestroy(this._scene)
         }
@@ -18,7 +18,7 @@ export default abstract class Painter {
             this.initialize(scene)
         }
     }
-    private _programs: Program[] = []
+    private readonly _programs: Program[] = []
     private _scene: Scene | null = null
 
     abstract render(time: number): void

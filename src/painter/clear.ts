@@ -58,13 +58,13 @@ export default class ClearPainter extends Painter {
     private _blue = 0.2
     private _alpha = 1
 
-    constructor(private params: IClearPainterParams) {
+    constructor(private readonly params: IClearPainterParams) {
         super()
     }
 
     render() {
         const { scene } = this
-        if (!scene) return
+        if (!scene) { return }
         const { gl } = scene
         gl.clearColor(this._red, this._green, this._blue, this._alpha)
         gl.clear(gl.COLOR_BUFFER_BIT)
