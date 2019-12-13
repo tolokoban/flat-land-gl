@@ -1,6 +1,7 @@
 import Atlas from '../../atlas';
 import Painter from '../painter';
 import Scene from '../../scene';
+import Quad, { IQuad } from './quad';
 import Sprite, { ISprite } from './sprite';
 interface ISpritesPainterParams {
     atlas: Atlas;
@@ -20,7 +21,11 @@ export default class SpritesPainter extends Painter {
     /**
      * Register a new sprite that will be immediatly visible.
      */
-    create(params: Partial<ISprite>): Sprite;
+    createSprite(params: Partial<ISprite>): Sprite;
+    /**
+     * Register a new sprite that will be immediatly visible.
+     */
+    createQuad(params: Partial<IQuad>): Quad;
     private _update;
     /**
      * Only called by an instance os Sprite.

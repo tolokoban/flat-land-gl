@@ -2,6 +2,8 @@ import Atlas from '../../atlas'
 import Painter from '../painter'
 import Program from '../../webgl/program'
 import Scene from '../../scene'
+import VirtualSprite from "./virtual-sprite"
+import Quad, { IQuad } from './quad'
 import Sprite, { ISprite } from './sprite'
 import { IUniforms } from '../../types'
 import frag from './sprites.frag'
@@ -33,16 +35,16 @@ export default class SpritesPainter extends Painter {
   // If a sprite wnats to be updated but the painter is not yet initialized,
   // we put this sprite in this map in order to update it as soon as the initialization
   // will be done.
-  private readonly _deferedSpritesUpdate: Map<string, [Sprite, Float32Array]>
+  private readonly _deferedSpritesUpdate: Map<string, [VirtualSprite, Float32Array]>
   // We need to keep track of all the inserted sprites because when we want to destroy
   // one, we wnat to exchange its position with the one at the end of the list for
   // optimisation purpose.
-  private readonly _sprites: Sprite[] = []
+  private readonly _sprites: VirtualSprite[] = []
 
   constructor(params: ISpritesPainterParams) {
     super()
     this._atlas = params.atlas
-    this._deferedSpritesUpdate = new Map<string, [Sprite, Float32Array]>()
+    this._deferedSpritesUpdate = new Map<string, [VirtualSprite, Float32Array]>()
   }
 
   get atlas(): Atlas {
@@ -56,7 +58,7 @@ export default class SpritesPainter extends Painter {
   /**
    * Register a new sprite that will be immediatly visible.
    */
-  create(params: Partial<ISprite>): Sprite {
+  createSprite(params: Partial<ISprite>): Sprite {
     const { atlas } = this
     const width = atlas.width || DEFAULT_WIDTH
     const height = atlas.height || DEFAULT_HEIGHT
@@ -71,6 +73,26 @@ export default class SpritesPainter extends Painter {
         originX: width * HALF, originY: width * HALF,
         u0: 0, v0: 0, u1: 1, v1: 1,
         scale: 1, angle: 0,
+        ...params
+      })
+    sprite.update()
+    return sprite
+  }
+
+  /**
+   * Register a new sprite that will be immediatly visible.
+   */
+  createQuad(params: Partial<IQuad>): Quad {
+    const data = new Float32Array(CHUNK)
+    const sprite = new Quad(
+      `${globalID++}`,
+      data,
+      this._update,
+      this._destroy, {
+          xTL: 0, yTL: 0, zTL: 0, uTL: 0, vTL: 0,
+          xTR: 1024, yTR: 0, zTR: 0, uTR: 1, vTR: 0,
+          xBR: 1024, yBR: 0, zBR: 0, uBR: 1, vBR: 1,
+          xBL: 0, yBL: 0, zBL: 0, uBL: 0, vBL: 1,
         ...params
       })
     sprite.update()

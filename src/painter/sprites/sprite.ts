@@ -4,7 +4,7 @@
  */
 
 import Calc from '../../calc'
-import { IExtra } from '../../types'
+import VirtualSprite, { IUpdateFunction, IDestroyFunction } from "./virtual-sprite"
 
 export interface ISprite {
   x: number
@@ -22,10 +22,7 @@ export interface ISprite {
   angle: number
 }
 
-type IUpdateFunction = (sprite: Sprite, data: Float32Array) => void
-type IDestroyFunction = (sprite: Sprite) => void
-
-export default class Sprite {
+export default class Sprite extends VirtualSprite {
   get x() {
     return this._params.x
   }
@@ -60,28 +57,13 @@ export default class Sprite {
     return this._params.v1
   }
 
-  readonly extra: IExtra = {}
-  $index = -1
-  private readonly _data: Float32Array
   private _params: ISprite
-  private readonly _id: string
-  private readonly _update: IUpdateFunction
-  private readonly _destroy: IDestroyFunction
 
   constructor(id: string, data: Float32Array,
               update: IUpdateFunction, destroy: IDestroyFunction,
               params: ISprite) {
-    this._id = id
-    this._data = data
-    this._update = update
-    this._destroy = destroy
+    super(id, data, update, destroy)
     this._params = params
-  }
-
-  get id() { return this._id }
-
-  destroy() {
-    this._destroy(this)
   }
 
   update(newParams?: Partial<ISprite>) {
