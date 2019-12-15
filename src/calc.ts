@@ -14,7 +14,7 @@ for (let i = 0; i < FULL_TURN; i++) {
     SIN[i] = Math.sin(angle)
 }
 
-export default { cos, sin }
+export default { cos, sin, clamp }
 
 /**
  * Fast cosine.
@@ -36,4 +36,13 @@ function cos(angle: number) {
  */
 function sin(angle: number) {
     return SIN[(angle | 0) & MODULO]
+}
+
+/**
+ * Force a number to stay between two bounds.
+ */
+function clamp(v: number, min = 0, max = 1) {
+  if (v < min) return min
+  if (v > max) return max
+  return v
 }

@@ -91,15 +91,15 @@ export default class SpritesPainter extends Painter {
       this._destroy, {
           xTL: 0, yTL: 0, zTL: 0, uTL: 0, vTL: 0,
           xTR: 1024, yTR: 0, zTR: 0, uTR: 1, vTR: 0,
-          xBR: 1024, yBR: 0, zBR: 0, uBR: 1, vBR: 1,
-          xBL: 0, yBL: 0, zBL: 0, uBL: 0, vBL: 1,
+          xBR: 1024, yBR: 1024, zBR: 0, uBR: 1, vBR: 1,
+          xBL: 0, yBL: 1024, zBL: 0, uBL: 0, vBL: 1,
         ...params
       })
     sprite.update()
     return sprite
   }
 
-  private _update = (sprite: Sprite, data: Float32Array) => {
+  private _update = (sprite: VirtualSprite, data: Float32Array) => {
     if (!this.scene) {
       // If this painter has not yet been initialized, then update has to be defered.
       this._deferedSpritesUpdate.set(
@@ -118,7 +118,7 @@ export default class SpritesPainter extends Painter {
   /**
    * Only called by an instance os Sprite.
    */
-  private _allocate(sprite: Sprite) {
+  private _allocate(sprite: VirtualSprite) {
     if (this._capacity <= this.count) {
       this._allocateNewBlock()
     }
@@ -129,7 +129,7 @@ export default class SpritesPainter extends Painter {
   /**
    * Only called by an instance os Sprite.
    */
-  private _destroy = (sprite: Sprite) => {
+  private _destroy = (sprite: VirtualSprite) => {
     const lastSprite = this._sprites.pop()
     if (!lastSprite) {
       console.error("You tried to destroy a Sprite that is not owned by this painter!", sprite)

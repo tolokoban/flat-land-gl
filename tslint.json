@@ -35,6 +35,7 @@
     },
     "comment-format": false,
     "completed-docs": false,
+    "curly": false,
     "file-name-casing": {
       "options": [
         "kebab-case"

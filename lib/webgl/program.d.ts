@@ -1,4 +1,3 @@
-import { IAtom } from '../types';
 export interface IShaders {
     vert: string;
     frag: string;
@@ -11,7 +10,10 @@ interface IAttrib extends WebGLActiveInfo {
 interface IAttribsDic {
     [key: string]: IAttrib;
 }
-interface IUniformsDic {
+interface IUniforms {
+    [key: string]: number | Float32Array;
+}
+interface IUniformsLocation {
     [key: string]: WebGLUniformLocation;
 }
 /**
@@ -37,7 +39,8 @@ export default class Program {
     readonly BPE: number;
     readonly program: WebGLProgram;
     readonly attribs: IAttribsDic;
-    readonly uniforms: IUniformsDic;
+    readonly uniforms: IUniforms;
+    readonly uniformsLocation: IUniformsLocation;
     private readonly _typesNamesLookup;
     constructor(gl: WebGLRenderingContext, _codes: IShaders, includes?: {
         [key: string]: string;
@@ -45,10 +48,10 @@ export default class Program {
     use(): void;
     getTypeName(typeId: number): string;
     bindAttribs(buffer: WebGLBuffer, ...names: string[]): void;
-    setUniform(name: string, value: IAtom): void;
+    setUniform(name: string, value: number | Float32Array): void;
     private createAttributes;
     private getSize;
-    private createUniforms;
+    private createUniformsLocation;
     private createUniformSetter;
     private createUniformGetter;
 }

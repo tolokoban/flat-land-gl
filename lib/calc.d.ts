@@ -1,6 +1,7 @@
 declare const _default: {
     cos: typeof cos;
     sin: typeof sin;
+    clamp: typeof clamp;
 };
 export default _default;
 /**
@@ -19,3 +20,7 @@ declare function cos(angle: number): number;
  * * 3*PI/2  <=>  3071
  */
 declare function sin(angle: number): number;
+/**
+ * Force a number to stay between two bounds.
+ */
+declare function clamp(v: number, min?: number, max?: number): number;
