@@ -15,7 +15,7 @@ export interface IVoronoiPainterParams {
   seeds?: number[]
 }
 
-const DURATION = 7000
+const DURATION = 3000
 
 export default class VoronoiPainter extends Painter {
   private prg?: Program
@@ -53,7 +53,7 @@ export default class VoronoiPainter extends Painter {
   private getSeeds(time: number) {
     const { lastTime } = this;
     let alpha = (time - lastTime) / DURATION
-    if (alpha > 1.5) {
+    if (alpha > 3) {
       this.lastTime = time
       this.seeds0 = this.seeds1
       this.seeds1 = randomArray()
