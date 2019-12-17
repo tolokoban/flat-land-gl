@@ -4,14 +4,17 @@
 import Scene from '../../scene';
 import Painter from '../painter';
 export interface IVoronoiPainterParams {
-    seeds?: number[];
+    seeds: number[];
+    colors: number[];
+    border: number;
+    light: number;
 }
 export default class VoronoiPainter extends Painter {
+    private readonly params;
     private prg?;
     private buff?;
-    private seeds0;
-    private seeds1;
-    private lastTime;
+    private seeds;
+    private colors;
     /**
      * params: { atlas, align }
      * - align: if undefined, the voronoi will be centered.
@@ -20,9 +23,8 @@ export default class VoronoiPainter extends Painter {
      *          "T" for Top.
      *          "B" for "Bottom".
      */
-    constructor();
-    render(time: number): void;
-    private getSeeds;
+    constructor(params: IVoronoiPainterParams);
+    render(): void;
     protected destroy(scene: Scene): void;
     protected initialize(scene: Scene): void;
 }
