@@ -1,7 +1,6 @@
 precision mediump float;
 
 #include "count"
-#include "threshold"
 
 const vec3 WHITE = vec3(1,1,1);
 const vec3 BLACK = vec3(0,0,0);
@@ -9,6 +8,7 @@ const vec3 BLACK = vec3(0,0,0);
 uniform float uniSeeds[COUNT];
 uniform float uniColors[COUNT];
 uniform float uniLight;
+uniform float uniThickness;
 
 float distSquared(vec2 a, vec2 b) {
   float x = abs(fract(a.x) - b.x);
@@ -64,18 +64,27 @@ void main() {
     }
   }
 
-  float dA = sqrt(distA);
-  float dB = sqrt(distB);
-  // 0: center of the region.
-  // 1: border of the region.
-  float a = 2.0 * dA / (dA + dB);
-  vec3 white = mix(colorA, WHITE, uniLight);
-  color = mix(white, colorA, a);
-  // 0: BLACK
-  // 1: mainColor
-  float b = clamp((1.0 - a) * BLACK_THRESHOLD, 0.0, 1.0);
-  float c = 1.0 - b;
-  color = mix(BLACK, color, 1.0 - c * c);
+  vec2 AM = varUV.xy - seedA.xy;
+  vec2 AB = seedB.xy - seedA.xy;
+  vec2 AB1 = normalize(AB);
+  float semiLengthAB = length(AB) * 0.5;
+  float distanceFromBorder = semiLengthAB - dot(AM, AB1);
 
-  gl_FragColor = vec4(color, 1);
+  float alpha;
+  vec3 color0;
+  vec3 color1;
+
+  if (distanceFromBorder < uniThickness) {
+      // Border.
+      color0 = BLACK;
+      color1 = colorA;
+      alpha = smoothstep(0.0, uniThickness, distanceFromBorder);
+  } else {
+      // Cell.
+      color0 = colorA;
+      color1 = mix(colorA, WHITE, uniLight);
+      alpha = smoothstep(uniThickness, semiLengthAB, distanceFromBorder);
+  }
+
+  gl_FragColor = vec4(mix(color0, color1, alpha), 1);
 }

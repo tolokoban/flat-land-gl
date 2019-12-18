@@ -8,13 +8,15 @@ export interface IVoronoiPainterParams {
     colors: number[];
     border: number;
     light: number;
+    scaleX: number;
+    scaleY: number;
 }
 export default class VoronoiPainter extends Painter {
-    private readonly params;
     private prg?;
     private buff?;
     private seeds;
     private colors;
+    private readonly params;
     /**
      * params: { atlas, align }
      * - align: if undefined, the voronoi will be centered.
@@ -23,7 +25,7 @@ export default class VoronoiPainter extends Painter {
      *          "T" for Top.
      *          "B" for "Bottom".
      */
-    constructor(params: IVoronoiPainterParams);
+    constructor(params: Partial<IVoronoiPainterParams>);
     render(): void;
     protected destroy(scene: Scene): void;
     protected initialize(scene: Scene): void;

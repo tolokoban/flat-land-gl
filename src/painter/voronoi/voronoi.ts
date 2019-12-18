@@ -1,13 +1,12 @@
 /**
  * Fill the screen with a tilable voronoi pattern.
  */
-
 import Scene from '../../scene'
 import Program from '../../webgl/program'
 import Painter from '../painter'
 import Vert from './voronoi.vert'
 import Frag from './voronoi.frag'
-import Calc from '../../calc'
+
 
 const NB_VERTICES_IN_SQUARE = 4
 
@@ -19,7 +18,9 @@ export interface IVoronoiPainterParams {
     border: number,
     // 0: flat.
     // 1: maximum reflection.
-    light: number
+    light: number,
+    scaleX: number,
+    scaleY: number
 }
 
 export default class VoronoiPainter extends Painter {
@@ -27,6 +28,7 @@ export default class VoronoiPainter extends Painter {
     private buff?: WebGLBuffer
     private seeds: Float32Array
     private colors: Float32Array
+    private readonly params: IVoronoiPainterParams
 
     /**
      * params: { atlas, align }
@@ -36,27 +38,40 @@ export default class VoronoiPainter extends Painter {
      *          "T" for Top.
      *          "B" for "Bottom".
      */
-    constructor(private readonly params: IVoronoiPainterParams) {
+    constructor(params: Partial<IVoronoiPainterParams>) {
         super()
-        if (params.seeds.length % 3 !== 0) {
+
+        this.params = {
+            seeds: randomArray(20),
+            colors: randomArray(20),
+            border: 0, light: 0, scaleX: 1, scaleY: 1,
+            ...params
+        }
+        if (this.params.seeds.length % 3 !== 0) {
             throw Error(`The length of "seeds" must be an integral multiple of 3!`)
         }
-        if (params.seeds.length !== params.colors.length) {
+        if (this.params.seeds.length !== this.params.colors.length) {
             throw Error(`"seeds" and "colors" must have the same length!`)
         }
-        this.seeds = new Float32Array(params.seeds)
-        this.colors = new Float32Array(params.colors)
+        this.seeds = new Float32Array(this.params.seeds)
+        this.colors = new Float32Array(this.params.colors)
     }
 
     render() {
         const { scene, prg, buff } = this
         if (!scene || !prg || !buff) { return }
+
+        const { border, scaleX, scaleY } = this.params
+        const thickness = border
         const gl = scene.gl
         gl.enable(gl.DEPTH_TEST)
         prg.use()
         prg.setUniform("uniSeeds", this.seeds)
         prg.setUniform("uniColors", this.colors)
         prg.setUniform("uniLight", this.params.light)
+        prg.setUniform("uniThickness", thickness)
+        prg.setUniform("uniScaleX", scaleX)
+        prg.setUniform("uniScaleY", scaleY)
         prg.bindAttribs(buff, 'attXY')
         gl.bindBuffer(gl.ARRAY_BUFFER, buff)
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, NB_VERTICES_IN_SQUARE)
@@ -91,16 +106,12 @@ export default class VoronoiPainter extends Painter {
     }
 
     protected initialize(scene: Scene) {
-        const { border } = this.params
-        const thickness = 1 / Calc.clamp(border, 0.000000001, 1)
-
         this.prg = this.createProgram(
             {
                 frag: Frag,
                 vert: Vert,
             }, {
-                count: `const int COUNT = ${this.params.seeds.length};`,
-                threshold: `const float BLACK_THRESHOLD = ${thickness.toFixed(3)};`
+                count: `const int COUNT = ${this.params.seeds.length};`
             }
         )
         const { gl } = scene
@@ -115,11 +126,11 @@ export default class VoronoiPainter extends Painter {
     }
 }
 
-/*
-function randomArray() {
+
+function randomArray(count: number) {
     const arr = []
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 3*count; i++) {
         arr.push(Math.random())
     }
-    return new Float32Array(arr)
-}*/
+    return arr
+}

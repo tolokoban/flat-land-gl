@@ -1,4 +1,6 @@
 import Scene from './scene';
+export declare class IScene extends Scene {
+}
 declare const _default: {
     Calc: {
         cos: (angle: number) => number;
