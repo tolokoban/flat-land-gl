@@ -10,10 +10,13 @@ uniform float uniColors[COUNT];
 uniform float uniLight;
 uniform float uniThickness;
 
+/**
+ * The coords of a and b must be in the range [0;1].
+ */
 float distSquared(vec2 a, vec2 b) {
-  float x = abs(fract(a.x) - b.x);
+  float x = abs(a.x - b.x);
   if (x > .5) x = 1.0 - x;
-  float y = abs(fract(a.y) - b.y);
+  float y = abs(a.y - b.y);
   if (y > .5) y = 1.0 - y;
 
   return x*x + y*y;
@@ -22,10 +25,12 @@ float distSquared(vec2 a, vec2 b) {
 varying vec2 varUV;
 
 void main() {
-  float distA = distSquared(varUV, vec2(uniSeeds[0], uniSeeds[1])) * uniSeeds[2];
+  vec2 M = vec2(fract(varUV.x), fract(varUV.y));
+
+  float distA = distSquared(M, vec2(uniSeeds[0], uniSeeds[1])) * uniSeeds[2];
   vec3 seedA = vec3(uniSeeds[0], uniSeeds[1], uniSeeds[2]);
   vec3 colorA = vec3(uniColors[0], uniColors[1], uniColors[2]);
-  float distB = distSquared(varUV, vec2(uniSeeds[3], uniSeeds[4])) * uniSeeds[5];
+  float distB = distSquared(M, vec2(uniSeeds[3], uniSeeds[4])) * uniSeeds[5];
   vec3 seedB = vec3(uniSeeds[3], uniSeeds[4], uniSeeds[5]);
   vec3 colorB = vec3(uniColors[3], uniColors[4], uniColors[5]);
 
@@ -48,7 +53,7 @@ void main() {
   for (int i = 6; i < COUNT; i+=3) {
     seed = vec3(uniSeeds[i], uniSeeds[i+1], uniSeeds[i+2]);
     color = vec3(uniColors[i], uniColors[i+1], uniColors[i+2]);
-    dist = distSquared(varUV, seed.xy) * seed.z;
+    dist = distSquared(M, seed.xy) * seed.z;
     if (dist < distA) {
       distB = distA;
       seedB = seedA;
@@ -64,12 +69,17 @@ void main() {
     }
   }
 
-  vec2 AM = varUV.xy - seedA.xy;
+/*
+  vec2 AM = M.xy - seedA.xy;
   vec2 AB = seedB.xy - seedA.xy;
   vec2 AB1 = normalize(AB);
   float semiLengthAB = length(AB) * 0.5;
   float distanceFromBorder = semiLengthAB - dot(AM, AB1);
+*/
 
+  float dA = distA;
+  float dB = distB;
+  float distanceFromBorder = dB - dA;
   float alpha;
   vec3 color0;
   vec3 color1;
@@ -83,7 +93,7 @@ void main() {
       // Cell.
       color0 = colorA;
       color1 = mix(colorA, WHITE, uniLight);
-      alpha = smoothstep(uniThickness, semiLengthAB, distanceFromBorder);
+      alpha = (distanceFromBorder - uniThickness) / (dB - uniThickness);
   }
 
   gl_FragColor = vec4(mix(color0, color1, alpha), 1);
