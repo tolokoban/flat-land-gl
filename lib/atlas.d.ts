@@ -1,6 +1,7 @@
 export interface IAtlasParams {
     name?: string;
-    image: string;
+    image?: string;
+    canvas?: HTMLCanvasElement;
 }
 export default class Atlas {
     private readonly gl;
@@ -9,6 +10,7 @@ export default class Atlas {
     private _ready;
     private _width;
     private _height;
+    private _params;
     constructor(gl: WebGLRenderingContext, _name: string);
     get name(): string;
     get width(): number;
@@ -22,6 +24,16 @@ export default class Atlas {
      */
     destroy(): void;
     activate(unit?: number): void;
+    /**
+     * If you use canvas and you want to repaint this canvas, the atlas won't change.
+     * To force it to change, you have to call refresh().
+     */
+    refresh(): Promise<void>;
+    /**
+     * This function must not be called directly.
+     * It is used internally by painters.
+     */
     load(params: IAtlasParams): Promise<void>;
     private loadImage;
+    private loadCanvas;
 }

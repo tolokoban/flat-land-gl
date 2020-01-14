@@ -30,9 +30,6 @@ export default class Scene {
         return this.gl.drawingBufferHeight
     }
 
-    get pointerTap(): boolean {
-        return this._pointerTap
-    }
     resolution = 1
     onAnimation: ((time: number) => void) | null = null
     private readonly _gl: WebGLRenderingContext
@@ -40,7 +37,6 @@ export default class Scene {
     private readonly atlases: Map<string, Atlas>
     private activePainters: Painter[] = []
     private isRendering = false
-    private readonly _pointerTap = false
 
     constructor(canvas: HTMLCanvasElement) {
         this._pointer = new Pointer(canvas)

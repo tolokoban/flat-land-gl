@@ -15,7 +15,6 @@ export default class Scene {
      * Visible height. Between 0 and 1024.
      */
     get height(): number;
-    get pointerTap(): boolean;
     resolution: number;
     onAnimation: ((time: number) => void) | null;
     private readonly _gl;
@@ -23,7 +22,6 @@ export default class Scene {
     private readonly atlases;
     private activePainters;
     private isRendering;
-    private readonly _pointerTap;
     constructor(canvas: HTMLCanvasElement);
     /**
      * Define which painter to use and in what order.

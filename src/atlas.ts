@@ -1,7 +1,9 @@
 export interface IAtlasParams {
     name?: string
     // URL of an image JPG, PNG, GIF or WEBP.
-    image: string
+    image?: string,
+    // Load from canvas. It cannot be specified as long with "image".
+    canvas?: HTMLCanvasElement
 }
 
 export default class Atlas {
@@ -9,6 +11,7 @@ export default class Atlas {
     private _ready = false
     private _width = 0
     private _height = 0
+    private _params: IAtlasParams | undefined
 
     constructor(private readonly gl: WebGLRenderingContext, private readonly _name: string) {
         const texture = gl.createTexture()
@@ -64,10 +67,29 @@ export default class Atlas {
         gl.bindTexture(gl.TEXTURE_2D, texture)
     }
 
+    /**
+     * If you use canvas and you want to repaint this canvas, the atlas won't change.
+     * To force it to change, you have to call refresh().
+     */
+    async refresh(): Promise<void> {
+        if (!this._params) return
+        await this.load(this._params)
+    }
+
+    /**
+     * This function must not be called directly.
+     * It is used internally by painters.
+     */
     async load(params: IAtlasParams): Promise<void> {
         this._ready = false
+        this._params = params
 
-        return this.loadImage(params.image)
+        if (params.image) {
+            return this.loadImage(params.image)
+        }
+        else if (params.canvas) {
+            return this.loadCanvas(params.canvas)
+        }
     }
 
     private async loadImage(url: string): Promise<void> {
@@ -91,5 +113,14 @@ export default class Atlas {
             }
             img.src = url
         })
+    }
+
+    private loadCanvas(canvas: HTMLCanvasElement) {
+        const { gl, texture } = this
+        gl.bindTexture(gl.TEXTURE_2D, texture)
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas)
+        this._ready = true
+        this._width = canvas.width
+        this._height = canvas.height
     }
 }
