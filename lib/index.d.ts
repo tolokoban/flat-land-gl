@@ -7,6 +7,10 @@ declare const _default: {
         sin: (angle: number) => number;
         clamp: (v: number, min?: number, max?: number) => number;
     };
+    Camera: {
+        Silly: typeof import("./camera/silly").default;
+        Zoomable2D: typeof import("./camera/zoomable-2d").default;
+    };
     Painter: {
         Background: typeof import("./painter/background").default;
         Clear: typeof import("./painter/clear").default;

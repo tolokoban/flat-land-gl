@@ -1,9 +1,11 @@
 import Atlas from '../../atlas';
+import Camera from '../../camera/camera';
 import Painter from '../painter';
 import Scene from '../../scene';
 import Quad, { IQuad } from './quad';
 import Sprite, { ISprite } from './sprite';
 interface ISpritesPainterParams {
+    camera: Camera;
     atlas: Atlas;
 }
 export default class SpritesPainter extends Painter {
