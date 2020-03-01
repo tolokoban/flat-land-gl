@@ -14,6 +14,7 @@ export default class SpritesPainter extends Painter {
     private _buffElem?;
     private _buffVert?;
     private readonly _atlas;
+    private readonly _camera;
     private _prg?;
     private readonly _deferedSpritesUpdate;
     private readonly _sprites;

@@ -76,11 +76,6 @@ export default class Program {
         gl.attachShader(shaderProgram, fragShader)
         gl.linkProgram(shaderProgram)
 
-        console.log("Vertex Shader:")
-        console.log(codes.vert)
-        console.log("Fragment Shader:")
-        console.log(codes.frag)
-
         this.use = () => {
             gl.useProgram(shaderProgram)
         }

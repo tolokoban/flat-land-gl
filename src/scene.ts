@@ -88,6 +88,24 @@ export default class Scene {
         return atlas
     }
 
+    /**
+     * Create an atlas that can be used immediatly even if the needed assets are not yet loaded.
+     * @param  params
+     * @param  onLoad You can provide a callback function that will be called when the assets
+     * are loaded.
+     */
+    createAtlasAsync(params: IAtlasParams): Promise<Atlas> {
+        return new Promise((resolve) => {
+            const { name } = params
+            const sanitizedName = name || this.getNewName()
+            const atlas = new Atlas(this.gl, sanitizedName)
+            this.atlases.set(sanitizedName, atlas)
+
+            // tslint:disable:no-floating-promises
+            atlas.load(params).then(() => resolve(atlas))
+        })
+    }
+
     destroyAtlas(name: string): boolean {
         const { atlases } = this
         const atlas = atlases.get(name)

@@ -12,7 +12,8 @@ import vert from './sprites.vert'
 
 // Allocations will be done by pieces of BLOCK Sprites.
 const BLOCK = 64
-const NB_ATTRIBS = 6 // attXYZ and attUV and attAngle.
+const NB_ATTRIBS = 5 // attXYZ and attUV.
+const NB_ELEMS = 6   // Two triangles of 3 points to get a square.
 const NB_CORNERS = 4
 const CHUNK = NB_ATTRIBS * NB_CORNERS
 const DEFAULT_WIDTH = 64
@@ -33,6 +34,7 @@ export default class SpritesPainter extends Painter {
     private _buffElem?: WebGLBuffer
     private _buffVert?: WebGLBuffer
     private readonly _atlas: Atlas
+    private readonly _camera: Camera
     private _prg?: Program
     // If a sprite wnats to be updated but the painter is not yet initialized,
     // we put this sprite in this map in order to update it as soon as the initialization
@@ -46,6 +48,7 @@ export default class SpritesPainter extends Painter {
     constructor(params: ISpritesPainterParams) {
         super()
         this._atlas = params.atlas
+        this._camera = params.camera
         this._deferedSpritesUpdate = new Map<string, [VirtualSprite, Float32Array]>()
     }
 
@@ -181,7 +184,6 @@ export default class SpritesPainter extends Painter {
         // Update sprites' attributes.
         gl.bindBuffer(gl.ARRAY_BUFFER, _buffVert)
         gl.bufferData(gl.ARRAY_BUFFER, this._dataVert, gl.DYNAMIC_DRAW)
-
         gl.enable(gl.DEPTH_TEST)
         _prg.use()
         atlas.activate()
@@ -192,11 +194,13 @@ export default class SpritesPainter extends Painter {
         _prg.bindAttribs(_buffVert, 'attXYZ', 'attUV')
         gl.bindBuffer(gl.ARRAY_BUFFER, _buffVert)
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, _buffElem)
-        gl.drawElements(gl.TRIANGLES, NB_ATTRIBS * this.count, gl.UNSIGNED_SHORT, 0)
+        gl.drawElements(gl.TRIANGLES, NB_ELEMS * this.count, gl.UNSIGNED_SHORT, 0)
     }
 
     protected initialize(scene: Scene) {
-        this._prg = this.createProgram({ vert, frag })
+        this._prg = this.createProgram(
+            { vert, frag },
+            this._camera.getShaderIncludes())
         const { gl } = scene
 
         const buffVert = gl.createBuffer()
@@ -252,7 +256,7 @@ const CORNER_D = 3
  * D--C
  */
 function createElements(capacity: number) {
-    const dataElem = new Uint16Array(NB_ATTRIBS * capacity)
+    const dataElem = new Uint16Array(NB_ELEMS * capacity)
     let i = 0
     let a = 0
     for (let k = 0; k < capacity; k++) {
@@ -268,7 +272,8 @@ function createElements(capacity: number) {
         dataElem[i + 5] = c
         // tslint:enable:no-magic-numbers
         a += NB_CORNERS
-        i += NB_ATTRIBS
+        i += NB_ELEMS
     }
+    console.log("dataElem = ", dataElem)
     return dataElem
 }

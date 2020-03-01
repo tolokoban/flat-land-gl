@@ -36,6 +36,13 @@ export default class Scene {
      * are loaded.
      */
     createAtlas(params: IAtlasParams, onLoad?: (params: IAtlasParams) => void): Atlas;
+    /**
+     * Create an atlas that can be used immediatly even if the needed assets are not yet loaded.
+     * @param  params
+     * @param  onLoad You can provide a callback function that will be called when the assets
+     * are loaded.
+     */
+    createAtlasAsync(params: IAtlasParams): Promise<Atlas>;
     destroyAtlas(name: string): boolean;
     /**
      * Start rendering.
