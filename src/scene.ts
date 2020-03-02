@@ -5,6 +5,14 @@ import Resize from './webgl/resize'
 
 let ID = 1
 
+export interface IAtlasParamsDic {
+    [key: string]: IAtlasParams
+}
+
+export interface IAtlases {
+    [key: string]: Atlas
+}
+
 export default class Scene {
     get gl(): WebGLRenderingContext {
         return this._gl
@@ -37,6 +45,7 @@ export default class Scene {
     private readonly atlases: Map<string, Atlas>
     private activePainters: Painter[] = []
     private isRendering = false
+    private lastRenderingTime = 0
 
     constructor(canvas: HTMLCanvasElement) {
         this._pointer = new Pointer(canvas)
@@ -106,6 +115,27 @@ export default class Scene {
         })
     }
 
+    createAtlasesAsync(params: IAtlasParamsDic): Promise<IAtlases> {
+        return new Promise(resolve => {
+            const atlasNames: string[] = Object.keys(params)
+            const promises = []
+            for (const atlasName of atlasNames) {
+                const atlasParam: IAtlasParams = params[atlasName]
+                promises.push(this.createAtlasAsync(atlasParam))
+            }
+            Promise.all(promises).then((atlases: Atlas[]) => {
+                const result: IAtlases = {}
+                for (let i = 0 ; i < atlases.length ; i++) {
+                    const name = atlasNames[i]
+                    const atlas = atlases[i]
+                    result[name] = atlas
+                }
+                resolve(result)
+            })
+        })
+    }
+
+
     destroyAtlas(name: string): boolean {
         const { atlases } = this
         const atlas = atlases.get(name)
@@ -150,8 +180,11 @@ export default class Scene {
             return
         }
 
-        const { gl } = this
+        const { gl, lastRenderingTime } = this
         Resize(gl, this.resolution)
+
+        this.lastRenderingTime = time
+        const delta = time - lastRenderingTime
 
         gl.clearDepth(-1)
         gl.clear(gl.DEPTH_BUFFER_BIT)
@@ -159,7 +192,7 @@ export default class Scene {
 
         try {
             for (const painter of this.activePainters) {
-                painter.render(time)
+                painter.render(time, delta)
             }
 
             const { onAnimation } = this

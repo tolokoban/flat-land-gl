@@ -70,7 +70,10 @@ export default class Sprite extends VirtualSprite {
     if (newParams) {
       this._params = { ...this._params, ...newParams }
     }
-    const { x, y, z, originX, originY, width, height, u0, v0, u1, v1, scale, angle } = this._params
+    const {
+        x, y, z, originX, originY, width, height, u0, v0, u1, v1, scale, angle
+    } = this._params
+
     const xxA = -originX
     const yyA = -originY
     const xxB = xxA + width
@@ -110,25 +113,25 @@ export default class Sprite extends VirtualSprite {
     data[1] = yA + y
     data[2] = z
     data[3] = u0
-    data[4] = v0
+    data[4] = v1
 
     data[5] = xB + x
     data[6] = yB + y
     data[7] = z
     data[8] = u1
-    data[9] = v0
+    data[9] = v1
 
     data[10] = xC + x
     data[11] = yC + y
     data[12] = z
     data[13] = u1
-    data[14] = v1
+    data[14] = v0
 
     data[15] = xD + x
     data[16] = yD + y
     data[17] = z
     data[18] = u0
-    data[19] = v1
+    data[19] = v0
     // tslint:enable:no-magic-numbers
 
     this._update(this, data)

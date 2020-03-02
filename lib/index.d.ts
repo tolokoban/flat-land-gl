@@ -9,7 +9,7 @@ declare const _default: {
     };
     Camera: {
         Silly: typeof import("./camera/silly").default;
-        Zoomable2D: typeof import("./camera/zoomable-2d").default;
+        Cover2D: typeof import("./camera/cover-2d").default;
     };
     Painter: {
         Background: typeof import("./painter/background").default;

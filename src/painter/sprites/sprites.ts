@@ -174,8 +174,8 @@ export default class SpritesPainter extends Painter {
         this._dataVert = dataVert
     }
 
-    render() {
-        const { scene, _prg, atlas, _buffVert, _buffElem } = this
+    render(time: number, delta: number) {
+        const { scene, _prg, atlas, _buffVert, _buffElem, _camera } = this
         if (!scene || !_prg || !atlas || !_buffVert || !_buffElem) {
             return
         }
@@ -186,11 +186,10 @@ export default class SpritesPainter extends Painter {
         gl.bufferData(gl.ARRAY_BUFFER, this._dataVert, gl.DYNAMIC_DRAW)
         gl.enable(gl.DEPTH_TEST)
         _prg.use()
+        _camera.setUniformValues(_prg, scene.width, scene.height, time, delta)
         atlas.activate()
         const uniforms = (_prg as unknown) as IUniforms
         uniforms.$uniTexture = 0
-        uniforms.$uniWidth = scene.width
-        uniforms.$uniHeight = scene.height
         _prg.bindAttribs(_buffVert, 'attXYZ', 'attUV')
         gl.bindBuffer(gl.ARRAY_BUFFER, _buffVert)
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, _buffElem)
@@ -274,6 +273,5 @@ function createElements(capacity: number) {
         a += NB_CORNERS
         i += NB_ELEMS
     }
-    console.log("dataElem = ", dataElem)
     return dataElem
 }

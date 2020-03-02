@@ -1,6 +1,12 @@
 import Atlas, { IAtlasParams } from './atlas';
 import Painter from './painter/painter';
 import Pointer from './pointer';
+export interface IAtlasParamsDic {
+    [key: string]: IAtlasParams;
+}
+export interface IAtlases {
+    [key: string]: Atlas;
+}
 export default class Scene {
     get gl(): WebGLRenderingContext;
     /**
@@ -22,6 +28,7 @@ export default class Scene {
     private readonly atlases;
     private activePainters;
     private isRendering;
+    private lastRenderingTime;
     constructor(canvas: HTMLCanvasElement);
     /**
      * Define which painter to use and in what order.
@@ -43,6 +50,7 @@ export default class Scene {
      * are loaded.
      */
     createAtlasAsync(params: IAtlasParams): Promise<Atlas>;
+    createAtlasesAsync(params: IAtlasParamsDic): Promise<IAtlases>;
     destroyAtlas(name: string): boolean;
     /**
      * Start rendering.

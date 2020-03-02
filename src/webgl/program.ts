@@ -83,6 +83,11 @@ export default class Program {
         this.attribs = this.createAttributes()
         this.uniforms = {}
         this.uniformsLocation = this.createUniformsLocation()
+
+        for (const name of Object.keys(codes)) {
+            console.log(">>> Shader: ", name)
+            console.log(codes[name])
+        }
     }
 
     use() {

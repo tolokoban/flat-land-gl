@@ -1,7 +1,7 @@
 import Silly from './silly'
-import Zoomable2D from './zoomable-2d'
+import Cover2D from './cover-2d'
 
 export default {
     Silly,
-    Zoomable2D
+    Cover2D
 }

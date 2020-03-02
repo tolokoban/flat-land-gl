@@ -8,7 +8,7 @@ export default abstract class Painter {
     set scene(scene: Scene | null);
     private readonly _programs;
     private _scene;
-    abstract render(time: number): void;
+    abstract render(time: number, delta: number): void;
     protected abstract initialize(scene: Scene): void;
     protected abstract destroy(scene: Scene): void;
     protected createProgram(shaders: IShaders, includes?: {

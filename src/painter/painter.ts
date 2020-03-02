@@ -21,7 +21,7 @@ export default abstract class Painter {
     private readonly _programs: Program[] = []
     private _scene: Scene | null = null
 
-    abstract render(time: number): void
+    abstract render(time: number, delta: number): void
 
     protected abstract initialize(scene: Scene): void
     protected abstract destroy(scene: Scene): void

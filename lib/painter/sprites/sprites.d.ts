@@ -43,7 +43,7 @@ export default class SpritesPainter extends Painter {
      * This function cannot be called before painter initialization.
      */
     private _allocateNewBlock;
-    render(): void;
+    render(time: number, delta: number): void;
     protected initialize(scene: Scene): void;
     protected destroy(): void;
     private manageDeferedSpritesUpdates;

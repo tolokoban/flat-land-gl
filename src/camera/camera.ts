@@ -44,8 +44,14 @@ export default abstract class Camera {
 
     /**
      * @param prg - Attributes have to be set in this Program.
+     * @param width - Canvas Width.
+     * @param height - Canvas Height.
      * @param time - Time of the rendered frame in milliseconds.
      * @param delta - Number of milliseconds since the last rendered frame.
      */
-    abstract setUniformValues(prg: Program, time: number, delta: number): void
+    abstract setUniformValues(prg: Program,
+                              width: number,
+                              height: number,
+                              time: number,
+                              delta: number): void
 }

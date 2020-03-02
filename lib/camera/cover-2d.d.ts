@@ -1,4 +1,8 @@
+import Camera from "./camera";
 import Program from "../webgl/program";
+export interface ICover2DParams {
+    size: number;
+}
 /**
  * The Camera is responsible of transforming World coordinates into Screen coordinates.
  * To do this, the Camera defines the following Vertex Shader function:
@@ -19,29 +23,25 @@ import Program from "../webgl/program";
  * * `glslUniforms`:
  * * `glslFunction`
  */
-export default abstract class Camera {
-    /**
-     * @return Uniforms defined for the camera.
-     * Example: `{ uniCameraX: "float", uniCameraY: "float" }`
-     */
-    protected abstract get glslUniforms(): {
-        [key: string]: string;
+export default class Cover2D extends Camera {
+    zoom: number;
+    x: number;
+    y: number;
+    private readonly params;
+    constructor(params: Partial<ICover2DParams>);
+    get glslUniforms(): {
+        uniCameraInvertedScale: string;
+        uniCameraScaleX: string;
+        uniCameraScaleY: string;
+        uniCameraX: string;
+        uniCameraY: string;
     };
-    /**
-     * @return Vertey Shader GLSL function taht transforms World coordinates
-     * of a point into Screen coordinates.
-     */
-    protected abstract get glslFunction(): string;
-    getShaderIncludes(): {
-        cameraUniforms: string;
-        cameraFunction: string;
-    };
+    get glslFunction(): string;
     /**
      * @param prg - Attributes have to be set in this Program.
      * @param width - Canvas Width.
      * @param height - Canvas Height.
      * @param time - Time of the rendered frame in milliseconds.
-     * @param delta - Number of milliseconds since the last rendered frame.
      */
-    abstract setUniformValues(prg: Program, width: number, height: number, time: number, delta: number): void;
+    setUniformValues(prg: Program, width: number, height: number): void;
 }
