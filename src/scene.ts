@@ -186,9 +186,9 @@ export default class Scene {
         this.lastRenderingTime = time
         const delta = time - lastRenderingTime
 
-        gl.clearDepth(-1)
+        gl.clearDepth(+1)
         gl.clear(gl.DEPTH_BUFFER_BIT)
-        gl.depthFunc(gl.GEQUAL)
+        gl.depthFunc(gl.LESS)
 
         try {
             for (const painter of this.activePainters) {

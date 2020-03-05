@@ -12,6 +12,7 @@ declare const _default: {
             dot3(a: Float32Array, b: Float32Array): number;
             length3(input: Float32Array): number;
             normalize3(input: Float32Array, output: Float32Array): void;
+            orbital3(latitude: number, longitude: number, output: Float32Array): void;
             length4(input: Float32Array): number;
             normalize4(input: Float32Array, output: Float32Array): void;
         };
@@ -22,6 +23,7 @@ declare const _default: {
             identity4(output: Float32Array): void;
             multiply4(a: Float32Array, b: Float32Array, output: Float32Array): void;
             invert4(a: Float32Array, output: Float32Array): boolean;
+            rotationX(angle: number, output: Float32Array): void;
         };
         M4_00: number;
         M4_10: number;

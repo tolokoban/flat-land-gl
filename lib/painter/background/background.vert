@@ -11,5 +11,5 @@ void main() {
     location.x = -uniAspectRatio;
   }
 
-  gl_Position = vec4(location.x, -location.y, -1.0, 1.0);
+  gl_Position = vec4(location.x, -location.y, 1.0, 1.0);
 }

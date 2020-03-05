@@ -3,6 +3,7 @@
 const FULL_TURN = 4096
 const MODULO = FULL_TURN - 1
 const HALF_TURN = 2048
+const HALF = 0.5
 
 const COS = new Float32Array(FULL_TURN)
 const SIN = new Float32Array(FULL_TURN)
@@ -73,6 +74,10 @@ const M3_02 = 6
 const M3_12 = 7
 const M3_22 = 8
 
+const X = 0
+const Y = 1
+const Z = 2
+const W = 3
 
 type IVector3 = Float32Array
 type IVector4 = Float32Array
@@ -90,9 +95,9 @@ const vector = {
     },
 
     cross3(a: IVector3, b: IVector3, output: IVector3) {
-        output[0] = a[1] * b[2] - a[2] * b[1]
-        output[1] = a[2] * b[0] - a[0] * b[2]
-        output[2] = a[0] * b[1] - a[1] * b[0]
+        output[X] = a[Y] * b[Z] - a[Z] * b[Y]
+        output[Y] = a[Z] * b[X] - a[X] * b[Z]
+        output[Z] = a[X] * b[Y] - a[Y] * b[X]
     },
 
     dot3(a: IVector3, b: IVector3): number {
@@ -113,9 +118,25 @@ const vector = {
      */
     normalize3(input: IVector3, output: IVector3) {
         const len = vector.length3(input)
-        output[0] = input[0] * len
-        output[1] = input[1] * len
-        output[2] = input[2] * len
+        output[X] = input[X] * len
+        output[Y] = input[Y] * len
+        output[Z] = input[Z] * len
+    },
+
+    /**
+     * Create a 3D vector of length 1, pointing in latitude/longitude position.
+     * Latitude goes along with Y axis.
+     * orbital3(0, 0) === (0,0,-1)
+     *
+     * Latitude and longitude are expressed in radians.
+     */
+    orbital3(latitude: number, longitude: number, output: IVector3) {
+        const height = Math.sin(latitude)
+        const radius = Math.cos(latitude)
+        const angle = longitude - Math.PI * HALF
+        output[X] = radius * Math.cos(angle)
+        output[Y] = radius * Math.sin(angle)
+        output[Z] = height
     },
 
     /**
@@ -131,10 +152,10 @@ const vector = {
      */
     normalize4(input: IVector4, output: IVector4) {
         const len = vector.length4(input)
-        output[0] = input[0] * len
-        output[1] = input[1] * len
-        output[2] = input[2] * len
-        output[3] = input[3] * len
+        output[X] = input[X] * len
+        output[Y] = input[Y] * len
+        output[Z] = input[Z] * len
+        output[W] = input[W] * len
     }
 }
 
@@ -251,6 +272,34 @@ const matrix = {
         output[M4_33] = (a20 * b03 - a21 * b01 + a22 * b00) * det
 
         return true
+    },
+
+    /**
+     * Rotation around X axis of `angle` radians.
+     */
+    rotationX(angle: number, output: IMatrix4) {
+        const c = Math.cos(angle);
+        const s = Math.sin(angle);
+
+        output[M4_00] = 1
+        output[M4_10] = 0
+        output[M4_20] = 0
+        output[M4_30] = 0
+
+        output[M4_10] = 0
+        output[M4_11] = c
+        output[M4_12] = s
+        output[M4_13] = 0
+
+        output[M4_20] = 0
+        output[M4_21] = -s
+        output[M4_22] = c
+        output[M4_23] = 0
+
+        output[M4_30] = 0
+        output[M4_31] = 0
+        output[M4_32] = 0
+        output[M4_33] = 1
     }
 }
 

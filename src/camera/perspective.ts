@@ -1,15 +1,9 @@
 import Space from "./space"
 import Program from "../webgl/program"
 
-export interface ICover2DParams {
-    // The camera acts like a square of side `size` which covers the screen.
-    size: number
-}
-
 /**
  */
-export default class Cover2D extends Space {
-    private readonly params: ICover2DParams
+export default class Perspective extends Space {
     private perspectiveMatrix = new Float32Array(16)
 
     /**
@@ -19,13 +13,9 @@ export default class Cover2D extends Space {
     near = 1
     far = 4097
 
-    constructor(params: Partial<ICover2DParams>) {
+    constructor() {
         super()
-        this.params = {
-            size: 1024,
-            ...params
-        }
-        this.orbit(0,0,0, this.params.size, Math.PI / 4, 0)
+        this.orbit(0, 0, 0, 1000, 0, 0)
     }
 
     get glslUniforms() {

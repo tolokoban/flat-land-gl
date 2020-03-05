@@ -35,6 +35,14 @@ declare const _default: {
          */
         normalize3(input: Float32Array, output: Float32Array): void;
         /**
+         * Create a 3D vector of length 1, pointing in latitude/longitude position.
+         * Latitude goes along with Y axis.
+         * orbital3(0, 0) === (0,0,-1)
+         *
+         * Latitude and longitude are expressed in radians.
+         */
+        orbital3(latitude: number, longitude: number, output: Float32Array): void;
+        /**
          * @return Length of a 3D vector.
          */
         length4(input: Float32Array): number;
@@ -53,6 +61,10 @@ declare const _default: {
          * @return false if the matrix is not invertible.
          */
         invert4(a: Float32Array, output: Float32Array): boolean;
+        /**
+         * Rotation around X axis of `angle` radians.
+         */
+        rotationX(angle: number, output: Float32Array): void;
     };
     M4_00: number;
     M4_10: number;

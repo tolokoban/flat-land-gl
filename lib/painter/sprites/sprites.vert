@@ -1,6 +1,3 @@
-uniform float uniWidth;
-uniform float uniHeight;
-
 attribute vec3 attXYZ;
 attribute vec2 attUV;
 

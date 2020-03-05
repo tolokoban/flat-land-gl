@@ -1,12 +1,8 @@
 import Space from "./space";
 import Program from "../webgl/program";
-export interface ICover2DParams {
-    size: number;
-}
 /**
  */
-export default class Cover2D extends Space {
-    private readonly params;
+export default class Perspective extends Space {
     private perspectiveMatrix;
     /**
      * Field view angle expressed in radians.
@@ -14,7 +10,7 @@ export default class Cover2D extends Space {
     fieldAngle: number;
     near: number;
     far: number;
-    constructor(params: Partial<ICover2DParams>);
+    constructor();
     get glslUniforms(): {
         uniCameraMatrix: string;
         uniPerspectiveMatrix: string;
