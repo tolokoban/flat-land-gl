@@ -23,6 +23,9 @@ declare const _default: {
     sin: typeof sin;
     clamp: typeof clamp;
     vector: {
+        areEqual(a: Float32Array, b: Float32Array): boolean;
+        cross3(a: Float32Array, b: Float32Array, output: Float32Array): void;
+        dot3(a: Float32Array, b: Float32Array): number;
         /**
          * @return Length of a 3D vector.
          */
@@ -41,9 +44,15 @@ declare const _default: {
         normalize4(input: Float32Array, output: Float32Array): void;
     };
     matrix: {
+        areEqual: (a: Float32Array, b: Float32Array) => boolean;
         identity3(output: Float32Array): void;
         multiply3(a: Float32Array, b: Float32Array, output: Float32Array): void;
         identity4(output: Float32Array): void;
+        multiply4(a: Float32Array, b: Float32Array, output: Float32Array): void;
+        /**
+         * @return false if the matrix is not invertible.
+         */
+        invert4(a: Float32Array, output: Float32Array): boolean;
     };
     M4_00: number;
     M4_10: number;
