@@ -104,7 +104,7 @@ void main() {
     location.x /= uniAspectRatio;${x}
   }
 
-  gl_Position = vec4(location.x, -location.y, -1.0, 1.0);
+  gl_Position = vec4(location.x, -location.y, 0.9999999, 1.0);
 }`
 }
 
