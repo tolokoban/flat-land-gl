@@ -392,7 +392,7 @@ function getShader(type: number, gl: WebGLRenderingContext, code: string): WebGL
         const errorMessage: string = gl.getShaderInfoLog(shader) || "NULL"
         console.error(`An error occurred compiling the shader: ${errorMessage}`)
         // tslint:disable-next-line:no-console
-        console.info(geCodeSection(code, errorMessage))
+        console.info(getCodeSection(code, errorMessage))
         // tslint:disable-next-line:no-console
         throw Error(
             `Unable to create a ${type === gl.VERTEX_SHADER ? 'VERTEX' : 'FRAGMENT'} shader!`
@@ -441,7 +441,7 @@ const RX_ERROR_MESSAGE = /ERROR: ([0-9]+):([0-9]+):/g
 /**
  * Return a portion of the code that is two lines before the error and two lines after.
  */
-function geCodeSection(code: string, errorMessage: string) {
+function getCodeSection(code: string, errorMessage: string) {
     const lines = code.split(/\n\r?/)
     lines.unshift("")  // Because lines numbers start at 1
     RX_ERROR_MESSAGE.lastIndex = -1  // Reinit RegExp
@@ -452,10 +452,10 @@ function geCodeSection(code: string, errorMessage: string) {
     const lineNumber = Number(matcher[2])
     const firstLine = Math.max(1, lineNumber - 2)
     const lastLine = Math.min(lines.length - 1, lineNumber + 2)
-    let outputLines = []
+    const outputLines = ["Here is an extract of the shader code:"]
     for (let n = firstLine; n <= lastLine; n++) {
         outputLines.push(
-            `${n}:    ${lines[n]}`
+            `| ${n}:    ${lines[n]}`
         )
     }
     return outputLines.join("\n")
