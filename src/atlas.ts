@@ -67,6 +67,12 @@ export default class Atlas {
         gl.bindTexture(gl.TEXTURE_2D, texture)
     }
 
+    activateUnit0() {
+        const { gl, texture } = this
+        gl.activeTexture(gl.TEXTURE0)
+        gl.bindTexture(gl.TEXTURE_2D, texture)
+    }
+
     /**
      * If you use canvas and you want to repaint this canvas, the atlas won't change.
      * To force it to change, you have to call refresh().

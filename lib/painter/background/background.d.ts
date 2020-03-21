@@ -6,20 +6,24 @@ import Scene from '../../scene';
 import Painter from '../painter';
 interface IBackgroundPainterParams {
     atlas: Atlas;
-    align?: string;
+    alignX?: number;
+    alignY?: number;
+    scale?: number;
 }
 export default class BackgroundPainter extends Painter {
-    private readonly params;
     private atlas?;
     private prg?;
     private buff?;
+    alignX: number;
+    alignY: number;
+    scale: number;
     /**
      * params: { atlas, align }
-     * - align: if undefined, the background will be centered.
-     *          "R" means that the Right edge of the background is always visible.
-     *          "L" means the same for Left.
-     *          "T" for Top.
-     *          "B" for "Bottom".
+     * - alignX: Float number between 0 and 1.
+     *   Imagine the background is wider than the screen of K pixels.
+     *   Then we will shift the background from K * alignX pixels to the left.
+     * - alignY: Same for Y axis.
+     * If alignX = 0.5 and alignY = 0.5, the background is perfectly centered.
      */
     constructor(params: IBackgroundPainterParams);
     render(): void;

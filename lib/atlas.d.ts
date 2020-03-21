@@ -24,6 +24,7 @@ export default class Atlas {
      */
     destroy(): void;
     activate(unit?: number): void;
+    activateUnit0(): void;
     /**
      * If you use canvas and you want to repaint this canvas, the atlas won't change.
      * To force it to change, you have to call refresh().
