@@ -61,7 +61,7 @@ export default class BackgroundPainter extends Painter {
         prg.setUniform('uniImageAspectRatio', atlas.width / atlas.height)
         prg.setUniform('uniAlignX', alignX)
         prg.setUniform('uniAlignY', alignY)
-        prg.setUniform('uniScale', 1 / scale)
+        prg.setUniform('uniScale', scale)
         prg.bindAttribs(buff, 'attXY')
         gl.bindBuffer(gl.ARRAY_BUFFER, buff)
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, NB_VERTICES_IN_SQUARE)

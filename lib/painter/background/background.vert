@@ -10,20 +10,20 @@ varying vec2 varUV;
 void main() {
     if (uniImageAspectRatio > uniSceneAspectRatio) {
         // Image is wider.
-        float w = 2.0 * uniImageAspectRatio / uniSceneAspectRatio;
-        float h = 2.0;
-        float shiftX = w - 2.0;
-        float x = uniScale * (attXY.x - uniAlignX * shiftX);
-        float y = uniScale * attXY.y;
-        varUV = vec2((x + 1.0) / w, 1.0 - (y + 1.0) / h);
+        float w = uniImageAspectRatio / uniSceneAspectRatio;
+        float x = uniScale * attXY.x * w;
+        float y = attXY.y;
+        varUV.x = 1.0 / x + 2.0 * (uniAlignX - 0.5) * (w - 1.0) / w;
+        varUV.y = -y / uniScale;
+        varUV = 0.5 * (vec2(1.0, 1.0) + varUV);
     } else {
         // Image is narrower.
-        float w = 2.0;
-        float h = 2.0 * uniSceneAspectRatio / uniImageAspectRatio;
-        float shiftY = h - 2.0;
-        float x = uniScale * attXY.x;
-        float y = uniScale * (attXY.y - uniAlignY * shiftY);
-        varUV = vec2((x + 1.0) / w, 1.0 - (y + 1.0) / h);
+        float h = uniSceneAspectRatio / uniImageAspectRatio;
+        float x = attXY.x;
+        float y = uniScale * attXY.y * h;
+        varUV.x = x / uniScale;
+        varUV.y = -1.0 / y - 2.0 * (uniAlignY - 0.5) * (h - 1.0) / h;
+        varUV = 0.5 * (vec2(1.0, 1.0) + varUV);
     }
-    gl_Position = vec4(attXY, 0.0, 1.0);
+    gl_Position = vec4(attXY, -0.999999999, 1.0);
 }
