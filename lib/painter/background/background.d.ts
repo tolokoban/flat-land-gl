@@ -1,17 +1,17 @@
 /**
  * Background the screen by filling it with an image that covers it entirely.
  */
-import Atlas from '../../atlas';
+import Texture from '../../texture/image-texture';
 import Scene from '../../scene';
 import Painter from '../painter';
 interface IBackgroundPainterParams {
-    atlas: Atlas;
+    texture: Texture;
     alignX?: number;
     alignY?: number;
     scale?: number;
 }
 export default class BackgroundPainter extends Painter {
-    private atlas?;
+    private readonly texture;
     private prg?;
     private buff?;
     alignX: number;

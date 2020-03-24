@@ -1,20 +1,20 @@
-import Atlas, { IAtlasParams } from './atlas'
 import Painter from './painter/painter'
 import Pointer from './pointer'
 import Resize from './webgl/resize'
-
-let ID = 1
-
-export interface IAtlasParamsDic {
-    [key: string]: IAtlasParams
-}
-
-export interface IAtlases {
-    [key: string]: Atlas
-}
+import Texture from './texture'
+import ImageTexture from './texture/image-texture'
 
 export default class Scene {
-    get gl(): WebGLRenderingContext {
+    private textures: Map<string, Texture> = new Map()
+    resolution = 1
+    onAnimation: ((time: number) => void) | null = null
+    private readonly _gl: WebGL2RenderingContext
+    private readonly _pointer: Pointer
+    private activePainters: Painter[] = []
+    private isRendering = false
+    private lastRenderingTime = 0
+
+    get gl(): WebGL2RenderingContext {
         return this._gl
     }
 
@@ -29,27 +29,18 @@ export default class Scene {
      * Visible width. Between 0 and 1024.
      */
     get width(): number {
-        return this.gl.drawingBufferWidth
+        return this._gl.drawingBufferWidth
     }
     /**
      * Visible height. Between 0 and 1024.
      */
     get height(): number {
-        return this.gl.drawingBufferHeight
+        return this._gl.drawingBufferHeight
     }
-
-    resolution = 1
-    onAnimation: ((time: number) => void) | null = null
-    private readonly _gl: WebGLRenderingContext
-    private readonly _pointer: Pointer
-    private readonly atlases: Map<string, Atlas>
-    private activePainters: Painter[] = []
-    private isRendering = false
-    private lastRenderingTime = 0
 
     constructor(canvas: HTMLCanvasElement) {
         this._pointer = new Pointer(canvas)
-        const gl = canvas.getContext('webgl', {
+        const gl = canvas.getContext('webgl2', {
             // Specify WebGL options.
         })
         if (!gl) {
@@ -57,7 +48,6 @@ export default class Scene {
         }
 
         this._gl = gl
-        this.atlases = new Map()
     }
 
     /**
@@ -71,80 +61,40 @@ export default class Scene {
         this.activePainters = painters.slice()
     }
 
-    getAtlas(name: string): Atlas | null {
-        const { atlases } = this
-        return atlases.get(name) || null
-    }
-
-    /**
-     * Create an atlas that can be used immediatly even if the needed assets are not yet loaded.
-     * @param  params
-     * @param  onLoad You can provide a callback function that will be called when the assets
-     * are loaded.
-     */
-    createAtlas(params: IAtlasParams, onLoad?: (params: IAtlasParams) => void): Atlas {
-        const { name } = params
-        const sanitizedName = name || this.getNewName()
-        const atlas = new Atlas(this.gl, sanitizedName)
-        this.atlases.set(sanitizedName, atlas)
-
-        // tslint:disable:no-floating-promises
-        atlas.load(params).then(() => {
-            if (typeof onLoad === 'function') {
-                onLoad(params)
+    createTextureFromImageAsync(url: string): Promise<ImageTexture> {
+        const { textures, gl } = this
+        return new Promise((resolve, reject) => {
+            if (typeof url !== 'string') {
+                reject(Error("[FlatLand.Scene.createTextureFromImageAsync] url must be a non-empty string!"))
+                return
             }
-        })
-        return atlas
-    }
-
-    /**
-     * Create an atlas that can be used immediatly even if the needed assets are not yet loaded.
-     * @param  params
-     * @param  onLoad You can provide a callback function that will be called when the assets
-     * are loaded.
-     */
-    createAtlasAsync(params: IAtlasParams): Promise<Atlas> {
-        return new Promise((resolve) => {
-            const { name } = params
-            const sanitizedName = name || this.getNewName()
-            const atlas = new Atlas(this.gl, sanitizedName)
-            this.atlases.set(sanitizedName, atlas)
-
-            // tslint:disable:no-floating-promises
-            atlas.load(params).then(() => resolve(atlas))
-        })
-    }
-
-    createAtlasesAsync(params: IAtlasParamsDic): Promise<IAtlases> {
-        return new Promise(resolve => {
-            const atlasNames: string[] = Object.keys(params)
-            const promises = []
-            for (const atlasName of atlasNames) {
-                const atlasParam: IAtlasParams = params[atlasName]
-                promises.push(this.createAtlasAsync(atlasParam))
-            }
-            Promise.all(promises).then((atlases: Atlas[]) => {
-                const result: IAtlases = {}
-                for (let i = 0 ; i < atlases.length ; i++) {
-                    const name = atlasNames[i]
-                    const atlas = atlases[i]
-                    result[name] = atlas
+            if (textures.has(url)) {
+                // This texture already exists in the map.
+                const texture = textures.get(url) as ImageTexture
+                if (!texture || texture.isDestroyed) {
+                    // But it is destroyed, so cleanup.
+                    textures.delete(url)
+                } else {
+                    texture.share()
+                    resolve(texture)
+                    return
                 }
-                resolve(result)
-            })
+            }
+
+            const img = new Image()
+            img.src = url
+            img.onload = () => {
+                const texture = new ImageTexture({
+                    gl, id: url,
+                    source: img,
+                    width: img.width,
+                    height: img.height
+                })
+                textures.set(url, texture)
+                resolve(texture)
+            }
+            img.onerror = () => reject(Error(`[FlatLand.Scene.createTextureFromImageAsync] Unable to load image "${url}"!`))
         })
-    }
-
-
-    destroyAtlas(name: string): boolean {
-        const { atlases } = this
-        const atlas = atlases.get(name)
-        if (!atlas) {
-            return false
-        }
-        atlases.delete(name)
-        atlas.destroy()
-        return true
     }
 
     /**
@@ -166,13 +116,6 @@ export default class Scene {
         this.isRendering = false
     }
 
-    private getNewName() {
-        while (true) {
-            const name = `atlas-${ID++}`
-            if (!this.atlases.has(name)) { return name }
-        }
-    }
-
     private readonly render = (time: number) => {
         if (this.isRendering) {
             window.requestAnimationFrame(this.render)
@@ -189,6 +132,7 @@ export default class Scene {
         gl.clearDepth(+1)
         gl.clear(gl.DEPTH_BUFFER_BIT)
         gl.depthFunc(gl.LESS)
+        gl.disable(gl.DEPTH_TEST)
 
         try {
             for (const painter of this.activePainters) {
@@ -202,11 +146,12 @@ export default class Scene {
                 this.pointer.reset()
             }
         } catch (ex) {
-            console.error(ex)
             this.stop()
-            console.error('###############################')
-            console.error('# Rendering has been stopped! #')
-            console.error('###############################')
+            console.error('#################################')
+            console.error('# Rendering  has  been  stopped #')
+            console.error('# because of the followin error #')
+            console.error('#################################')
+            console.error(ex)
         }
     }
 }

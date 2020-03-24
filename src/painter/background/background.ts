@@ -2,7 +2,7 @@
  * Background the screen by filling it with an image that covers it entirely.
  */
 
-import Atlas from '../../atlas'
+import Texture from '../../texture/image-texture'
 import Scene from '../../scene'
 import Program from '../../webgl/program'
 import Painter from '../painter'
@@ -12,7 +12,7 @@ import frag from './background.frag'
 import vert from './background.vert'
 
 interface IBackgroundPainterParams {
-    atlas: Atlas
+    texture: Texture
     alignX?: number
     alignY?: number
     scale?: number
@@ -21,7 +21,7 @@ interface IBackgroundPainterParams {
 const NB_VERTICES_IN_SQUARE = 4
 
 export default class BackgroundPainter extends Painter {
-    private atlas?: Atlas
+    private readonly texture: Texture
     private prg?: Program
     private buff?: WebGLBuffer
 
@@ -45,26 +45,32 @@ export default class BackgroundPainter extends Painter {
         this.alignX = options.alignX
         this.alignY = options.alignY
         this.scale = options.scale
-        this.atlas = params.atlas
+        this.texture = params.texture
     }
 
     render() {
-        const { scene, prg, atlas, buff, alignX, alignY, scale } = this
-        if (!scene || !prg || !atlas || !buff) { return }
+        const { scene, prg, texture, buff, alignX, alignY, scale } = this
+        if (!scene || !prg || !buff) { return }
         const gl = scene.gl
+        const savedDepthFunc = gl.getParameter(gl.DEPTH_FUNC)
+
+        gl.depthFunc(gl.LEQUAL)
         gl.enable(gl.DEPTH_TEST)
+
         prg.use()
-        atlas.activate()
+        texture.attachToUnit(0)
         const uniforms = (prg as unknown) as IUniforms
         uniforms.$uniTexture = 0
         prg.setUniform('uniSceneAspectRatio', scene.width / scene.height)
-        prg.setUniform('uniImageAspectRatio', atlas.width / atlas.height)
+        prg.setUniform('uniImageAspectRatio', texture.width / texture.height)
         prg.setUniform('uniAlignX', alignX)
         prg.setUniform('uniAlignY', alignY)
         prg.setUniform('uniScale', scale)
         prg.bindAttribs(buff, 'attXY')
         gl.bindBuffer(gl.ARRAY_BUFFER, buff)
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, NB_VERTICES_IN_SQUARE)
+
+        gl.depthFunc(savedDepthFunc)
     }
 
     protected destroy(scene: Scene) {

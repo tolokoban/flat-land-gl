@@ -1,4 +1,4 @@
-import Atlas from '../../atlas'
+import ImageTexture from '../../texture/image-texture'
 import Camera from '../../camera/camera'
 import Painter from '../painter'
 import Program from '../../webgl/program'
@@ -25,7 +25,7 @@ let globalID = 1
 interface ISpritesPainterParams {
     camera: Camera,
     // Atlas which contains all the sprite images.
-    atlas: Atlas
+    texture: ImageTexture
 }
 
 export default class SpritesPainter extends Painter {
@@ -33,7 +33,7 @@ export default class SpritesPainter extends Painter {
     private _dataVert = new Float32Array(BLOCK * CHUNK)
     private _buffElem?: WebGLBuffer
     private _buffVert?: WebGLBuffer
-    private readonly _atlas: Atlas
+    private readonly _texture: ImageTexture
     private readonly _camera: Camera
     private _prg?: Program
     // If a sprite wnats to be updated but the painter is not yet initialized,
@@ -47,13 +47,13 @@ export default class SpritesPainter extends Painter {
 
     constructor(params: ISpritesPainterParams) {
         super()
-        this._atlas = params.atlas
+        this._texture = params.texture
         this._camera = params.camera
         this._deferedSpritesUpdate = new Map<string, [VirtualSprite, Float32Array]>()
     }
 
-    get atlas(): Atlas {
-        return this._atlas
+    get texture(): ImageTexture {
+        return this._texture
     }
 
     get count() {
@@ -64,9 +64,9 @@ export default class SpritesPainter extends Painter {
      * Register a new sprite that will be immediatly visible.
      */
     createSprite(params: Partial<ISprite>): Sprite {
-        const { atlas } = this
-        const width = atlas.width || DEFAULT_WIDTH
-        const height = atlas.height || DEFAULT_HEIGHT
+        const { texture } = this
+        const width = texture.width || DEFAULT_WIDTH
+        const height = texture.height || DEFAULT_HEIGHT
         const data = new Float32Array(CHUNK)
         const sprite = new Sprite(
             `${globalID++}`,
@@ -175,8 +175,8 @@ export default class SpritesPainter extends Painter {
     }
 
     render(time: number, delta: number) {
-        const { scene, _prg, atlas, _buffVert, _buffElem, _camera } = this
-        if (!scene || !_prg || !atlas || !_buffVert || !_buffElem) {
+        const { scene, _prg, texture, _buffVert, _buffElem, _camera } = this
+        if (!scene || !_prg || !_buffVert || !_buffElem) {
             return
         }
         const gl = scene.gl
@@ -187,7 +187,7 @@ export default class SpritesPainter extends Painter {
         gl.enable(gl.DEPTH_TEST)
         _prg.use()
         _camera.setUniformValues(_prg, scene.width, scene.height, time, delta)
-        atlas.activate()
+        texture.attachToUnit(0)
         const uniforms = (_prg as unknown) as IUniforms
         uniforms.$uniTexture = 0
         _prg.bindAttribs(_buffVert, 'attXYZ', 'attUV')

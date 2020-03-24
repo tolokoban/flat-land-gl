@@ -25,5 +25,5 @@ void main() {
         varUV.y = -1.0 / y - 2.0 * (uniAlignY - 0.5) * (h - 1.0) / h;
         varUV = 0.5 * (vec2(1.0, 1.0) + varUV);
     }
-    gl_Position = vec4(attXY, -0.999999999, 1.0);
+    gl_Position = vec4(attXY, 1.0, 1.0);
 }

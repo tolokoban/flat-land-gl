@@ -1,4 +1,4 @@
-import Atlas from '../../atlas';
+import ImageTexture from '../../texture/image-texture';
 import Camera from '../../camera/camera';
 import Painter from '../painter';
 import Scene from '../../scene';
@@ -6,20 +6,20 @@ import Quad, { IQuad } from './quad';
 import Sprite, { ISprite } from './sprite';
 interface ISpritesPainterParams {
     camera: Camera;
-    atlas: Atlas;
+    texture: ImageTexture;
 }
 export default class SpritesPainter extends Painter {
     private _capacity;
     private _dataVert;
     private _buffElem?;
     private _buffVert?;
-    private readonly _atlas;
+    private readonly _texture;
     private readonly _camera;
     private _prg?;
     private readonly _deferedSpritesUpdate;
     private readonly _sprites;
     constructor(params: ISpritesPainterParams);
-    get atlas(): Atlas;
+    get texture(): ImageTexture;
     get count(): number;
     /**
      * Register a new sprite that will be immediatly visible.
