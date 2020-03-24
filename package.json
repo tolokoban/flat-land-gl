@@ -1,6 +1,6 @@
 {
   "name": "flat-land-gl",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "license": "GPL-3.0",
   "description": "WebGL library for flat images display management",
   "keywords": [
