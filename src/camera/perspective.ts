@@ -1,15 +1,19 @@
 import Space from "./space"
 import Program from "../webgl/program"
+import VertexShader from "./perspective.vert"
+import Calc from "../calc"
+const DEFAULT_FIELD_ANGLE = 0.25
+const MAT4_LENGTH = 16
+const HALF = 0.5
+const DOUBLE = 2
 
-/**
- */
 export default class Perspective extends Space {
-    private perspectiveMatrix = new Float32Array(16)
+    private perspectiveMatrix = new Float32Array(MAT4_LENGTH)
 
     /**
      * Field view angle expressed in radians.
      */
-    fieldAngle: number = Math.PI / 4
+    fieldAngle: number = Math.PI * DEFAULT_FIELD_ANGLE
     near = 1
     far = 4097
 
@@ -26,9 +30,7 @@ export default class Perspective extends Space {
     }
 
     get glslFunction() {
-        return `vec4 worldPointToScreen(vec3 point) {
-    return uniPerspectiveMatrix * uniCameraMatrix * vec4(point, 1.0);
-}`
+        return VertexShader
     }
 
     /**
@@ -39,29 +41,29 @@ export default class Perspective extends Space {
      */
     setUniformValues(prg: Program, width: number, height: number) {
         const { near, far, fieldAngle } = this
-        const f = Math.tan(0.5 * (Math.PI - fieldAngle));
+        const f = Math.tan(HALF * (Math.PI - fieldAngle));
         const rangeInv = 1.0 / (near - far);
 
         const result = this.perspectiveMatrix
-        result[0] = f * height / width
-        result[1] = 0;
-        result[2] = 0;
-        result[3] = 0;
+        result[Calc.M4_00] = f * height / width
+        result[Calc.M4_10] = 0;
+        result[Calc.M4_20] = 0;
+        result[Calc.M4_30] = 0;
 
-        result[4] = 0;
-        result[5] = f;
-        result[6] = 0;
-        result[7] = 0;
+        result[Calc.M4_01] = 0;
+        result[Calc.M4_11] = f;
+        result[Calc.M4_21] = 0;
+        result[Calc.M4_31] = 0;
 
-        result[8] = 0;
-        result[9] = 0;
-        result[10] = (near + far) * rangeInv;
-        result[11] = -1;
+        result[Calc.M4_02] = 0;
+        result[Calc.M4_12] = 0;
+        result[Calc.M4_22] = (near + far) * rangeInv;
+        result[Calc.M4_32] = -1;
 
-        result[12] = 0;
-        result[13] = 0;
-        result[14] = near * far * rangeInv * 2;
-        result[15] = 0;
+        result[Calc.M4_03] = 0;
+        result[Calc.M4_13] = 0;
+        result[Calc.M4_23] = near * far * rangeInv * DOUBLE;
+        result[Calc.M4_33] = 0;
 
         prg.uniforms.uniCameraMatrix = this.cameraMatrix
         prg.uniforms.uniPerspectiveMatrix = this.perspectiveMatrix

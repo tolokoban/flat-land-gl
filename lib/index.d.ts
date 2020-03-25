@@ -19,11 +19,12 @@ declare const _default: {
         matrix: {
             areEqual: (a: Float32Array, b: Float32Array) => boolean;
             identity3(output: Float32Array): void;
+            extract3From4(mat4: Float32Array, mat3: Float32Array): void;
             multiply3(a: Float32Array, b: Float32Array, output: Float32Array): void;
             identity4(output: Float32Array): void;
             multiply4(a: Float32Array, b: Float32Array, output: Float32Array): void;
             invert4(a: Float32Array, output: Float32Array): boolean;
-            rotationX(angle: number, output: Float32Array): void;
+            rotation4X(angle: number, output: Float32Array): void;
         };
         M4_00: number;
         M4_10: number;
@@ -59,6 +60,7 @@ declare const _default: {
     Painter: {
         Background: typeof import("./painter/background").default;
         Clear: typeof import("./painter/clear").default;
+        CubeMap: typeof import("./painter/cube-map").default;
         Painter: typeof import("./painter/painter").default;
         Sprites: typeof import("./painter/sprites").default;
         Voronoi: typeof import("./painter/voronoi").default;

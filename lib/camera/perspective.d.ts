@@ -1,7 +1,5 @@
 import Space from "./space";
 import Program from "../webgl/program";
-/**
- */
 export default class Perspective extends Space {
     private perspectiveMatrix;
     /**
@@ -15,7 +13,7 @@ export default class Perspective extends Space {
         uniCameraMatrix: string;
         uniPerspectiveMatrix: string;
     };
-    get glslFunction(): string;
+    get glslFunction(): any;
     /**
      * @param prg - Attributes have to be set in this Program.
      * @param width - Canvas Width.

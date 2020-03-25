@@ -231,7 +231,8 @@ Available attributes are: ${Object.keys(that.attribs)
             case gl.UNSIGNED_SHORT:
             case gl.INT:
             case gl.UNSIGNED_INT:
-            case gl.SAMPLER_2D: // For textures, we specify the texture unit.
+            case gl.SAMPLER_2D: // For 2D textures, we specify the texture unit.
+            case gl.SAMPLER_CUBE: // For CubeMap textures, we specify the texture unit.
                 if (item.size === 1) {
                     return function(this: { [key: string]: number }, v: number) {
                         gl.uniform1i(nameGL, v)

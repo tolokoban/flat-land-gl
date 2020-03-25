@@ -1,9 +1,11 @@
 // tslint:disable:no-bitwise
+import { IVec3, IVec4, IMat3, IMat4 } from '../types'
 
 const FULL_TURN = 4096
 const MODULO = FULL_TURN - 1
 const HALF_TURN = 2048
 const HALF = 0.5
+const EPSILON = 0.00000001
 
 const COS = new Float32Array(FULL_TURN)
 const SIN = new Float32Array(FULL_TURN)
@@ -46,7 +48,6 @@ function clamp(v: number, min = 0, max = 1) {
     return v
 }
 
-
 const M4_00 = 0
 const M4_10 = 1
 const M4_20 = 2
@@ -79,12 +80,6 @@ const Y = 1
 const Z = 2
 const W = 3
 
-type IVector3 = Float32Array
-type IVector4 = Float32Array
-type IMatrix3 = Float32Array
-type IMatrix4 = Float32Array
-
-
 const vector = {
     areEqual(a: Float32Array, b: Float32Array): boolean {
         if (a.length !== b.length) return false
@@ -94,13 +89,13 @@ const vector = {
         return true
     },
 
-    cross3(a: IVector3, b: IVector3, output: IVector3) {
+    cross3(a: IVec3, b: IVec3, output: IVec3) {
         output[X] = a[Y] * b[Z] - a[Z] * b[Y]
         output[Y] = a[Z] * b[X] - a[X] * b[Z]
         output[Z] = a[X] * b[Y] - a[Y] * b[X]
     },
 
-    dot3(a: IVector3, b: IVector3): number {
+    dot3(a: IVec3, b: IVec3): number {
         const [xa, ya, za] = a
         const [xb, yb, zb] = b
         return xa * xb + ya * yb + za * zb
@@ -109,14 +104,14 @@ const vector = {
     /**
      * @return Length of a 3D vector.
      */
-    length3(input: IVector3): number {
+    length3(input: IVec3): number {
         return Math.sqrt(vector.dot3(input, input))
     },
 
     /**
      * Create a 3D vector with length 1.
      */
-    normalize3(input: IVector3, output: IVector3) {
+    normalize3(input: IVec3, output: IVec3) {
         const len = vector.length3(input)
         output[X] = input[X] * len
         output[Y] = input[Y] * len
@@ -130,7 +125,7 @@ const vector = {
      *
      * Latitude and longitude are expressed in radians.
      */
-    orbital3(latitude: number, longitude: number, output: IVector3) {
+    orbital3(latitude: number, longitude: number, output: IVec3) {
         const height = Math.sin(latitude)
         const radius = Math.cos(latitude)
         const angle = longitude - Math.PI * HALF
@@ -142,7 +137,7 @@ const vector = {
     /**
      * @return Length of a 3D vector.
      */
-    length4(input: IVector4): number {
+    length4(input: IVec4): number {
         const [x, y, z, w] = input
         return Math.sqrt(x * x + y * y + z * z + w * w)
     },
@@ -150,7 +145,7 @@ const vector = {
     /**
      * Create a 3D vector with length 1.
      */
-    normalize4(input: IVector4, output: IVector4) {
+    normalize4(input: IVec4, output: IVec4) {
         const len = vector.length4(input)
         output[X] = input[X] * len
         output[Y] = input[Y] * len
@@ -162,7 +157,7 @@ const vector = {
 const matrix = {
     areEqual: vector.areEqual,
 
-    identity3(output: IMatrix3) {
+    identity3(output: IMat3) {
         output[M3_00] = 1
         output[M3_10] = 0
         output[M3_20] = 0
@@ -174,7 +169,22 @@ const matrix = {
         output[M3_22] = 1
     },
 
-    multiply3(a: IMatrix3, b: IMatrix3, output: IMatrix3) {
+    /**
+     * Extract a 3x3 matrix from the top/left corner of a 4x4 matrix.
+     */
+    extract3From4(mat4: IMat4, mat3: IMat3) {
+        mat3[M3_00] = mat4[M4_00]
+        mat3[M3_10] = mat4[M4_10]
+        mat3[M3_20] = mat4[M4_20]
+        mat3[M3_01] = mat4[M4_01]
+        mat3[M3_11] = mat4[M4_11]
+        mat3[M3_21] = mat4[M4_21]
+        mat3[M3_02] = mat4[M4_02]
+        mat3[M3_12] = mat4[M4_12]
+        mat3[M3_22] = mat4[M4_22]
+    },
+
+    multiply3(a: IMat3, b: IMat3, output: IMat3) {
         output[M3_00] = a[M3_00] * b[M3_00] + a[M3_01] * b[M3_10] + a[M3_02] * b[M3_20]
         output[M3_10] = a[M3_10] * b[M3_00] + a[M3_11] * b[M3_10] + a[M3_12] * b[M3_20]
         output[M3_20] = a[M3_20] * b[M3_00] + a[M3_21] * b[M3_10] + a[M3_22] * b[M3_20]
@@ -186,7 +196,7 @@ const matrix = {
         output[M3_22] = a[M3_20] * b[M3_02] + a[M3_21] * b[M3_12] + a[M3_22] * b[M3_22]
     },
 
-    identity4(output: IMatrix4) {
+    identity4(output: IMat4) {
         output[M4_00] = 1
         output[M4_10] = 0
         output[M4_20] = 0
@@ -205,7 +215,7 @@ const matrix = {
         output[M4_33] = 1
     },
 
-    multiply4(a: IMatrix4, b: IMatrix4, output: IMatrix4) {
+    multiply4(a: IMat4, b: IMat4, output: IMat4) {
         output[M4_00] = a[M4_00] * b[M4_00] + a[M4_01] * b[M4_10] + a[M4_02] * b[M4_20] + a[M4_03] * b[M4_30]
         output[M4_10] = a[M4_10] * b[M4_00] + a[M4_11] * b[M4_10] + a[M4_12] * b[M4_20] + a[M4_13] * b[M4_30]
         output[M4_20] = a[M4_20] * b[M4_00] + a[M4_21] * b[M4_10] + a[M4_22] * b[M4_20] + a[M4_23] * b[M4_30]
@@ -227,7 +237,7 @@ const matrix = {
     /**
      * @return false if the matrix is not invertible.
      */
-    invert4(a: IMatrix4, output: IMatrix4): boolean {
+    invert4(a: IMat4, output: IMat4): boolean {
         const [
             a00, a10, a20, a30,
             a01, a11, a21, a31,
@@ -250,7 +260,7 @@ const matrix = {
         // Calculate the determinant
         const invDet = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06
 
-        if (Math.abs(invDet) < 0.00000001) return false
+        if (Math.abs(invDet) < EPSILON) return false
 
         const det = 1.0 / invDet;
 
@@ -277,7 +287,7 @@ const matrix = {
     /**
      * Rotation around X axis of `angle` radians.
      */
-    rotationX(angle: number, output: IMatrix4) {
+    rotation4X(angle: number, output: IMat4) {
         const c = Math.cos(angle);
         const s = Math.sin(angle);
 
@@ -302,7 +312,6 @@ const matrix = {
         output[M4_33] = 1
     }
 }
-
 
 export default {
     cos, sin, clamp, vector, matrix,

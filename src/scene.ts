@@ -3,11 +3,21 @@ import Pointer from './pointer'
 import Resize from './webgl/resize'
 import Texture from './texture'
 import ImageTexture from './texture/image-texture'
+import CubeMapTexture from './texture/cube-map-texture'
+
+interface ICubeMapTextureParams {
+    urlPosX: string
+    urlNegX: string
+    urlPosY: string
+    urlNegY: string
+    urlPosZ: string
+    urlNegZ: string
+}
 
 export default class Scene {
     private textures: Map<string, Texture> = new Map()
     resolution = 1
-    onAnimation: ((time: number) => void) | null = null
+    onAnimation: ((time: number, delta: number) => void) | null = null
     private readonly _gl: WebGL2RenderingContext
     private readonly _pointer: Pointer
     private activePainters: Painter[] = []
@@ -61,11 +71,11 @@ export default class Scene {
         this.activePainters = painters.slice()
     }
 
-    createTextureFromImageAsync(url: string): Promise<ImageTexture> {
+    createImageTextureAsync(url: string): Promise<ImageTexture> {
         const { textures, gl } = this
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (typeof url !== 'string') {
-                reject(Error("[FlatLand.Scene.createTextureFromImageAsync] url must be a non-empty string!"))
+                reject(Error("[FlatLand.Scene.createImageTextureAsync] url must be a non-empty string!"))
                 return
             }
             if (textures.has(url)) {
@@ -81,9 +91,8 @@ export default class Scene {
                 }
             }
 
-            const img = new Image()
-            img.src = url
-            img.onload = () => {
+            try {
+                const img = await this.loadImageAsync(url)
                 const texture = new ImageTexture({
                     gl, id: url,
                     source: img,
@@ -92,11 +101,73 @@ export default class Scene {
                 })
                 textures.set(url, texture)
                 resolve(texture)
+            } catch (ex) {
+                reject(ex)
             }
-            img.onerror = () => reject(Error(`[FlatLand.Scene.createTextureFromImageAsync] Unable to load image "${url}"!`))
         })
     }
 
+    createCubeMapTextureAsync(params: ICubeMapTextureParams): Promise<CubeMapTexture> {
+        const { textures, gl } = this
+        return new Promise(async (resolve, reject) => {
+            const urls = [
+                params.urlNegX, params.urlNegY, params.urlNegZ,
+                params.urlPosX, params.urlPosY, params.urlPosZ
+            ]
+            for (const url of urls) {
+                if (typeof url !== 'string') {
+                    reject(Error("[FlatLand.Scene.createCubeMapTextureAsync] url must be a non-empty string!"))
+                    return
+                }
+            }
+            const id = urls.join('|')
+            if (textures.has(id)) {
+                // This texture already exists in the map.
+                const texture = textures.get(id) as CubeMapTexture
+                if (!texture || texture.isDestroyed) {
+                    // But it is destroyed, so cleanup.
+                    textures.delete(id)
+                } else {
+                    texture.share()
+                    resolve(texture)
+                    return
+                }
+            }
+
+            try {
+                const promises = urls.map((url: string) => this.loadImageAsync(url))
+                const images = await Promise.all(promises)
+                const [
+                    sourceNegX, sourceNegY, sourceNegZ,
+                    sourcePosX, sourcePosY, sourcePosZ
+                ] = images
+
+                const texture = new CubeMapTexture({
+                    gl, id,
+                    sourceNegX, sourcePosX,
+                    sourceNegY, sourcePosY,
+                    sourceNegZ, sourcePosZ
+                })
+                textures.set(id, texture)
+                resolve(texture)
+            } catch (ex) {
+                console.error(ex)
+                reject(ex)
+            }
+        })
+    }
+
+    /**
+     * Asynchronous load of an image given its URL.
+     */
+    loadImageAsync(url: string): Promise<HTMLImageElement> {
+        return new Promise((resolve, reject) => {
+            const img = new Image()
+            img.src = url
+            img.onload = () => resolve(img)
+            img.onerror = () => reject(Error(`[FlatLand.Scene.createImageTextureAsync] Unable to load image "${url}"!`))
+        })
+    }
     /**
      * Start rendering.
      * When a frame is rendered, the function `onAnimation( time: number )` is called.
@@ -124,10 +195,15 @@ export default class Scene {
         }
 
         const { gl, lastRenderingTime } = this
-        Resize(gl, this.resolution)
-
         this.lastRenderingTime = time
+        if (lastRenderingTime === 0) {
+            // Skip the first frame to have a correct delta time.
+            return
+        }
+
         const delta = time - lastRenderingTime
+
+        Resize(gl, this.resolution)
 
         gl.clearDepth(+1)
         gl.clear(gl.DEPTH_BUFFER_BIT)
@@ -141,8 +217,7 @@ export default class Scene {
 
             const { onAnimation } = this
             if (typeof onAnimation === 'function') {
-                onAnimation(time)
-
+                onAnimation(time, delta)
                 this.pointer.reset()
             }
         } catch (ex) {

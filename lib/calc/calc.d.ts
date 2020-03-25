@@ -54,6 +54,10 @@ declare const _default: {
     matrix: {
         areEqual: (a: Float32Array, b: Float32Array) => boolean;
         identity3(output: Float32Array): void;
+        /**
+         * Extract a 3x3 matrix from the top/left corner of a 4x4 matrix.
+         */
+        extract3From4(mat4: Float32Array, mat3: Float32Array): void;
         multiply3(a: Float32Array, b: Float32Array, output: Float32Array): void;
         identity4(output: Float32Array): void;
         multiply4(a: Float32Array, b: Float32Array, output: Float32Array): void;
@@ -64,7 +68,7 @@ declare const _default: {
         /**
          * Rotation around X axis of `angle` radians.
          */
-        rotationX(angle: number, output: Float32Array): void;
+        rotation4X(angle: number, output: Float32Array): void;
     };
     M4_00: number;
     M4_10: number;

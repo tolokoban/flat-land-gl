@@ -19,8 +19,10 @@ export default abstract class Space extends Camera {
      * @param  latitude - Expressed in radians.
      * @param  longitude - Expressed in radians.
      */
-    orbit(targetX: number, targetY: number, targetZ: number,
-        distance: number, latitude: number, longitude: number) {
+    orbit(
+        targetX: number, targetY: number, targetZ: number,
+        distance: number, latitude: number, longitude: number
+    ) {
         const lat = Calc.clamp(latitude, -ALMOST_HALF_PI, ALMOST_HALF_PI)
         const lng = longitude - HALF_PI
         const cosLat = Math.cos(lat)
@@ -53,24 +55,24 @@ export default abstract class Space extends Camera {
         // Le résultat est la multiplication de la projection avec la translation.
         const result = this.cameraMatrix
 
-        result[0] = Xx;
-        result[4] = Xy;
-        result[8] = Xz;
-        result[12] = Tx * Xx + Ty * Xy + Tz * Xz;
+        result[Calc.M4_00] = Xx;
+        result[Calc.M4_01] = Xy;
+        result[Calc.M4_02] = Xz;
+        result[Calc.M4_03] = Tx * Xx + Ty * Xy + Tz * Xz;
 
-        result[1] = Yx;
-        result[5] = Yy;
-        result[9] = Yz;
-        result[13] = Tx * Yx + Ty * Yy + Tz * Yz;
+        result[Calc.M4_10] = Yx;
+        result[Calc.M4_11] = Yy;
+        result[Calc.M4_12] = Yz;
+        result[Calc.M4_13] = Tx * Yx + Ty * Yy + Tz * Yz;
 
-        result[2] = Zx;
-        result[6] = Zy;
-        result[10] = Zz;
-        result[14] = Tx * Zx + Ty * Zy + Tz * Zz;
+        result[Calc.M4_20] = Zx;
+        result[Calc.M4_21] = Zy;
+        result[Calc.M4_22] = Zz;
+        result[Calc.M4_23] = Tx * Zx + Ty * Zy + Tz * Zz;
 
-        result[3] = 0;
-        result[7] = 0;
-        result[11] = 0;
-        result[15] = 1;
+        result[Calc.M4_30] = 0;
+        result[Calc.M4_31] = 0;
+        result[Calc.M4_32] = 0;
+        result[Calc.M4_33] = 1;
     }
 }
